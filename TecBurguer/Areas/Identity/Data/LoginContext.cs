@@ -27,7 +27,7 @@ public class LoginContext : IdentityDbContext<LoginCliente>
         {
             builder.Property(x => x.Nome).HasMaxLength(100);
             builder.Property(x => x.Localidade).HasMaxLength(10);
-            builder.Property(x => x.NumeroCasa).HasMaxLength(50);
+            builder.Property(x => x.NumeroCasa).HasMaxLength(100);
             builder.Property(x => x.Cep).HasMaxLength(10);
             builder.Property(x => x.Rua).HasMaxLength(100);
             builder.Property(x => x.Bairro).HasMaxLength(100);

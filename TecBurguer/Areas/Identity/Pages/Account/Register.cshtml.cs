@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -18,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using TecBurguer.Areas.Identity.Data;
 using TecBurguer.Models;
 
@@ -128,10 +131,9 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "A senha e a confirmação não estão identicas.")]
             public string ConfirmPassword { get; set; }
         }
-
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -146,6 +148,21 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                user.Nome = Input.Nome;
+                user.Localidade = Input.Localidade;
+                user.NumeroCasa = Input.NumeroCasa;
+                user.Cep = Input.Cep;
+                user.Rua = Input.Rua;
+                user.Bairro = Input.Bairro;
+                user.Cidade = Input.Cidade;
+
+                Usuario usuario = new Usuario
+                {
+                    Nome =Input.Nome,
+                    Email = Input.Email,
+                    Cep = Input.Cep
+                };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
