@@ -13,19 +13,19 @@ html {
   min-height: 100%;
 }
 
-body {
-    margin-bottom: 60px;
-    background-color:#1b1b1b;
-    color: white;
-}
-
 .OutBox {
     display: block;
 }
 
-h1{
-    text-align: center;
-    margin: 10px;
+.TextoComImagem {
+    font-size: 60px;
+    font-weight: bold;
+    background: linear-gradient(90deg, orange, #fecf78);
+    background-size: cover;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 .Ball1 {
@@ -37,8 +37,7 @@ h1{
     left: -195px;
     bottom: -90px;
     z-index: -1;
-    
-    
+    filter: blur(60px);
 }
 
 .Ball2 {
@@ -50,8 +49,7 @@ h1{
     left: -100px;
     top: 95px;
     z-index: -1;
-    
-    
+    filter: blur(60px);
 }
 
 .Ball3 {
@@ -63,8 +61,7 @@ h1{
     right: -195px;
     top: -90px;
     z-index: -1;
-   
-
+    filter: blur(60px);
 }
 
 .Ball4 {
@@ -76,20 +73,21 @@ h1{
     right: -100px;
     bottom: 95px;
     z-index: -1;
-
-   
+    filter: blur(60px);
 }
-.Box{
-    text-align:center;
-    color:black;
+.Box {
+    text-align: center;
+    color: black;
     display: block;
     margin: auto;
     width: 30vw;
     background-color: #f8f8f8;
-    padding:15px;
+    padding: 15px;
     border-radius: 15px;
-    margin-bottom:20px;
+    margin-bottom: 20px;
     z-index: 1;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    animation: fadeIn 0.6s ease-out forwards;
 }
 
 .Box input{
@@ -100,10 +98,41 @@ h1{
     margin-bottom: 10px;
 }
 
+.form-floating input, .form-floating select {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-floating input:focus, .form-floating select:focus {
+    border-color: orange;
+    box-shadow: 0 0 5px rgba(255,152,0,0.5);
+}
+
+.form-floating select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23ff9800' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+}
+
 @media (max-width: 1080px) {
     .Box {
         margin: 0;
         width: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -116,10 +145,18 @@ h1{
         transform: scale(1);
     }
 }
-#registerSubmit{
-
-    background-color:orange;
-        outline:hidden;
+#registerSubmit {
+    background: linear-gradient(90deg, orange, #fecf78);
     border: none;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
+#registerSubmit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}

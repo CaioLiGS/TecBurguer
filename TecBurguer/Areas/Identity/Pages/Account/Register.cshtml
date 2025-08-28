@@ -10,12 +10,10 @@
     ViewData["Title"] = "Registro";
 }
 
-<h1>@ViewData["Title"]</h1>
-
 <div class="OutBox">
     <div class="Box">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Criar nova conta</h2>
+            <h2 class="TextoComImagem">Criar nova conta</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
