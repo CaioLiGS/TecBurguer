@@ -16,3 +16,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.OutBox{
+    display: block;
+}
+
+.Box{
+    display: block;
+    margin: auto;
+    width: 30vw;
+}
+
+@media (max-width: 1080px) {
+    .Box {
+        margin: 0;
+        width:100%;
+    }
+}

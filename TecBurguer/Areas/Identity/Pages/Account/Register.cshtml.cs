@@ -92,6 +92,26 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             [Display(Name = "Localidade")]
             public string Localidade { get; set; }
 
+            [Required]
+            [Display(Name = "Numero Casa")]
+            public string NumeroCasa { get; set; }
+
+            [Required]
+            [Display(Name = "CEP")]
+            public string Cep { get; set; }
+
+            [Required]
+            [Display(Name = "Rua")]
+            public string Rua { get; set; }
+
+            [Required]
+            [Display(Name = "Bairro")]
+            public string Bairro { get; set; }
+
+            [Required]
+            [Display(Name = "Cidade")]
+            public string Cidade { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
