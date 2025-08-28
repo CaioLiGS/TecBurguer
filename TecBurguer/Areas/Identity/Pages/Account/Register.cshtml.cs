@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using TecBurguer.Areas.Identity.Data;
+using TecBurguer.Models;
 
 namespace TecBurguer.Areas.Identity.Pages.Account
 {
@@ -30,13 +31,15 @@ namespace TecBurguer.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<LoginCliente> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly DBTecBurguerContext _dbTecBurguerContext;
 
         public RegisterModel(
             UserManager<LoginCliente> userManager,
             IUserStore<LoginCliente> userStore,
             SignInManager<LoginCliente> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            DBTecBurguerContext dBTecBurguerContext)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +47,7 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dbTecBurguerContext = dBTecBurguerContext;
         }
 
         /// <summary>
@@ -79,6 +83,14 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "Nome")]
+            public string Nome { get; set; }
+
+            [Required]
+            [Display(Name = "Localidade")]
+            public string Localidade { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
