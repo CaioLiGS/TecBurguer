@@ -15,7 +15,7 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #222222;
+    background-color:#1b1b1b;
     color: white;
 }
 
@@ -37,7 +37,8 @@ h1{
     left: -195px;
     bottom: -90px;
     z-index: -1;
-    animation: pulsar 5s infinite;
+    
+    
 }
 
 .Ball2 {
@@ -49,9 +50,35 @@ h1{
     left: -100px;
     top: 95px;
     z-index: -1;
-    animation: pulsar 2s infinite;
+    
+    
 }
 
+.Ball3 {
+    background-color: orange;
+    width: 700px;
+    height: 700px;
+    border-radius: 100%;
+    position: fixed;
+    right: -195px;
+    top: -90px;
+    z-index: -1;
+   
+
+}
+
+.Ball4 {
+    background-color: orange;
+    width: 300px;
+    height: 300px;
+    border-radius: 100%;
+    position: fixed;
+    right: -100px;
+    bottom: 95px;
+    z-index: -1;
+
+   
+}
 .Box{
     text-align:center;
     color:black;
@@ -88,5 +115,11 @@ h1{
     100% {
         transform: scale(1);
     }
+}
+#registerSubmit{
+
+    background-color:orange;
+        outline:hidden;
+    border: none;
 }
 
