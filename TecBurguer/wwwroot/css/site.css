@@ -38,6 +38,7 @@ html {
     bottom: -90px;
     z-index: -1;
     filter: blur(60px);
+    animation: pulsar 20s linear infinite;
 }
 
 .Ball2 {
@@ -62,6 +63,7 @@ html {
     top: -90px;
     z-index: -1;
     filter: blur(60px);
+    animation: pulsar 30s linear infinite;
 }
 
 .Ball4 {
@@ -136,6 +138,16 @@ html {
     }
 }
 
+@keyframes girarNeon {
+    0% {
+        background-position:0% 50%;
+    }
+
+    100% {
+        background-position: 100vw 50%;
+    }
+}
+
 @keyframes pulsar {
     50% {
         transform: scale(1.2);
@@ -145,15 +157,16 @@ html {
         transform: scale(1);
     }
 }
+
 #registerSubmit {
-    background: linear-gradient(90deg, orange, #fecf78);
+    background: linear-gradient(100deg, orange, #fecf78);
     border: none;
     color: white;
     font-weight: bold;
     padding: 12px;
     border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.5s ease-in-out;
 }
 
 #registerSubmit:hover {
