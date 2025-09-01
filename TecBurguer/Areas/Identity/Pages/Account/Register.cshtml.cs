@@ -156,10 +156,11 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                 user.Rua = Input.Rua;
                 user.Bairro = Input.Bairro;
                 user.Cidade = Input.Cidade;
+                user.UserName = Input.Nome;
 
                 Usuario usuario = new Usuario
                 {
-                    Nome =Input.Nome,
+                    Nome = Input.Nome,
                     Email = Input.Email,
                     Cep = Input.Cep
                 };

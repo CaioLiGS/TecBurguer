@@ -1,6 +1,13 @@
-html {
-  font-size: 14px;
+:root {
+    --color-orange: #F97316;
+    --color-yellow: #FACC15;
+    --color-blue: #2563EB;
+    --color-gray: #6B7280;
+    --color-white: #F9FAFB; 
 }
+
+html {
+    font-size: 14px;}
 
 @media (min-width: 768px) {
   html {
@@ -17,10 +24,19 @@ html {
     display: block;
 }
 
+#BarraDeNavegacao {
+    padding:0;
+}
+
+.container-fluid {
+    padding: 10px;
+    background-color: var(--color-white);
+}
+
 .TextoComImagem {
     font-size: 60px;
     font-weight: bold;
-    background: linear-gradient(90deg, orange, #fecf78);
+    background: linear-gradient(90deg, var(--color-orange), #fecf78);
     background-size: cover;
     background-position: center;
     color: transparent;
@@ -29,7 +45,7 @@ html {
 }
 
 .Ball1 {
-    background-color: orange;
+    background-color: var(--color-orange);
     width: 700px;
     height: 700px;
     border-radius: 100%;
@@ -42,7 +58,7 @@ html {
 }
 
 .Ball2 {
-    background-color: orange;
+    background-color: var(--color-orange);
     width: 300px;
     height: 300px;
     border-radius: 100%;
@@ -54,7 +70,7 @@ html {
 }
 
 .Ball3 {
-    background-color: orange;
+    background-color: var(--color-orange);
     width: 700px;
     height: 700px;
     border-radius: 100%;
@@ -67,7 +83,7 @@ html {
 }
 
 .Ball4 {
-    background-color: orange;
+    background-color: (--color-orange);
     width: 300px;
     height: 300px;
     border-radius: 100%;
@@ -108,7 +124,7 @@ html {
 }
 
 .form-floating input:focus, .form-floating select:focus {
-    border-color: orange;
+    border-color: var(--color-orange);
     box-shadow: 0 0 5px rgba(255,152,0,0.5);
 }
 
@@ -159,7 +175,7 @@ html {
 }
 
 #registerSubmit {
-    background: linear-gradient(100deg, orange, #fecf78);
+    background: linear-gradient(100deg, var(--color-orange), #fecf78);
     border: none;
     color: white;
     font-weight: bold;
@@ -172,4 +188,50 @@ html {
 #registerSubmit:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.navbar-nav-flex-grow-1 {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    width:100%;
+    margin: 0;
+}
+
+.LoginPartial {
+    display: flex;
+    border: 3px solid var(--color-orange);
+    border-radius: 10px;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px;
+}
+
+.LoginPartial .navbar-nav {
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+#login {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--color-orange);
+    border-radius: 0px 6px 6px 0px;
+    color: saddlebrown;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    width: 50%;
+    transition: all 0.5s ease-in-out;
+    text-align: center;
+}
+
+#login:hover {
+    width: 100%;
+    z-index: 10;
+    border-radius: 6px;
+}
+
+#registrar{
+    text-wrap: nowrap;
 }

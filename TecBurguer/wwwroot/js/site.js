@@ -23,4 +23,4 @@ $("#Localidade").blur(function(){
     } else {
         $("#NumeroCasaLabel").text("Numero da casa")
     }
-});
+});z
