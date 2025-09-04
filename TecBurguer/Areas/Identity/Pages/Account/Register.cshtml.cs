@@ -91,29 +91,6 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             [Display(Name = "Nome")]
             public string Nome { get; set; }
 
-            [Required]
-            [Display(Name = "Localidade")]
-            public string Localidade { get; set; }
-
-            [Required]
-            [Display(Name = "Numero Casa")]
-            public string NumeroCasa { get; set; }
-
-            [Required]
-            [Display(Name = "CEP")]
-            public string Cep { get; set; }
-
-            [Required]
-            [Display(Name = "Rua")]
-            public string Rua { get; set; }
-
-            [Required]
-            [Display(Name = "Bairro")]
-            public string Bairro { get; set; }
-
-            [Required]
-            [Display(Name = "Cidade")]
-            public string Cidade { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -150,21 +127,15 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 user.Nome = Input.Nome;
-                user.Localidade = Input.Localidade;
-                user.NumeroCasa = Input.NumeroCasa;
-                user.Cep = Input.Cep;
-                user.Rua = Input.Rua;
-                user.Bairro = Input.Bairro;
-                user.Cidade = Input.Cidade;
                 user.UserName = Input.Nome;
 
                 Usuario usuario = new Usuario
                 {
                     Nome = Input.Nome,
-                    Email = Input.Email,
-                    Cep = Input.Cep
+                    Email = Input.Email
                 };
 
+                await _userManager.AddToRoleAsync(user, "Usuário");
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

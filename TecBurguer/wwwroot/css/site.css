@@ -93,6 +93,16 @@ html {
     z-index: -1;
     filter: blur(60px);
 }
+
+.banner{
+    width:100vw;
+    height: 100vh;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
 .Box {
     text-align: center;
     color: black;

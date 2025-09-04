@@ -172,6 +172,22 @@ namespace TecBurguer.Models
                 entity.Property(e => e.Nome)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Estado)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.Cidade)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.Bairro)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.Rua)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.Administrador)
+                    .IsUnicode(false)
+                    .HasDefaultValue(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

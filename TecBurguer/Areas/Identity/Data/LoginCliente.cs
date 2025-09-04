@@ -10,11 +10,6 @@ namespace TecBurguer.Areas.Identity.Data;
 public class LoginCliente : IdentityUser
 {
     public string Nome { get; set; }
-    public string Localidade { get; set; }
-    public string NumeroCasa { get; set; }
-    public string Cep { get; set; }
-    public string Rua { get; set; }
-    public string Bairro { get; set; }
-    public string Cidade { get; set; }
+    public bool Administrador { get; set; } = false;
 }
 

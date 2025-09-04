@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
+
 
 namespace TecBurguer.Models
 {
