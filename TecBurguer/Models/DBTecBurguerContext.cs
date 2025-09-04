@@ -88,6 +88,10 @@ namespace TecBurguer.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Imagem)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Preco).HasColumnType("numeric(18, 0)");
             });
 

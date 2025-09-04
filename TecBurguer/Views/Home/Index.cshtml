@@ -1,10 +1,43 @@
-﻿@{
+﻿@model IEnumerable<TecBurguer.Models.Hamburguer>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<img class="banner" src="~/css/Imagens/Banner.png">
+<div class="BannerContent">
+    <img class="banner" src="~/css/Imagens/Banner.png">
+</div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="Content1" id="OfertasDiarias">
+    <h2 class="OfertasDiariasTitle">OFERTAS DO DIA</h2>
+
+</div>
+
+<div class="Content2" id="RecomendacoesDoChefe">
+    <h2>RECOMENDAÇÕES DO CHEFE</h2>
+
+</div>
+
+
+<div class="Content1" id="Cardapio">
+    <h2>CARDAPIO</h2>
+
+    @foreach (var item in Model)
+    {
+        <div class="BlocoHamburguer">
+            <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer">
+
+            <h3 class="TituloHamburguer">
+                @Html.DisplayFor(modelItem => item.Nome)
+            </h3>
+            <p class="DescricaoHamburguer">
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </p>
+            <a class="SaibaMaisHamburguer">Saiba Mais</a>
+
+        </div>
+
+    }
+
+    <a>Acesse nosso cardapio completo.</a>
 </div>

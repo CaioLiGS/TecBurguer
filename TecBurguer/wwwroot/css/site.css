@@ -83,7 +83,7 @@ html {
 }
 
 .Ball4 {
-    background-color: (--color-orange);
+    background-color: var(--color-orange);
     width: 300px;
     height: 300px;
     border-radius: 100%;
@@ -94,13 +94,74 @@ html {
     filter: blur(60px);
 }
 
+.BannerContent{
+    height: 80vh;
+}
+
 .banner{
-    width:100vw;
-    height: 100vh;
-    position: relative;
-    left: 0;
-    bottom: 0;
+    width:95vw;
+    height: 70vh;
+    position: absolute;
+    top: 10vh;
+    left:2.5vw;
     z-index: -1;
+    border-radius: 15px 15px 0 0;
+}
+
+.Content1 {
+    display: block;
+    border: 5px solid var(--color-orange);
+    width: 100%;
+    border-radius: 20px
+}
+
+    .Content1 h2 {
+        text-align: center;
+        background: linear-gradient(to right, var(--color-yellow), var(--color-orange), var(--color-yellow));
+        animation: MoveBackground 20s ease-in-out infinite;
+        border-radius: 15px;
+        padding: 5px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    }
+
+
+.BlocoHamburguer{
+    display: flex;
+    background-color: #ff9159ad;
+    width: 300px;
+    height: 500px;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 20px;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: center;
+}
+
+.ImagemHamburguer {
+    border-radius: 15px;
+    width: 100%;
+    height: 50%;
+}
+
+.TituloHamburguer{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.SaibaMaisHamburguer{
+    display: block;
+    background-color: var(--color-blue);
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    text-decoration:none;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    padding: 5px;
+    position: relative;
+    
+    transition: all 0.5s ease-in-out;
 }
 
 .Box {
@@ -145,6 +206,16 @@ html {
     background-size: 18px;
 }
 
+@keyframes MoveBackground{
+    50% {
+        background-position: 100vw 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
 @media (max-width: 1080px) {
     .Box {
         margin: 0;
@@ -164,15 +235,6 @@ html {
     }
 }
 
-@keyframes girarNeon {
-    0% {
-        background-position:0% 50%;
-    }
-
-    100% {
-        background-position: 100vw 50%;
-    }
-}
 
 @keyframes pulsar {
     50% {

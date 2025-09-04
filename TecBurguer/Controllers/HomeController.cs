@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TecBurguer.Models;
 
 namespace TecBurguer.Controllers
@@ -7,15 +8,18 @@ namespace TecBurguer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DBTecBurguerContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DBTecBurguerContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var hamburgueres = _context.Hamburguers.ToList();
+            return View(hamburgueres);
         }
 
         public IActionResult Privacy()

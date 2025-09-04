@@ -15,6 +15,7 @@ namespace TecBurguer.Models
         public string? Nome { get; set; }
         public string? Descricao { get; set; }
         public decimal? Preco { get; set; }
+        public string? Imagem { get; set; }
 
         public virtual ICollection<HamburguerIgrediente> HamburguerIgredientes { get; set; }
         public virtual ICollection<Pedido> Pedidos { get; set; }
