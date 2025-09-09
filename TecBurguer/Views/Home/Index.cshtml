@@ -22,22 +22,28 @@
 <div class="Content1" id="Cardapio">
     <h2>CARDAPIO</h2>
 
-    @foreach (var item in Model)
-    {
-        <div class="BlocoHamburguer">
-            <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer">
+    <div class="ConteudoContent1">
+        @foreach (var item in Model)
+        {
+            <div class="BlocoHamburguer">
+                <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer">
 
-            <h3 class="TituloHamburguer">
-                @Html.DisplayFor(modelItem => item.Nome)
-            </h3>
-            <p class="DescricaoHamburguer">
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </p>
-            <a class="SaibaMaisHamburguer">Saiba Mais</a>
+                <h3 class="TituloHamburguer">
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </h3>
+                <p class="DescricaoHamburguer">
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </p>
+                <div class="BotoesDoHamburguer">
+                    <a class="CartBurguer"><img src="~/css/Imagens/IconCart.png"></a>
+                    <a class="SaibaMaisHamburguer">Saiba Mais</a>
+                </div>
 
-        </div>
+            </div>
 
-    }
+        }
+    </div>
+    
 
-    <a>Acesse nosso cardapio completo.</a>
+    <a>Acesse nosso cardapio completo</a>
 </div>

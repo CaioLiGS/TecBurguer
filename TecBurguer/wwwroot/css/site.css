@@ -36,6 +36,11 @@ main{
     padding: 0;
 }
 
+.Abas{
+    display: flex;
+    align-items: center;
+}
+
 .navbar-brand {
     display: inline-block;
     width: 80px;
@@ -77,6 +82,78 @@ main{
 .navbar-brand:hover .logo-icon {
     top: 0;
 }
+
+nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* evita o “pulo” do menu */
+
+}
+.nav-item.dropdown {
+    position: relative;
+}
+
+.nav-link.dropdown-toggle {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #333;
+    padding: 8px 12px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+    .nav-link.dropdown-toggle:hover {
+        background-color: #f0f0f0;
+        color: #007bff;
+    }
+
+/* A seta (caret) */
+.nav-link .caret {
+    font-size: 0.6em;
+    transition: transform 0.3s ease;
+}
+
+/* Menu escondido por padrão */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* logo abaixo do botão */
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+    border-radius: 5px;
+    min-width: 180px;
+    padding: 5px 0;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+}
+
+/* Mostrar o menu no hover */
+.nav-item.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+/* Itens do menu */
+.dropdown-item {
+    display: block;
+    padding: 8px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+    .dropdown-item:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+/* Animação da seta para indicar aberto */
+.nav-item.dropdown:hover .caret {
+    transform: rotate(180deg);
+}
+
 
 /*
 
@@ -152,6 +229,11 @@ main{
     filter: blur(60px);
 }
 
+
+/*
+    HOME
+*/
+
 .BannerContent {
     height: 100vh;
     margin-bottom: 100px;
@@ -178,44 +260,102 @@ main{
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
 
-
-.BlocoHamburguer{
+.ConteudoContent1{
     display: flex;
-    background-color: ghostwhite;
-    width: 300px;
-    height: 500px;
-    border-radius: 15px;
-    padding: 10px;
-    margin: 20px;
-    flex-wrap: wrap;
-    align-content: space-around;
-    justify-content: center;
 }
+
+/*
+    CONTEUDO DO HAMBURGUER
+*/
+.BlocoHamburguer {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    padding: 20px;
+    width: 280px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .BlocoHamburguer:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
 
 .ImagemHamburguer {
-    border-radius: 15px;
     width: 100%;
-    height: 50%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
 }
 
-.TituloHamburguer{
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-}
 
-.SaibaMaisHamburguer{
-    display: block;
-    background-color: var(--color-blue);
-    border-radius: 10px;
-    width: 100%;
+.TituloHamburguer {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #3D405B; 
+    margin: 10px 0;
     text-align: center;
-    color: white;
-    text-decoration:none;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    padding: 5px;
-    position: relative;
-    
-    transition: all 0.5s ease-in-out;
 }
+
+.DescricaoHamburguer {
+    font-size: 0.95rem;
+    color: #555;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.BotoesDoHamburguer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
+}
+
+.CartBurguer {
+    flex: 0 0 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: #E07A5F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+    .CartBurguer img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .CartBurguer:hover {
+        background: #d45d47;
+    }
+
+.SaibaMaisHamburguer {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 12px;
+    background: #81B29A; 
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+    .SaibaMaisHamburguer:hover {
+        background: #6d9b85;
+    }
+
+/*
+
+*/
 
 .Box {
     text-align: center;

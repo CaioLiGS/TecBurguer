@@ -167,7 +167,7 @@ namespace TecBurguer.Models
 
                 entity.Property(e => e.Cep)
                     .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(100)
@@ -179,16 +179,16 @@ namespace TecBurguer.Models
 
                 entity.Property(e => e.Estado)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasDefaultValue(false);
                 entity.Property(e => e.Cidade)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasDefaultValue(false);
                 entity.Property(e => e.Bairro)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasDefaultValue(false);
                 entity.Property(e => e.Rua)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasDefaultValue(false);
                 entity.Property(e => e.Administrador)
                     .IsUnicode(false)
                     .HasDefaultValue(false);
