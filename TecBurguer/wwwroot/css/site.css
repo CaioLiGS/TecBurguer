@@ -9,8 +9,10 @@
     --light: #FAF3E0; /* branco quente */
 }
 
+
 html {
     font-size: 14px;
+    scroll-padding-top: 100px;
 }
 
 @media (min-width: 768px) {
@@ -19,10 +21,6 @@ html {
     }
 }
 
-html {
-    position: relative;
-    min-height: 100%;
-}
 
 body {
     background: var(--light);
@@ -43,6 +41,7 @@ header {
     left: 0;
     top: 0;
     width: 100vw;
+    height: 100px;
     z-index: 1;
 }
 
@@ -128,6 +127,15 @@ header {
     transition: transform 0.3s ease;
 }
 
+.Cart a img{
+    width: 20px;
+    height: 20px;
+}
+
+.QuantCart{
+    position
+}
+
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -165,6 +173,7 @@ header {
 
 .OutBox {
     display: block;
+    margin-top: 120px;
 }
 
 .TextoComImagem {
@@ -261,8 +270,8 @@ header {
 
     .ScrollDown .arrow {
         display: inline-block;
-        width: 24px;
-        height: 24px;
+        width: 16px;
+        height: 16px;
         border-left: 3px solid var(--light);
         border-bottom: 3px solid var(--light);
         transform: rotate(-45deg);
@@ -397,6 +406,7 @@ header {
     text-decoration: none;
     transition: all 0.3s ease-in-out;
     justify-content: center;
+    align-items: center;
     height: 100%;
     width: 80%;
 }
