@@ -18,7 +18,7 @@ namespace TecBurguer.Controllers
             _context = context;
         }
 
-        // GET: Hamburgueres
+        // GET: Hamburgueres8
         public async Task<IActionResult> Index()
         {
               return _context.Hamburguers != null ? 

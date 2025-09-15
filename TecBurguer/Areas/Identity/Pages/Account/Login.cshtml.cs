@@ -124,16 +124,29 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                     var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
                     Console.WriteLine("O usuário é administrador", user.Administrador);
 
-                    if (user != null && user.Administrador) 
+                    if (user != null) 
                     {
-                        // Aqui você sabe que ele é admin
-                        _logger.LogInformation("Usuário é ADMINISTRADOR!");
-
-
-                        if (!await _signInManager.UserManager.IsInRoleAsync(user, "Administrador"))
+                        if (user.Vendedor)
                         {
-                            await _signInManager.UserManager.AddToRoleAsync(user, "Administrador");
+                            _logger.LogInformation("Usuário é VENDEDOR!");
+
+
+                            if (!await _signInManager.UserManager.IsInRoleAsync(user, "Vendedor"))
+                            {
+                                await _signInManager.UserManager.AddToRoleAsync(user, "Vendedor");
+                            }
                         }
+                        else if (user.Administrador)
+                        {
+                            _logger.LogInformation("Usuário é ADMINISTRADOR!");
+
+
+                            if (!await _signInManager.UserManager.IsInRoleAsync(user, "Administrador"))
+                            {
+                                await _signInManager.UserManager.AddToRoleAsync(user, "Administrador");
+                            }
+                        }
+                        
                     }
 
                     return LocalRedirect(returnUrl);

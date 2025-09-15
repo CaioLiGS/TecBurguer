@@ -1,9 +1,73 @@
 ﻿@model IEnumerable<TecBurguer.Models.Hamburguer>
 
-@{
-    ViewData["Title"] = "Cardapio";
-}
-<h1>Cardapio</h1>
+<div class="ConteudoContent1">
+    @foreach (var item in Model)
+    {
+        <div class="BlocoHamburguer">
+            <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer">
 
-<p>Veja nosso cardapio</p>
+            <h3 class="TituloHamburguer">
+                @Html.DisplayFor(modelItem => item.Nome)
+            </h3>
+            <p class="DescricaoHamburguer">
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </p>
 
+            <div class="BotoesDoHamburguer">
+                <h4 class="PrecoBurguer">R$ @item.Preco</h4>
+                <a class="CartBurguer" pointer><img src="~/css/Imagens/IconCart.png"></a>
+                <a class="SaibaMaisHamburguer" poin>Saiba Mais</a>
+            </div>
+
+        </div>
+
+    }
+</div>
+
+<div class="ConteudoContent1">
+    @foreach (var item in Model)
+    {
+        <div class="BlocoHamburguer">
+            <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer">
+
+            <h3 class="TituloHamburguer">
+                @Html.DisplayFor(modelItem => item.Nome)
+            </h3>
+            <p class="DescricaoHamburguer">
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </p>
+
+            <div class="BotoesDoHamburguer">
+                <h4 class="PrecoBurguer">R$ @item.Preco</h4>
+                <a class="CartBurguer" pointer><img src="~/css/Imagens/IconCart.png"></a>
+                <a class="SaibaMaisHamburguer" poin>Saiba Mais</a>
+            </div>
+
+        </div>
+
+    }
+</div>
+
+<div class="ConteudoContent1">
+    @foreach (var item in Model)
+    {
+        <div class="BlocoHamburguer">
+            <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer">
+
+            <h3 class="TituloHamburguer">
+                @Html.DisplayFor(modelItem => item.Nome)
+            </h3>
+            <p class="DescricaoHamburguer">
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </p>
+
+            <div class="BotoesDoHamburguer">
+                <h4 class="PrecoBurguer">R$ @item.Preco</h4>
+                <a class="CartBurguer" pointer><img src="~/css/Imagens/IconCart.png"></a>
+                <a class="SaibaMaisHamburguer" poin>Saiba Mais</a>
+            </div>
+
+        </div>
+
+    }
+</div>

@@ -27,6 +27,7 @@ public class LoginContext : IdentityDbContext<LoginCliente>
         {
             builder.Property(x => x.Nome).HasMaxLength(100);
             builder.Property(x => x.Administrador).HasDefaultValue(false);
+            builder.Property(x => x.Vendedor).HasDefaultValue(false);
         }
     }
 }

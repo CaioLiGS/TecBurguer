@@ -25,5 +25,45 @@
 //    }
 //});
 
+function adicionarAoCarrinho(id, emailUsuario) {
+    console.log(emailUsuario);
+    // 1. Coleta os dados do hambúrguer
+    const elementoNome = document.getElementById("NomeBurguer_" + id);
+    const elementoPreco = document.getElementById("PrecoBurguer_" + id);
+
+    if (!elementoNome) {
+        console.error("Elemento 'NomeBurguer_' não encontrado.");
+        return;
+    }
+    const nome = elementoNome.textContent;
+    const preco = parseFloat(elementoPreco.textContent.replace('R$', ''));
+    const idUsuario = 0;
+
+    axios.get('/api/usuarios/listar').then(function (response) {
+        console.log(response.data);
+
+        if (emailUsuario == response.data.email) {
+            idUsuario = response.data.idUsuario;
+        }
+        
+    });
+
+    const dados = {
+        nome: nome,
+        PrecoTotal: preco,
+        estado: "Decidindo",
+        idHamburguer: id
+    };
 
 
+    const url = 'https://localhost:7192/api/pedidos/create';
+
+    // 3. Usa o Axios para enviar a requisição POST
+    axios.post(url, dados)
+        .then(response => {
+            console.log('Sucesso! Resposta do servidor:', response.data);
+        })
+        .catch(error => {
+            console.error('Erro ao adicionar pedido:', error);
+        });
+}

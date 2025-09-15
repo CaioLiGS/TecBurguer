@@ -11,5 +11,6 @@ public class LoginCliente : IdentityUser
 {
     public string Nome { get; set; }
     public bool Administrador { get; set; } = false;
+    public bool Vendedor { get; set; } = false;
 }
 

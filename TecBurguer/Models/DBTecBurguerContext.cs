@@ -57,7 +57,7 @@ namespace TecBurguer.Models
 
                 entity.ToTable("Entregador");
 
-                entity.Property(e => e.Avaliacao).HasColumnType("numeric(18, 0)");
+                entity.Property(e => e.Avaliacao).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.Nome)
                     .HasMaxLength(100)
@@ -92,7 +92,7 @@ namespace TecBurguer.Models
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Preco).HasColumnType("numeric(18, 0)");
+                entity.Property(e => e.Preco).HasColumnType("numeric(18, 2)");
             });
 
             modelBuilder.Entity<HamburguerIgrediente>(entity =>
@@ -129,10 +129,6 @@ namespace TecBurguer.Models
 
                 entity.ToTable("Pedido");
 
-                entity.Property(e => e.DataHorario)
-                    .IsRowVersion()
-                    .IsConcurrencyToken();
-
                 entity.Property(e => e.Descricao)
                     .HasMaxLength(350)
                     .IsUnicode(false);
@@ -145,7 +141,7 @@ namespace TecBurguer.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PrecoTotal).HasColumnType("numeric(18, 0)");
+                entity.Property(e => e.PrecoTotal).HasColumnType("numeric(18, 2)");
 
                 entity.HasOne(d => d.IdHamburguerNavigation)
                     .WithMany(p => p.Pedidos)

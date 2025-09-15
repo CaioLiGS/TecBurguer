@@ -13,7 +13,6 @@ namespace TecBurguer.Models
         public int IdPedido { get; set; }
         public string? Nome { get; set; }
         public string? Descricao { get; set; }
-        public byte[] DataHorario { get; set; } = null!;
         public decimal? PrecoTotal { get; set; }
         public string? Estado { get; set; }
         public int? IdUsuario { get; set; }
@@ -24,3 +23,4 @@ namespace TecBurguer.Models
         public virtual ICollection<Entregador> Entregadors { get; set; }
     }
 }
+
