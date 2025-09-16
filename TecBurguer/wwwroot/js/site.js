@@ -25,9 +25,48 @@
 //    }
 //});
 
+function adicionarPedidosHamburgueres(response, num) {
+    var url = 'api/pedidohamburgueres/create';
+
+    axios.post(url, { IdPedido: response.data[num].IdPedido, IdHamburguer: id })
+        .then(x => {
+            console.log('Sucesso! Resposta do servidor:', x.data);
+        })
+        .catch(error => {
+            console.error('Erro ao adicionar pedido:', error);
+        });
+}
+
+function posicaoUsuarioEPedidos(user, response) {
+    for (var i = 0; i < response.data.length; i++) {
+        if (user == response.data[i].IdUsuario) {
+            return i
+        }
+    }
+}
+
+function adicionarPedidos(nome, preco, user) {
+    const dados = {
+        nome: nome,
+        PrecoTotal: preco,
+        estado: "Decidindo",
+        IdUsuario: user
+    };
+
+    var url = 'api/pedidos/create';
+
+    axios.post(url, dados)
+        .then(response => {
+            console.log('Criou pedidos', response.data);
+        })
+        .catch(error => {
+            console.error('Erro ao adicionar pedido:', error);
+        });
+}
+
 function adicionarAoCarrinho(id, emailUsuario) {
     console.log(emailUsuario);
-    // 1. Coleta os dados do hambúrguer
+    
     const elementoNome = document.getElementById("NomeBurguer_" + id);
     const elementoPreco = document.getElementById("PrecoBurguer_" + id);
 
@@ -38,39 +77,49 @@ function adicionarAoCarrinho(id, emailUsuario) {
 
     const nome = elementoNome.textContent;
     const preco = parseFloat(elementoPreco.textContent.replace('R$', ''));
-    var user = 0;
 
+    // Pegando os usuários
     axios.get('/api/usuarios/listar').then(function (response) {
 
         console.log(response.data);
 
+        // Pegando cada usuário
         for (var i = 0; i < response.data.length; i++) {
             if (emailUsuario == response.data[i].email) {
-                user = response.data[i].idUsuario;
+
+                // IdUsuairo
+                var user = response.data[i].idUsuario;
+
                 console.log(user);
+
+                // Verificando se esse usuário já tem pedido
+                axios.get('/api/pedidos/listar').then(function (response) {
+
+                    var possui = false;
+
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (user == response.data[i].IdUsuario) {
+
+                            possui = true;
+
+                            // Adicionando ao carrinho
+                            adicionarPedidosHamburgueres(response, i);
+
+                            break;
+
+                        }
+                    }
+
+                    if (!possui) {
+                        adicionarPedidos(nome, preco, user);
+                        var num = posicaoUsuarioEPedidos(user, response);
+                        adicionarPedidosHamburgueres(response, num);
+
+                    }
+                });
                 break;
             }
         }
-        
+
     });
-
-    const dados = {
-        nome: nome,
-        PrecoTotal: preco,
-        estado: "Decidindo",
-        idUsuario: user,
-        idHamburguer: id
-    };
-
-
-    const url = 'https://localhost:7192/api/pedidos/create';
-
-    // 3. Usa o Axios para enviar a requisição POST
-    axios.post(url, dados)
-        .then(response => {
-            console.log('Sucesso! Resposta do servidor:', response.data);
-        })
-        .catch(error => {
-            console.error('Erro ao adicionar pedido:', error);
-        });
 }

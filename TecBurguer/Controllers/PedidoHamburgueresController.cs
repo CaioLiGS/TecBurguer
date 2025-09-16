@@ -1,0 +1,30 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using TecBurguer.Models;
+
+[ApiController]
+[Route("api/[controller]")]
+public class PedidosHamburgueresController : ControllerBase
+{
+    private readonly DBTecBurguerContext _context;
+
+    public PedidosHamburgueresController(DBTecBurguerContext context)
+    {
+        _context = context;
+    }
+
+    [HttpPost("Create")]
+    public async Task<IActionResult> Create([FromBody] PedidoHamburguer pedido)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState); 
+        }
+
+        _context.PedidoHamburgueres.Add(pedido);
+
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(Create), new { id = pedido.IdPedido }, pedido);
+    }
+}

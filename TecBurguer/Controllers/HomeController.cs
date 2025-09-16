@@ -35,6 +35,12 @@ namespace TecBurguer.Controllers
             return View(hamburgueres);
         }
 
+        public IActionResult Vendedor()
+        {
+            var hamburgueres = _context.Pedidos.ToList();
+            return View(hamburgueres);
+        }
+
         public IActionResult Privacy()
         {
             return View();

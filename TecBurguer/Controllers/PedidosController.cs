@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TecBurguer.Models;
 
@@ -16,19 +17,25 @@ public class PedidosController : ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromBody] Pedido pedido)
     {
-        // 1. Verifica se os dados do pedido são válidos (validação automática do ASP.NET Core)
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState); // Retorna 400 se os dados não forem válidos
+            return BadRequest(ModelState); 
         }
 
-        // 2. Adiciona o pedido ao contexto do Entity Framework
         _context.Pedidos.Add(pedido);
 
-        // 3. Salva a nova entrada no banco de dados
         await _context.SaveChangesAsync();
 
-        // 4. Retorna uma resposta de sucesso com o ID do novo pedido
         return CreatedAtAction(nameof(Create), new { id = pedido.IdPedido }, pedido);
+    }
+
+    [HttpGet("Listar")]
+    public async Task<ActionResult<IEnumerable<Pedido>>> GetPedidos()
+    {
+        if (_context.Pedidos == null)
+        {
+            return NotFound();
+        }
+        return await _context.Pedidos.ToListAsync();
     }
 }

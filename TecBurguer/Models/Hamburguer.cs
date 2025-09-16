@@ -8,7 +8,7 @@ namespace TecBurguer.Models
         public Hamburguer()
         {
             HamburguerIgredientes = new HashSet<HamburguerIgrediente>();
-            Pedidos = new HashSet<Pedido>();
+            PedidoHamburgueres = new HashSet<PedidoHamburguer>();
         }
 
         public int IdHamburguer { get; set; }
@@ -18,6 +18,6 @@ namespace TecBurguer.Models
         public string? Imagem { get; set; }
 
         public virtual ICollection<HamburguerIgrediente> HamburguerIgredientes { get; set; }
-        public virtual ICollection<Pedido> Pedidos { get; set; }
+        public virtual ICollection<PedidoHamburguer> PedidoHamburgueres { get; set; }
     }
 }

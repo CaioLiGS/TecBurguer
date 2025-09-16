@@ -22,6 +22,7 @@ namespace TecBurguer.Models
         public virtual DbSet<HamburguerIgrediente> HamburguerIgredientes { get; set; } = null!;
         public virtual DbSet<Ingrediente> Ingredientes { get; set; } = null!;
         public virtual DbSet<Pedido> Pedidos { get; set; } = null!;
+        public virtual DbSet<PedidoHamburguer> PedidoHamburgueres { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -143,15 +144,25 @@ namespace TecBurguer.Models
 
                 entity.Property(e => e.PrecoTotal).HasColumnType("numeric(18, 2)");
 
-                entity.HasOne(d => d.IdHamburguerNavigation)
-                    .WithMany(p => p.Pedidos)
-                    .HasForeignKey(d => d.IdHamburguer)
-                    .HasConstraintName("FK__Pedido__IdHambur__5441852A");
-
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.Pedidos)
                     .HasForeignKey(d => d.IdUsuario)
                     .HasConstraintName("FK__Pedido__IdUsuari__534D60F1");
+            });
+
+            modelBuilder.Entity<PedidoHamburguer>(entity =>
+            {
+                entity.ToTable("PedidoHamburguer");
+
+                entity.HasOne(d => d.IdHamburguerNavigation)
+                    .WithMany(p => p.PedidoHamburgueres)
+                    .HasForeignKey(d => d.IdHamburguer)
+                    .HasConstraintName("FK__PedidoHam__IdHam__5070F446");
+
+                entity.HasOne(d => d.IdPedidoNavigation)
+                    .WithMany(p => p.PedidoHamburgueres)
+                    .HasForeignKey(d => d.IdPedido)
+                    .HasConstraintName("FK__PedidoHam__IdPed__5441852A");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
