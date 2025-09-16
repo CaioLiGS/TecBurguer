@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TecBurguer.Areas.Identity.Data
+
 @model IEnumerable<TecBurguer.Models.Hamburguer>
+
 @inject UserManager<LoginCliente> UserManager
 @inject SignInManager<LoginCliente> SignInManager
 
@@ -51,11 +53,13 @@
                     <div class="BotoesDoHamburguer">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="CartBurguer" onclick="adicionarAoCarrinho(@item.IdHamburguer, @UserManager.GetUserName(User))"> <img src="~/css/Imagens/IconCart.png"></a>
+                            <a class="CartBurguer"
+                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')" > <img src="~/css/Imagens/IconCart.png"></a>
                         }
                         else{
                             <a class="CartBurguer"><img src="~/css/Imagens/IconCart.png"></a>
                         }
+
                             <a class="SaibaMaisHamburguer">Saiba Mais</a>
                     </div>
                     

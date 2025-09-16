@@ -35,15 +35,21 @@ function adicionarAoCarrinho(id, emailUsuario) {
         console.error("Elemento 'NomeBurguer_' não encontrado.");
         return;
     }
+
     const nome = elementoNome.textContent;
     const preco = parseFloat(elementoPreco.textContent.replace('R$', ''));
-    const idUsuario = 0;
+    var user = 0;
 
     axios.get('/api/usuarios/listar').then(function (response) {
+
         console.log(response.data);
 
-        if (emailUsuario == response.data.email) {
-            idUsuario = response.data.idUsuario;
+        for (var i = 0; i < response.data.length; i++) {
+            if (emailUsuario == response.data[i].email) {
+                user = response.data[i].idUsuario;
+                console.log(user);
+                break;
+            }
         }
         
     });
@@ -52,6 +58,7 @@ function adicionarAoCarrinho(id, emailUsuario) {
         nome: nome,
         PrecoTotal: preco,
         estado: "Decidindo",
+        idUsuario: user,
         idHamburguer: id
     };
 
