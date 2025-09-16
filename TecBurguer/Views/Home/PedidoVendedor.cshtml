@@ -1,0 +1,21 @@
+﻿@model IEnumerable<TecBurguer.Models.Pedido>
+
+
+<style>
+    html{
+        margin-top: 120px;
+    }
+
+</style>
+
+
+<h1>Pedidos</h1>
+<p>Alguns pedidos de clientes precisam ser atendidos, segue a baixo a lista de pedidos para serem feitos</p>
+
+
+ @foreach (var item in Model)
+{
+
+    <h4>Cliente: @item.IdUsuarioNavigation.Nome</h4>
+}
+

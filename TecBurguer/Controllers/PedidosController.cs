@@ -38,4 +38,60 @@ public class PedidosController : ControllerBase
         }
         return await _context.Pedidos.ToListAsync();
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Pedido>> GetPedidos(int id)
+    {
+        if (_context.Pedidos == null)
+        {
+            return NotFound();
+        }
+        var pedido = await _context.Pedidos.FindAsync(id);
+
+        if (pedido == null)
+        {
+            return NotFound();
+        }
+
+        return pedido;
+    }
+
+    [HttpPut("update/{id}")]
+    public async Task<IActionResult> PutPedido(int id, Pedido pedido)
+    {
+
+        Console.WriteLine(id);
+        Console.WriteLine(pedido.IdPedido);
+
+        if (id != pedido.IdPedido)
+        {
+            Console.WriteLine("Bad Request");
+            return BadRequest();
+        }
+
+        _context.Entry(pedido).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!PedidoExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return NoContent();
+    }
+
+    private bool PedidoExists(int id)
+    {
+        return (_context.Pedidos?.Any(e => e.IdPedido == id)).GetValueOrDefault();
+    }
 }

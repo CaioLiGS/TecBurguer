@@ -4,11 +4,11 @@ using TecBurguer.Models;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PedidosHamburgueresController : ControllerBase
+public class PedidoHamburgueresController : ControllerBase
 {
     private readonly DBTecBurguerContext _context;
 
-    public PedidosHamburgueresController(DBTecBurguerContext context)
+    public PedidoHamburgueresController(DBTecBurguerContext context)
     {
         _context = context;
     }
