@@ -38,28 +38,22 @@ function adicionarPedidosHamburgueres(IdPedido, IdHamburguer) {
     console.log(IdPedido);
 
     const dados = {
-        idPedido: IdPedido,
+        IdPedido: IdPedido,
         IdHamburguer: IdHamburguer
     }
 
+    console.log(dados);
+
     axios.post(url, dados)
-        .then(x => {
-            console.log('Sucesso! Resposta do servidor:', x.data);
+        .then(response => {
+            console.log('Sucesso! Resposta do servidor:', response.data);
         })
         .catch(error => {
             console.error('Erro ao adicionar pedido:', error);
         });
 }
 
-function posicaoUsuarioEPedidos(user, response) {
-    for (var i = 0; i < response.data.length; i++) {
-        if (user == response.data[i].IdUsuario) {
-            return i
-        }
-    }
-}
-
-function adicionarPedidos(nome, preco, user) {
+function adicionarPedidos(nome, preco, user, idHamburguer) {
     const dados = {
         nome: "Pedido_" + user + nome,
         PrecoTotal: preco,
@@ -72,6 +66,8 @@ function adicionarPedidos(nome, preco, user) {
     axios.post(url, dados)
         .then(response => {
             console.log('Criou pedidos', response.data);
+
+            adicionarPedidosHamburgueres(response.data.idPedido, idHamburguer)
         })
         .catch(error => {
             console.error('Erro ao adicionar pedido:', error);
@@ -126,7 +122,10 @@ function adicionarAoCarrinho(id, emailUsuario) {
                             var precoAnterior = response.data[i].precoTotal;
                             var novosDados = {
                                 idPedido: idPedido,
-                                precoTotal: precoAnterior + response.data[i].precoTotal
+                                nome: response.data[i].nome,
+                                precoTotal: precoAnterior + response.data[i].precoTotal,
+                                estado: response.data[i].estado,
+                                idUsuario: response.data[i].idUsuario
                             }
 
                             // Adicionando ao carrinho
@@ -149,9 +148,7 @@ function adicionarAoCarrinho(id, emailUsuario) {
                     }
 
                     if (!possui) {
-                        adicionarPedidos(nome, preco, user);
-                        var num = posicaoUsuarioEPedidos(user, response);
-                        adicionarPedidosHamburgueres(response.data[num].idPedido, id);
+                        adicionarPedidos(nome, preco, user, id);
 
                     }
                 });

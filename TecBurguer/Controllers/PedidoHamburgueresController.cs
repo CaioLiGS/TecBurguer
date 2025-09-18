@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TecBurguer.Models;
 
-[Authorize(Roles = "Administrador")]
 [ApiController]
 [Route("api/[controller]")]
 public class PedidoHamburgueresController : ControllerBase
@@ -27,6 +26,6 @@ public class PedidoHamburgueresController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(Create), new { id = pedido.IdPedido }, pedido);
+        return CreatedAtAction(nameof(Create), new { id = pedido.Id }, pedido);
     }
 }

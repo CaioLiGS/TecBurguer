@@ -6,7 +6,6 @@ using TecBurguer.Models;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Administrador")]
 public class PedidosController : ControllerBase
 {
     private readonly DBTecBurguerContext _context;
@@ -21,11 +20,10 @@ public class PedidosController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState); 
+            return BadRequest(ModelState);
         }
 
         _context.Pedidos.Add(pedido);
-
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(Create), new { id = pedido.IdPedido }, pedido);
@@ -38,6 +36,7 @@ public class PedidosController : ControllerBase
         {
             return NotFound();
         }
+
         return await _context.Pedidos.ToListAsync();
     }
 
@@ -48,7 +47,10 @@ public class PedidosController : ControllerBase
         {
             return NotFound();
         }
-        var pedido = await _context.Pedidos.FindAsync(id);
+
+        var pedido = await _context.Pedidos
+            .Include(p => p.IdUsuarioNavigation) 
+            .FirstOrDefaultAsync(p => p.IdPedido == id);
 
         if (pedido == null)
         {
@@ -61,13 +63,8 @@ public class PedidosController : ControllerBase
     [HttpPut("update/{id}")]
     public async Task<IActionResult> PutPedido(int id, Pedido pedido)
     {
-
-        Console.WriteLine(id);
-        Console.WriteLine(pedido.IdPedido);
-
         if (id != pedido.IdPedido)
         {
-            Console.WriteLine("Bad Request");
             return BadRequest();
         }
 

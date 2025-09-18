@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -82,7 +82,7 @@ namespace TecBurguer.Models
                 entity.ToTable("Hamburguer");
 
                 entity.Property(e => e.Descricao)
-                    .HasMaxLength(350)
+                    .HasMaxLength(500)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Nome)
@@ -90,6 +90,10 @@ namespace TecBurguer.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Imagem)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Categoria)
                     .HasMaxLength(200)
                     .IsUnicode(false);
 

@@ -12,7 +12,6 @@ namespace TecBurguer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Administrador")]
     public class UsuariosController : ControllerBase
     {
         private readonly DBTecBurguerContext _context;

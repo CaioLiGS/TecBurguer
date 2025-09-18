@@ -10,7 +10,6 @@ using TecBurguer.Models;
 
 namespace TecBurguer.Controllers
 {
-    [Authorize(Roles = "Administrador")]
     public class HamburgueresController : Controller
     {
         private readonly DBTecBurguerContext _context;
@@ -20,6 +19,7 @@ namespace TecBurguer.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: Hamburgueres8
         public async Task<IActionResult> Index()
         {
@@ -46,6 +46,7 @@ namespace TecBurguer.Controllers
             return View(hamburguer);
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: Hamburgueres/Create
         public IActionResult Create()
         {
@@ -55,9 +56,10 @@ namespace TecBurguer.Controllers
         // POST: Hamburgueres/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdHamburguer,Nome,Descricao,Preco,Imagem")] Hamburguer hamburguer)
+        public async Task<IActionResult> Create([Bind("IdHamburguer,Nome,Descricao,Preco, Imagem, Categoria")] Hamburguer hamburguer)
         {
             if (ModelState.IsValid)
             {
@@ -69,6 +71,7 @@ namespace TecBurguer.Controllers
         }
 
         // GET: Hamburgueres/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Hamburguers == null)
@@ -87,9 +90,10 @@ namespace TecBurguer.Controllers
         // POST: Hamburgueres/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdHamburguer,Nome,Descricao,Preco,Imagem")] Hamburguer hamburguer)
+        public async Task<IActionResult> Edit(int id, [Bind("IdHamburguer,Nome,Descricao,Preco,Imagem, Categoria")] Hamburguer hamburguer)
         {
             if (id != hamburguer.IdHamburguer)
             {
@@ -120,6 +124,7 @@ namespace TecBurguer.Controllers
         }
 
         // GET: Hamburgueres/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Hamburguers == null)
@@ -138,6 +143,7 @@ namespace TecBurguer.Controllers
         }
 
         // POST: Hamburgueres/Delete/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -14,6 +14,28 @@
     body{
         scroll-snap-type: y mandatory;
         overflow-y: scroll; 
+        .ImagemWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.SetaHover {
+    position: absolute;
+    top: 50%;
+    left: -30px; 
+    font-size: 30px;
+    color: white;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.5s ease;
+    pointer-events: none;
+}
+
+.ImagemWrapper:hover .SetaHover {
+    left: 10px;  
+    opacity: 1;
+}
+
     }
 </style>
 
@@ -43,10 +65,10 @@
         <h3>Quer fazer um pedido?</h3>
         <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
         <div>
-            <a class="BotaoCriarConta">
+            <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
                 Criar conta
             </a>
-           <a class="BotaoLogin">
+            <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
                Login
            </a>
 
@@ -58,45 +80,74 @@
 <div class="Content1" id="Cardapio">
     <h2>CARDAPIO</h2>
 
-    <div class="ConteudoContent1">
-        @foreach (var item in Model)
-        {
-            <div class="BlocoHamburguer">
-                <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
+    <div class="CarrosselWrapper" style="position: relative; display: flex; align-items: center;">
+        <!-- Seta esquerda -->
+        <button class="SetaCarrossel" onclick="scrollCarrossel('esquerda')" 
+                style="position: absolute; left: -40px; z-index: 10;">&#8592;</button>
 
-                <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </h3>
-                <p class="DescricaoHamburguer">
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </p>
-                
-                <div class="BottomInfoBurguer">
-                    <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+        <!-- Container de hambúrgueres -->
+        <div class="ConteudoContent1" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px;">
+            @foreach (var item in Model)
+            {
+                <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+                    <img src=@Html.DisplayFor(modelItem => item.Imagem) 
+                         class="ImagemHamburguer" 
+                         onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
-                    <div class="BotoesDoHamburguer">
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <a class="CartBurguer"
-                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')" > <img src="~/css/Imagens/IconCart.png"></a>
-                        }
-                        else{
-                            <a class="CartBurguer" onclick="mostrarBotaoLogin()"><img src="~/css/Imagens/IconCart.png"></a>
-                        }
-
-                        <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" asp-action="Details">Saiba Mais</a>
-                    </div>
+                    <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </h3>
+                    <p class="DescricaoHamburguer">
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </p>
                     
-                </div>
+                    <div class="BottomInfoBurguer">
+                        <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
 
-            </div>
-            
-        }
+                        <div class="BotoesDoHamburguer">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <a class="CartBurguer"
+                                   onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                   <img src="~/css/Imagens/IconCart.png">
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                    <img src="~/css/Imagens/IconCart.png">
+                                </a>
+                            }
+
+                            <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" 
+                               asp-action="Details" asp-route-id="@item.IdHamburguer">
+                               Saiba Mais
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Seta direita -->
+        <button class="SetaCarrossel" onclick="scrollCarrossel('direita')" 
+                style="position: absolute; right: -40px; z-index: 10;">&#8594;</button>
     </div>
-    
 
     <a>Acesse nosso cardapio completo</a>
 </div>
+
+<script>
+    function scrollCarrossel(direcao) {
+        const container = document.querySelector('.ConteudoContent1');
+        const scrollAmount = 300; // distância de rolagem em px
+        if (direcao === 'direita') {
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        } else {
+            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="~/js/site.js"></script>

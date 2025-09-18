@@ -37,9 +37,9 @@ namespace TecBurguer.Controllers
 
         public IActionResult PedidoVendedor()
         {
-            var pedidos = _context.Pedidos.Include(p => p.IdUsuarioNavigation).ToList();
+            var pedidos = _context.Pedidos.Include(p => p.IdUsuarioNavigation);
 
-            return View(pedidos);
+            return View(pedidos.ToList());
         }
 
         public IActionResult Privacy()
