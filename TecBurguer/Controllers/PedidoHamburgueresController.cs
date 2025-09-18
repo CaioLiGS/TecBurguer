@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TecBurguer.Models;
 
+[Authorize(Roles = "Administrador")]
 [ApiController]
 [Route("api/[controller]")]
 public class PedidoHamburgueresController : ControllerBase

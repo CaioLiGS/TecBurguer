@@ -25,6 +25,13 @@
 //    }
 //});
 
+function mostrarBotaoLogin() {
+    let interface = document.querySelector(".interface");
+
+    interface.classList.add("mostrar");
+    console.log(interface.className);
+}
+
 function adicionarPedidosHamburgueres(IdPedido, IdHamburguer) {
     var url = '/api/pedidohamburgueres/create';
 

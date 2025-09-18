@@ -10,6 +10,13 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    body{
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll; 
+    }
+</style>
+
 <div class="BannerContent">
     <img class="banner" src="~/css/Imagens/Banner.png">
     <div class="BannerOverlay">
@@ -30,6 +37,23 @@
 
 </div>
 
+<div id="FacaLogin" class="interface">
+    <img src="~/css/Imagens/BurguerLogo.png">
+    <div>
+        <h3>Quer fazer um pedido?</h3>
+        <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
+        <div>
+            <a class="BotaoCriarConta">
+                Criar conta
+            </a>
+           <a class="BotaoLogin">
+               Login
+           </a>
+
+        </div>
+    </div>
+</div>
+
 
 <div class="Content1" id="Cardapio">
     <h2>CARDAPIO</h2>
@@ -38,7 +62,7 @@
         @foreach (var item in Model)
         {
             <div class="BlocoHamburguer">
-                <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer">
+                <img src=@Html.DisplayFor(modelItem => item.Imagem) class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
                 <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
                     @Html.DisplayFor(modelItem => item.Nome)
@@ -57,10 +81,10 @@
                                onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')" > <img src="~/css/Imagens/IconCart.png"></a>
                         }
                         else{
-                            <a class="CartBurguer"><img src="~/css/Imagens/IconCart.png"></a>
+                            <a class="CartBurguer" onclick="mostrarBotaoLogin()"><img src="~/css/Imagens/IconCart.png"></a>
                         }
 
-                            <a class="SaibaMaisHamburguer">Saiba Mais</a>
+                        <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" asp-action="Details">Saiba Mais</a>
                     </div>
                     
                 </div>
