@@ -11,10 +11,9 @@
 }
 
 <div class="OutBox">
-    <div class="Box">
+    <div class="Box" id="LeftBox">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2 class="TextoComImagem">Criar nova conta</h2>
-            <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-floating">
@@ -39,38 +38,21 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrar</button>
+            
         </form>
+        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrar</button>
     </div>
-    <div class="Box">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+
+    <div class="Box" id="RightBox">
+        <img src="~/css/Imagens/BurguerLogo.png">
+        <h1>TecBurguer</h1>
+        <h3>Criando um nova conta, você pode receber notícias, fazer pedidos, receber descontos e muito mais!!</h3>
+        
+        <div class="BottomRightBox">
+            <h4>Você já tem uma conta?</h4>
+            <a class="w-100 btn btn-lg btn-primary">Login</a>
+        </div>
+        
     </div>
 </div>
 
