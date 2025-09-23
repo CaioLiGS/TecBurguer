@@ -1,0 +1,336 @@
+﻿/* ==========================
+   🎨 Variáveis
+   ========================== */
+:root {
+    --primary: #E07A5F; /* laranja queimado */
+    --primary-dark: #d45d47;
+    --secondary: #81B29A; /* verde oliva */
+    --secondary-dark: #6d9b85;
+    --accent: #F2CC8F; /* bege areia */
+    --dark: #3D405B; /* marrom café */
+    --light: #faf3e0; /* branco quente */
+}
+
+/* ==========================
+   📦 Layout principal
+   ========================== */
+.OutBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 120px;
+    height: 80vh;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.7s ease-in-out;
+}
+
+.Box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 40%;
+    height: 100%;
+    padding: 15px;
+    text-align: center;
+    color: var(--dark);
+    background-color: var(--light);
+    border-radius: 15px;
+    transition: all 0.7s ease-in-out;
+    z-index: 1;
+}
+
+    .Box img {
+        width: 25%;
+        height: 25%;
+        opacity: 0.25;
+        object-fit: cover;
+    }
+
+    .Box form {
+        width: 100%;
+    }
+
+/* ==========================
+   📌 Caixas específicas
+   ========================== */
+#LeftBox {
+    border-radius: 15px 0 0 15px;
+}
+
+#MidBox {
+    border-radius: 0 15px 15px 0;
+}
+
+#RightBox {
+    position: absolute;
+    right: 50%;
+    border-radius: 15px 0 0 15px;
+    background-color: var(--dark);
+    color: var(--light);
+    z-index: 2;
+    transition: all 0.7s ease-in-out;
+}
+
+    #RightBox h1 {
+        color: var(--primary);
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: clamp(1.2rem, 5vw, 2.5rem);
+        width: 100%;
+        border-bottom: 5px solid var(--primary);
+    }
+
+    #RightBox h5 {
+        text-align: justify;
+    }
+
+/* ==========================
+   🔘 Botões
+   ========================== */
+.BottomRightBox {
+    width: 100%;
+}
+
+    .BottomRightBox a,
+    #loginSubmit,
+    #registerSubmit {
+        display: inline-block;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 30px;
+        color: var(--light);
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        cursor: pointer;
+        transition: all 0.25s ease-in-out;
+    }
+
+    .BottomRightBox a {
+        background: linear-gradient(100deg, var(--primary), var(--primary-dark), var(--primary));
+    }
+
+#registerSubmit {
+    background: linear-gradient(100deg, var(--primary), var(--primary-dark), var(--primary));
+}
+
+#loginSubmit {
+    background: linear-gradient(100deg, var(--secondary), var(--secondary-dark), var(--secondary));
+}
+
+    .BottomRightBox a:hover,
+    #registerSubmit:hover,
+    #loginSubmit:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        background-position: 300px;
+    }
+
+.BottomRightBox h4 {
+    color: var(--secondary);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+/* ==========================
+   📝 Textos com gradiente
+   ========================== */
+.TextoComImagem {
+    background: linear-gradient(90deg, var(--secondary), var(--secondary-dark));
+}
+
+.TextoComImagem2 {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.TextoComImagem,
+.TextoComImagem2 {
+    width: 100%;
+    font-weight: bold;
+    font-size: clamp(1.2rem, 5vw, 2.5rem);
+    background-size: cover;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+/* ==========================
+   🖊️ Inputs & Selects
+   ========================== */
+.form-floating input,
+.form-floating select {
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+    .form-floating input:focus,
+    .form-floating select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 5px rgba(224,122,95,0.5);
+    }
+
+.form-floating select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23E07A5F' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+}
+
+/* ==========================
+   🔎 Input com ícone
+   ========================== */
+.input-icon-group {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+    .input-icon-group .input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--secondary);
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .input-icon-group input.form-control {
+        padding-left: 40px !important;
+        height: 44px;
+        font-size: 1rem;
+    }
+
+    /* Label flutuante */
+    .input-icon-group label {
+        position: absolute;
+        left: 40px !important;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: all 0.2s;
+        color: #888;
+        background: transparent;
+        z-index: 1;
+        font-size: 1rem;
+        padding-left: 2px;
+    }
+
+    .input-icon-group input.form-control:focus + label,
+    .input-icon-group input.form-control:not(:placeholder-shown) + label {
+        top: 0;
+        font-size: 0.85rem;
+        color: var(--secondary);
+        padding: 0 2px;
+        left: 40px !important;
+        transform: none;
+    }
+
+/* ==========================
+   🔴 Bolhas decorativas
+   ========================== */
+.Ball1, .Ball2, .Ball3, .Ball4 {
+    position: fixed;
+    border-radius: 100%;
+    background-color: var(--secondary);
+    filter: blur(60px);
+    z-index: -1;
+}
+
+.Ball1 {
+    width: 700px;
+    height: 700px;
+    left: -195px;
+    bottom: -90px;
+    animation: pulsar 10s linear infinite;
+}
+
+.Ball2 {
+    width: 300px;
+    height: 300px;
+    left: -100px;
+    top: 95px;
+}
+
+.Ball3 {
+    width: 700px;
+    height: 700px;
+    right: -195px;
+    top: -90px;
+    animation: pulsar 15s linear infinite;
+}
+
+.Ball4 {
+    width: 300px;
+    height: 300px;
+    right: -100px;
+    bottom: 95px;
+}
+
+/* ==========================
+   📱 Responsividade
+   ========================== */
+@media (max-width: 900px) {
+    .OutBox {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .Box {
+        width: 90%;
+        min-width: 260px;
+        height: auto;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    #LeftBox, #RightBox {
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .OutBox {
+        padding: 0 4px;
+    }
+
+    .Box {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+
+    .TextoComImagem {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    #RightBox h1 {
+        font-size: 1.3rem;
+        border-bottom-width: 3px;
+    }
+
+    .BottomRightBox a,
+    #registerSubmit,
+    #loginSubmit {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .Box input,
+    .Box select,
+    .form-floating input,
+    .form-floating select {
+        font-size: 0.95rem;
+        padding: 8px;
+    }
+}
+
+/* ==========================
+   🔄 Variação de layout
+   ========================== */
+.OutBox.swap #RightBox {
+    right: 10%;
+    border-radius: 0 15px 15px 0;
+}

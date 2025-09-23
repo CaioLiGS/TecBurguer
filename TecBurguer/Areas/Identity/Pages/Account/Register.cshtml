@@ -1,6 +1,9 @@
 ﻿@page
 @model RegisterModel
 
+<link rel="stylesheet" href="~/css/Register.css" asp-append-version="true">
+
+<!-- Background Circles -->
 <div class="Ball1"></div>
 <div class="Ball2"></div>
 <div class="Ball3"></div>
@@ -11,48 +14,131 @@
 }
 
 <div class="OutBox">
+    <!-- Registration Box -->
     <div class="Box" id="LeftBox">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2 class="TextoComImagem">Criar nova conta</h2>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="form-floating">
-                <input asp-for="Input.Nome" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="Input.Nome"></label>
-                <span asp-validation-for="Input.Nome" class="text-danger"></span>
-            </div>
-            
-            <div class="form-floating">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="Input.Email"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div>
+                <h2 class="TextoComImagem">Criar nova conta</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Name Field -->
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- User Icon -->
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
+                            <path fill-rule="evenodd" d="M14 14s-1-1.5-6-1.5S2 14 2 14V13a6 6 0 1 1 12 0v1z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input asp-for="Input.Nome" class="form-control" autocomplete="username" required />
+                        <label asp-for="Input.Nome"></label>
+                        <span asp-validation-for="Input.Nome" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- Email Icon -->
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.383V5.383zm-.034 6.434-5.966-3.583-5.966 3.583A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-1.183zM1 5.383v6l4.708-3.175L1 5.383z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" required />
+                        <label asp-for="Input.Email"></label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- Lock Icon -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" required />
+                        <label asp-for="Input.Password"></label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- Lock Icon -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" required />
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-floating">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.Password"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.ConfirmPassword"></label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrar</button>
         </form>
-        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrar</button>
+
+        
     </div>
 
+    <!-- Login Box -->
+    <div class="Box" id="MidBox">
+        <form id="account">
+            <h2 class="TextoComImagem2">Entrar na conta</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <!-- Email Field (Login) -->
+            <div class="input-icon-group2">
+                <span class="input-icon">
+                    <!-- Email Icon -->
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.383V5.383zm-.034 6.434-5.966-3.583-5.966 3.583A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-1.183zM1 5.383v6l4.708-3.175L1 5.383z" />
+                    </svg>
+                </span>
+                <div class="form-floating">
+                    <input class="form-control" required />
+                    <label>Email</label>
+                </div>
+            </div>
+
+            <!-- Password Field (Login) -->
+            <div class="input-icon-group2">
+                <span class="input-icon">
+                    <!-- Lock Icon -->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
+                    </svg>
+                </span>
+                <div class="form-floating">
+                    <input class="form-control" required />
+                    <label>Senha</label>
+                </div>
+            </div>
+
+            <!-- Login Button -->
+            <button id="loginSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Login</button>
+        </form>
+    </div>
+
+    <!-- Information Box -->
     <div class="Box" id="RightBox">
-        <img src="~/css/Imagens/BurguerLogo.png">
+        <img src="~/css/Imagens/BurguerLogo.png" alt="TecBurguer Logo">
         <h1>TecBurguer</h1>
-        <h3>Criando um nova conta, você pode receber notícias, fazer pedidos, receber descontos e muito mais!!</h3>
-        
+        <h3>Criando uma nova conta, você pode receber notícias, fazer pedidos, receber descontos e muito mais!!</h3>
+
         <div class="BottomRightBox">
             <h4>Você já tem uma conta?</h4>
-            <a class="w-100 btn btn-lg btn-primary">Login</a>
+            <a class="w-100 btn btn-lg btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </div>
-        
     </div>
 </div>
 

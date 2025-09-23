@@ -158,3 +158,52 @@ function adicionarAoCarrinho(id, emailUsuario) {
 
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const loginBtn = document.querySelector('.BottomRightBox a');
+    const outBox = document.querySelector('.OutBox');
+
+    if (loginBtn && outBox) {
+        loginBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            outBox.classList.add('swap');
+
+            // Opcional: Redireciona após a animação
+            setTimeout(() => {
+                window.location.href = loginBtn.href;
+            }, 800);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Seções que serão centralizadas
+    const sections = [
+        document.getElementById('BannerContent'),
+        document.getElementById('OfertasDiarias'),
+        document.getElementById('RecomendacoesDoChefe'),
+        document.getElementById('Cardapio')
+    ];
+    let currentSection = 0;
+    let isScrolling = false;
+
+    window.addEventListener('wheel', function (e) {
+        if (isScrolling) return; // Travado até terminar scroll
+
+        if (e.deltaY > 0 && currentSection < sections.length - 1) {
+            // Scroll para baixo
+            currentSection++;
+            isScrolling = true;
+            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => { isScrolling = false; }, 700); // Libera após animação
+            e.preventDefault();
+        } else if (e.deltaY < 0 && currentSection > 0) {
+            // Scroll para cima
+            currentSection--;
+            isScrolling = true;
+            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => { isScrolling = false; }, 700);
+            e.preventDefault();
+        }
+    }, { passive: false });
+});
