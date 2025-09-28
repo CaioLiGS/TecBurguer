@@ -203,6 +203,9 @@ namespace TecBurguer.Models
                 entity.Property(e => e.Administrador)
                     .IsUnicode(false)
                     .HasDefaultValue(false);
+                entity.Property(e => e.Vendedor)
+                    .IsUnicode(false)
+                    .HasDefaultValue(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

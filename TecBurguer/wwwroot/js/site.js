@@ -168,6 +168,10 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             outBox.classList.add('swap');
 
+            for (let i = 1; i <= 4; i++){
+                document.querySelector(`.Ball${i}`).classList.add('swap');
+            }
+
             // Opcional: Redireciona após a animação
             setTimeout(() => {
                 window.location.href = loginBtn.href;

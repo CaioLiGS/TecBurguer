@@ -127,15 +127,6 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 user.Nome = Input.Nome;
-                user.UserName = Input.Nome;
-
-                _dbTecBurguerContext.Usuarios.Add(new Usuario
-                {
-                    Nome = Input.Nome,
-                    Email = Input.Email
-                });
-
-                await _dbTecBurguerContext.SaveChangesAsync();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -146,6 +137,14 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                 {
 
                     await _userManager.AddToRoleAsync(user, "Usuário");
+
+                    _dbTecBurguerContext.Usuarios.Add(new Usuario
+                    {
+                        Nome = Input.Nome,
+                        Email = Input.Email
+                    });
+
+                    await _dbTecBurguerContext.SaveChangesAsync();
 
                     _logger.LogInformation("User created a new account with password.");
 

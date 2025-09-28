@@ -14,122 +14,134 @@
 
 <div class="OutBox">
     <div class="Box" id="LeftBox">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2 class="TextoComImagem2">Criar nova conta</h2>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form>
+            <div>
+                <h2 class="TextoComImagem2">Criar nova conta</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="input-icon-group">
-                <span class="input-icon">
-                    <!-- Ícone de usuário -->
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
-                        <path fill-rule="evenodd" d="M14 14s-1-1.5-6-1.5S2 14 2 14V13a6 6 0 1 1 12 0v1z" />
-                    </svg>
-                </span>
-                <div class="form-floating">
-                    <input class="form-control" />
-                    <label>Nome</label>
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- Ícone de usuário -->
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4-3a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
+                            <path fill-rule="evenodd" d="M14 14s-1-1.5-6-1.5S2 14 2 14V13a6 6 0 1 1 12 0v1z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input class="form-control" />
+                        <label>Nome</label>
+                    </div>
+                </div>
+
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- Ícone de email -->
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.383V5.383zm-.034 6.434-5.966-3.583-5.966 3.583A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-1.183zM1 5.383v6l4.708-3.175L1 5.383z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input class="form-control" />
+                        <label>Email</label>
+                    </div>
+                </div>
+
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- Ícone de cadeado que aceita cor via CSS -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input class="form-control"/>
+                        <label>Senha</label>
+                    </div>
+                </div>
+
+                <div class="input-icon-group">
+                    <span class="input-icon">
+                        <!-- Ícone de cadeado que aceita cor via CSS -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input class="form-control"/>
+                        <label>Confirmar senha</label>
+                    </div>
                 </div>
             </div>
 
-            <div class="input-icon-group">
-                <span class="input-icon">
-                    <!-- Ícone de email -->
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.383V5.383zm-.034 6.434-5.966-3.583-5.966 3.583A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-1.183zM1 5.383v6l4.708-3.175L1 5.383z" />
-                    </svg>
-                </span>
-                <div class="form-floating">
-                    <input class="form-control" />
-                    <label>Email</label>
-                </div>
-            </div>
-
-            <div class="input-icon-group">
-                <span class="input-icon">
-                    <!-- Ícone de cadeado que aceita cor via CSS -->
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
-                    </svg>
-                </span>
-                <div class="form-floating">
-                    <input class="form-control"/>
-                    <label>Senha</label>
-                </div>
-            </div>
-
-            <div class="input-icon-group">
-                <span class="input-icon">
-                    <!-- Ícone de cadeado que aceita cor via CSS -->
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
-                    </svg>
-                </span>
-                <div class="form-floating">
-                    <input class="form-control"/>
-                    <label>Confirmar senha</label>
-                </div>
-            </div>
+            <button id="registerSubmit" type="submit" >Registrar</button>
 
         </form>
-        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrar</button>
+        
     </div>
     <div class="Box" id="MidBox">
         <form id="account" method="post">
-            <h2 class="TextoComImagem">Entrar na conta</h2>
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="input-icon-group">
-                <span class="input-icon">
-                    <!-- Ícone de email -->
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.383V5.383zm-.034 6.434-5.966-3.583-5.966 3.583A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-1.183zM1 5.383v6l4.708-3.175L1 5.383z" />
-                    </svg>
-                </span>
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <label asp-for="Input.Email" class="form-label"></label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="input-icon-group">
-                <span class="input-icon">
-                    <!-- Ícone de cadeado que aceita cor via CSS -->
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
-                    </svg>
-                </span>
-                <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                    <label asp-for="Input.Password" class="form-label"></label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-            </div>
             <div>
-                <div class="checkbox">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
+                <h2 class="TextoComImagem">Entrar na conta</h2>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="input-icon-group2">
+                    <span class="input-icon">
+                        <!-- Ícone de email -->
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.383V5.383zm-.034 6.434-5.966-3.583-5.966 3.583A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-1.183zM1 5.383v6l4.708-3.175L1 5.383z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder=" "/>
+                        <label asp-for="Input.Email" class="form-label"></label>
+                        
+                    </div>
+                    
+                </div>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                <div class="input-icon-group2">
+                    <span class="input-icon">
+                        <!-- Ícone de cadeado que aceita cor via CSS -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 8V7a5 5 0 0 0-10 0v1a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-8-1a3 3 0 0 1 6 0v1H9V7zm10 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8z" />
+                        </svg>
+                    </span>
+                    <div class="form-floating">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder=" "/>
+                        <label asp-for="Input.Password" class="form-label">Senha</label>
+                        
+                    </div>
+                    
+                </div>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <div>
+                    <div class="checkbox">
+                        <label asp-for="Input.RememberMe" class="form-label">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                    </p>
+                    <p>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                    </p>
+                    <p>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    </p>
                 </div>
             </div>
 
-            <div>
-                <p>
-                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                </p>
-                <p>
-                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                </p>
-                <p>
-                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                </p>
-            </div>
-            
+            <button id="loginSubmit" type="submit" >Log in</button>
+
         </form>
 
-        <button id="loginSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+       
     </div>
     <div class="Box" id="RightBox">
         <img src="~/css/Imagens/BurguerLogo.png">
@@ -138,7 +150,7 @@
 
         <div class="BottomRightBox">
             <h4>Você não possui uma conta?</h4>
-            <a class="w-100 btn btn-lg btn-primary" asp-area="Identity" asp-page="/Account/Register">Cadastrar</a>
+            <a asp-area="Identity" asp-page="/Account/Register">Cadastrar</a>
         </div>
 
     </div>
