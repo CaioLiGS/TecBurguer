@@ -53,6 +53,12 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             _dbTecBurguerContext = dBTecBurguerContext;
         }
 
+        [BindProperty]
+        public string ConfirmationCode { get; set; }
+
+        public string GeneratedCode { get; set; }
+
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -157,11 +163,26 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    // Gerar código de confirmação
+                    GeneratedCode = new Random().Next(100000, 999999).ToString();
+
+                    // Enviar e-mail (exemplo usando um serviço fictício)
+                    await EmailService.SendAsync(Input.Email, "Código de confirmação", $"Seu código: {GeneratedCode}");
+
+                    // Salvar código em sessão ou banco (exemplo: sessão)
+                    HttpContext.Session.SetString("ConfirmationCode", GeneratedCode);
+                    HttpContext.Session.SetString("PendingEmail", Input.Email);
+
+                    // Exibir campo para digitar o código
+                    ViewData["ShowConfirmation"] = true;
+
+                    /*await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");*/
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
@@ -201,6 +222,25 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<LoginCliente>)_userStore;
+        }
+
+        public async Task<IActionResult> OnPostConfirmAsync()
+        {
+            var code = HttpContext.Session.GetString("ConfirmationCode");
+            var email = HttpContext.Session.GetString("PendingEmail");
+
+            if (ConfirmationCode == code)
+            {
+                // Prosseguir com o cadastro normalmente
+                // ... lógica de criação de usuário
+                // Limpar sessão
+                HttpContext.Session.Remove("ConfirmationCode");
+                HttpContext.Session.Remove("PendingEmail");
+                return RedirectToPage("RegisterConfirmation", new { email });
+            }
+            ModelState.AddModelError("", "Código inválido.");
+            ViewData["ShowConfirmation"] = true;
+            return Page();
         }
     }
 }

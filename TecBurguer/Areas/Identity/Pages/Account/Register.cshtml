@@ -150,6 +150,17 @@
     </div>
 </div>
 
+@if (ViewData["ShowConfirmation"] as bool? == true)
+{
+    <form method="post" asp-page-handler="Confirm">
+        <div class="form-floating">
+            <input asp-for="ConfirmationCode" class="form-control" required />
+            <label>Digite o código recebido</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Confirmar código</button>
+    </form>
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
