@@ -25,6 +25,35 @@
 //    }
 //});
 
+
+function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+// Fecha se clicar fora
+window.onclick = function (event) {
+    if (!event.target.matches('.btn-filtrar, .btn-filtrar *')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].style.display = "none";
+        }
+    }
+}
+
+function filtrar(categoria) {
+    const secoes = document.querySelectorAll(".section");
+    secoes.forEach(secao => {
+        if (categoria === "todos") {
+            secao.style.display = "block";
+        } else if (secao.querySelector("h2").innerText.toLowerCase().includes(categoria)) {
+            secao.style.display = "block";
+        } else {
+            secao.style.display = "none";
+        }
+    });
+}
+
 function mostrarBotaoLogin() {
     let interface = document.querySelector(".interface");
 

@@ -211,6 +211,11 @@ namespace TecBurguer.Models
             OnModelCreatingPartial(modelBuilder);
         }
 
+        internal string? HamburguersToList()
+        {
+            throw new NotImplementedException();
+        }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
