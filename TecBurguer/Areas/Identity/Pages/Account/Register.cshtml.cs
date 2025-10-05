@@ -175,15 +175,16 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                     HttpContext.Session.SetString("PendingEmail", Input.Email);
 
                     // Exibir campo para digitar o código
-                    ViewData["ShowConfirmation"] = true;
+                    
 
                     /*await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");*/
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        ViewData["ShowConfirmation"] = true;
 
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        // return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -224,19 +225,35 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             return (IUserEmailStore<LoginCliente>)_userStore;
         }
 
+
+
         public async Task<IActionResult> OnPostConfirmAsync()
         {
             var code = HttpContext.Session.GetString("ConfirmationCode");
             var email = HttpContext.Session.GetString("PendingEmail");
 
+            if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(email))
+            {
+                ModelState.AddModelError("", "Sessão expirada. Por favor, refaça o cadastro.");
+                return Page();
+            }
+
             if (ConfirmationCode == code)
             {
                 // Prosseguir com o cadastro normalmente
-                // ... lógica de criação de usuário
-                // Limpar sessão
                 HttpContext.Session.Remove("ConfirmationCode");
                 HttpContext.Session.Remove("PendingEmail");
-                return RedirectToPage("RegisterConfirmation", new { email });
+
+                // Buscar o usuário pelo e-mail
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user != null && !user.EmailConfirmed)
+                {
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                }
+
+                ViewData["ConfirmationSuccess"] = true;
+                return Page();
             }
             ModelState.AddModelError("", "Código inválido.");
             ViewData["ShowConfirmation"] = true;
