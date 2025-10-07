@@ -41,11 +41,10 @@
     z-index: 1;
 }
 
-    .Box img {
-        width: 25%;
-        height: 25%;
+    .Box div img {
+        height: 12vw;
         opacity: 0.25;
-        object-fit: cover;
+        object-fit: contain;
     }
 
     .Box form {
@@ -82,7 +81,7 @@
     transition: all 0.7s ease-in-out;
 }
 
-    #RightBox h1 {
+    #RightBox div h1 {
         color: var(--primary);
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         font-size: clamp(1.2rem, 5vw, 2.5rem);
@@ -101,6 +100,7 @@
     width: 100%;
 }
 
+    #RightBox button,
     .BottomRightBox a,
     #registerSubmit,
     #loginSubmit {
@@ -110,11 +110,15 @@
         border: none;
         border-radius: 30px;
         color: var(--light);
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 15px;
+        font-family: 'Arial Narrow Bold', sans-serif;
+        font-weight: bolder;
+        text-decoration: 0;
         cursor: pointer;
         transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-out, background-position 0.25s ease-in-out, background 0.7s ease-in-out;
     }
 
+    #RightBox button,
     .BottomRightBox a {
         background-color: var(--secondary);
         transition: background-color 0.7s ease-in-out, transform 0.25s ease-in-out;
@@ -129,10 +133,12 @@
     transition: all 0.7s ease-in-out;
 }
 
+    #RightBox button:hover,
     .BottomRightBox a:hover{
         background-color: var(--secondary);
     }
 
+    #RightBox button:hover,
     .BottomRightBox a:hover,
     #registerSubmit:hover,
     #loginSubmit:hover {

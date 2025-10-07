@@ -89,7 +89,7 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button id="registerSubmit" type="submit">Registrar</button>
+            <button id="registerSubmit" type="submit">Criar conta</button>
         </form>
 
         
@@ -112,7 +112,7 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input class="form-control" required />
+                        <input class="form-control" placeholder=" " />
                         <label>Email</label>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input class="form-control" required />
+                        <input class="form-control" placeholder=" " />
                         <label>Senha</label>
                     </div>
                 </div>
@@ -139,28 +139,95 @@
 
     <!-- Information Box -->
     <div class="Box" id="RightBox">
-        <img src="~/css/Imagens/BurguerLogo.png" alt="TecBurguer Logo">
-        <h1>TecBurguer</h1>
-        <h3>Criando uma nova conta, você pode receber notícias, fazer pedidos, receber descontos e muito mais!!</h3>
 
-        <div class="BottomRightBox">
-            <h4>Você já tem uma conta?</h4>
-            <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <div>
+            <img src="~/css/Imagens/BurguerLogo.png" alt="TecBurguer Logo">
+            <h1>TecBurguer</h1>
         </div>
+        
+
+        @if (ViewData["ShowConfirmation"] as bool? == true)
+        { 
+            <form method="post" asp-page-handler="Confirm">
+
+                <h2>Confirmação de Email</h2>
+
+                <div class="form-floating confirmation-code-inputs">
+                    <div class="confirmation-code-boxes">
+                        @for (int i = 0; i < 6; i++)
+                        {
+                            <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="form-control code-box" id="codeBox_@i" name="ConfirmationCodeDigits" required style="width:2.5em;display:inline-block;text-align:center;margin-right:0.3em;" />
+                        }
+                    </div>
+                </div>
+
+                <p>Enviamos um código de confimação para o seu email, digite-o aqui para conferirmos se realmente é você!</p>
+                <input type="hidden" asp-for="ConfirmationCode" id="ConfirmationCode" value="" />
+                <script>
+                    // Avança automaticamente para o próximo campo ao digitar
+
+                    const form = document.querySelector('form[method="post"]');
+                    const hiddenInput = document.getElementById('ConfirmationCode');
+
+                    document.querySelectorAll('.code-box').forEach((box, idx, arr) => {
+                        box.addEventListener('input', function (e) {
+                            if (this.value.length === 1 && idx < arr.length - 1) {
+                                arr[idx + 1].focus();
+                            }
+                            if (idx === arr.length - 1 && this.value.length === 1) {
+                                fullCode = '';
+
+                                for (let i=0; i<6; i++){
+                                    console.log()
+                                    fullCode += document.getElementById(`codeBox_${i}`).value;
+                                }   
+
+                                hiddenInput.value = fullCode;
+                               
+                            }
+                        });
+                        box.addEventListener('keydown', function (e) {
+                            if (e.key === 'Backspace' && this.value === '' && idx > 0) {
+                                arr[idx - 1].focus();
+                            }
+                        });
+                    });
+                </script>
+                <style>
+                    .confirmation-code-boxes .code-box {
+                        font-size: 1.5em;
+                        margin-right: 0.3em;
+                        text-align: center;
+                        width: 1.5em;
+                        display: inline-block;
+                        border-radius: 10px;
+                    }
+
+                    #RightBox{
+                        left: 10%;
+                        width: 80%;
+                        border-radius: 15px 15px 15px 15px;
+                    }
+                </style>
+
+                
+                <button type="submit" class="btn btn-primary">Confirmar código</button>
+            </form>
+        }
+        else
+        {
+            <h3>Criando uma nova conta, você pode receber notícias, fazer pedidos, receber descontos e muito mais!!</h3>
+
+            <div class="BottomRightBox">
+                <h4>Você já tem uma conta?</h4>
+                <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </div>
+        }  
+        
     </div>
 </div>
 
-@if (ViewData["ShowConfirmation"] as bool? == true)
-{
-    <form method="post" asp-page-handler="Confirm">
-        <div class="form-floating">
-            <input asp-for="ConfirmationCode" class="form-control" required />
-            <label>Digite o código recebido</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Confirmar código</button>
-    </form>
-}
-
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+
+    <partial name="_ValidationScriptsPartial" />    
 }
