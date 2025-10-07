@@ -782,3 +782,23 @@ header {
         .dropdown-content button:hover {
             background: rgba(255, 255, 255, 0.2);
         }
+.btn-carrinho {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px 0;
+    background-color: #d52b0d;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+    .btn-carrinho:hover {
+        background-color: #b2220a;
+        transform: translateY(-2px);
+    }
