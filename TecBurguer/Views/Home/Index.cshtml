@@ -11,6 +11,10 @@
 }
 
 <style>
+    main{
+        margin-top: 0;
+    }
+
 .SetaHover {
     position: absolute;
     top: 50%;
@@ -18,7 +22,7 @@
     font-size: 30px;
     color: white;
     transform: translateY(-50%);
-    opacity: 0;
+    opacity: 0; 
     transition: all 0.5s ease;
     pointer-events: none;
 }
@@ -30,7 +34,72 @@
 </style>
 
 <div class="BannerContent" id="BannerContent">
-    <img class="banner" src="~/css/Imagens/Banner.png">
+    @* <img class="banner" src="~/css/Imagens/Banner.png"> *@
+    <div class="conteudoBannerContent">
+
+        <div class="Ball1"></div>
+        <div class="Ball2"></div>
+
+        <div class="bannerWrapper">
+            <img class="BurgerImageBanner active" id="bannerPrincipal" src="/css/Imagens/BurguerLogo.png" alt="Hamburguer">
+        </div>
+
+        <div class="textos">
+            <h1>TEC</h1>
+            <h1>BURGER</h1>
+        </div>
+    </div>
+
+    <script>
+        // Array de imagens vindo do Razor
+        var imagens = [
+            @foreach (var item in Model)
+            {
+                    @: "@Html.DisplayFor(modelItem => item.Imagem)",
+            }
+        ];
+
+        var index = 0;
+        var bannerWrapper = document.querySelector(".bannerWrapper");
+
+        function trocarImagem() {
+            var atual = document.querySelector(".BurgerImageBanner.active");
+
+            // cria novo elemento img
+            var proxima = document.createElement("img");
+            proxima.src = imagens[index];
+            proxima.className = "BurgerImageBanner";
+            bannerWrapper.appendChild(proxima);
+
+            // força reflow para aplicar transição
+            void proxima.offsetWidth;
+
+            // adiciona classe active para animar entrada
+            proxima.classList.add("active");
+
+            // anima saída do atual
+            if (atual) {
+                atual.classList.remove("active");
+                atual.classList.add("exit");
+
+                // remove o antigo após a animação
+                setTimeout(() => {
+                    bannerWrapper.removeChild(atual);
+                }, 1000); // tempo igual ao transition
+            }
+
+            // avança índice
+            index = (index + 1) % imagens.length;
+        }
+
+        // troca a cada 10s
+        setInterval(trocarImagem, 10000);
+
+        // inicia
+        trocarImagem();
+    </script>
+
+    
     <div class="BannerOverlay">
         <a href="#OfertasDiarias" class="ScrollDown" pointer>Saiba Mais</a>
         <a href="#OfertasDiarias" class="ScrollDown" pointer>

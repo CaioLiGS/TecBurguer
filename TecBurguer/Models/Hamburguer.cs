@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TecBurguer.Models
 {
@@ -14,6 +15,7 @@ namespace TecBurguer.Models
         public int IdHamburguer { get; set; }
         public string? Nome { get; set; }
         public string? Descricao { get; set; }
+
         public decimal? Preco { get; set; }
         public string? Imagem { get; set; }
         public string? Categoria { get; set; }

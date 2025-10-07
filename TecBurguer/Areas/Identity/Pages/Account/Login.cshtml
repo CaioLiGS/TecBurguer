@@ -8,9 +8,7 @@
 <link rel="stylesheet" href="~/css/Login.css" asp-append-version="true">
 
 <div class="Ball1"></div>
-<div class="Ball2"></div>
 <div class="Ball3"></div>
-<div class="Ball4"></div>
 
 <div class="OutBox">
     <div class="Box" id="LeftBox">
@@ -28,7 +26,7 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input class="form-control" />
+                        <input class="form-control" placeholder=" "/>
                         <label>Nome</label>
                     </div>
                 </div>
@@ -41,7 +39,7 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input class="form-control" />
+                        <input class="form-control" placeholder=" "/>
                         <label>Email</label>
                     </div>
                 </div>
@@ -54,7 +52,7 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input class="form-control"/>
+                        <input class="form-control" placeholder=" "/>
                         <label>Senha</label>
                     </div>
                 </div>
@@ -67,13 +65,13 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input class="form-control"/>
+                        <input class="form-control" placeholder=" "/>
                         <label>Confirmar senha</label>
                     </div>
                 </div>
             </div>
 
-            <button id="registerSubmit" type="submit" >Registrar</button>
+            <button id="registerSubmit" type="submit" >Criar conta</button>
 
         </form>
         
@@ -115,42 +113,38 @@
                     
                 </div>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
-                <div>
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe" class="form-label">
-                            <input class="form-check-input" asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                </div>
+                <div class="links">
 
-                <div>
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        Lembre-me neste dispositivo
+                    </label>
+
+
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Esqueceu sua senha?</a>
                     </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
+
                 </div>
             </div>
 
-            <button id="loginSubmit" type="submit" >Log in</button>
+            <button id="loginSubmit" type="submit" >Login</button>
 
         </form>
 
        
     </div>
     <div class="Box" id="RightBox">
-        <img src="~/css/Imagens/BurguerLogo.png">
-        <h1>TecBurguer</h1>
-        <h5>Entre na sua conta para ter acesso a todas as areas do sistema.</h5>
+        <div>
+            <img src="~/css/Imagens/BurguerLogo.png">
+            <h1>TecBurger</h1>
+        </div>
+        
+        <h5>Entre na sua conta para ter acesso a todas as áreas do sistema.</h5>
 
         <div class="BottomRightBox">
             <h4>Você não possui uma conta?</h4>
-            <a asp-area="Identity" asp-page="/Account/Register">Cadastrar</a>
+            <a asp-area="Identity" asp-page="/Account/Register">Criar conta</a>
         </div>
 
     </div>

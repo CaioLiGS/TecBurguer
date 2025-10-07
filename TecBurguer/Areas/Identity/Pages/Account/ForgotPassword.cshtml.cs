@@ -61,22 +61,20 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
+                // Gerar código de 6 dígitos
+                var code = new Random().Next(100000, 999999).ToString();
 
-                await _emailSender.SendEmailAsync(
+                // Salvar código temporário no Identity
+                await _userManager.SetAuthenticationTokenAsync(user, "TecBurguer", "ResetCode", code);
+
+                // Enviar e-mail usando seu EmailService
+                await EmailService.SendAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Código de redefinição de senha",
+                    $"Seu código de redefinição é: <b>{code}</b>"
+                );
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                return RedirectToPage("./VerifyResetCode", new { email = Input.Email });
             }
 
             return Page();

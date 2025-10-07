@@ -41,11 +41,10 @@
     z-index: 1;
 }
 
-    .Box img {
-        width: 25%;
-        height: 25%;
+    .Box div img {
+        height: 12vw;
         opacity: 0.25;
-        object-fit: cover;
+        object-fit: contain;
     }
 
     .Box form {
@@ -82,7 +81,7 @@
     transition: all 0.7s ease-in-out;
 }
 
-    #RightBox h1 {
+    #RightBox div h1 {
         color: var(--primary);
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         font-size: clamp(1.2rem, 5vw, 2.5rem);
@@ -110,7 +109,10 @@
         border: none;
         border-radius: 30px;
         color: var(--light);
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 15px;
+        font-family: 'Arial Narrow Bold', sans-serif;
+        font-weight: bolder;
+        text-decoration: 0;
         cursor: pointer;
         transition: all 0.25s ease-in-out;
     }
@@ -147,6 +149,26 @@
 .BottomRightBox h4 {
     color: var(--secondary);
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+.links{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.links p a{
+    text-decoration: none;
+    color: var(--secondary-dark);
+    transition: all ease-in-out 0.25s;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.links p a:hover{
+    color: var(--primary);
 }
 
 /* ==========================
@@ -209,8 +231,7 @@
     .input-icon-group2 .input-icon {
         position: absolute;
         left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 20%;
         pointer-events: none;
         z-index: 2;
     }
@@ -250,7 +271,7 @@
    /* ==========================
    🔴 Bolhas decorativas
    ========================== */
-        .Ball1, .Ball2, .Ball3, .Ball4 {
+        .Ball1, .Ball3 {
             position: fixed;
             border-radius: 100%;
             background-color: var(--secondary);
@@ -262,31 +283,17 @@
 .Ball1 {
     width: 700px;
     height: 700px;
-    left: -195px;
-    bottom: -90px;
-    animation: pulsar 10s linear infinite;
-}
-
-.Ball2 {
-    width: 300px;
-    height: 300px;
-    left: -100px;
-    top: 95px;
+    left: -30vw;
+    bottom: -50vh;
+    animation: aparecer 0.7s ease-in-out forwards, pulsar 15s linear infinite;
 }
 
 .Ball3 {
     width: 700px;
     height: 700px;
-    right: -195px;
-    top: -90px;
-    animation: pulsar 15s linear infinite;
-}
-
-.Ball4 {
-    width: 300px;
-    height: 300px;
-    right: -100px;
-    bottom: 95px;
+    left: -30vw;
+    bottom: -50vh;
+    animation: aparecer 0.7s ease-in-out forwards, pulsar 30s linear infinite;
 }
 
 /* ==========================
@@ -306,7 +313,7 @@
         margin-bottom: 24px;
     }
 
-    #LeftBox, #RightBox {
+    #LeftBox, #MidBox, #RightBox {
         border-radius: 15px;
     }
 }
@@ -348,6 +355,42 @@
     }
 }
 
+@media (max-width: 900px) {
+    /* Faz o RightBox deixar de ser absoluto e virar bloco normal */
+    #RightBox {
+        position: static;
+        width: 90%;
+        left: auto;
+        top: auto;
+        transform: none;
+        border-radius: 15px;
+        margin-top: 10px;
+    }
+
+    /* Faz o MidBox desaparecer */
+    #LeftBox {
+        display: none !important;
+    }
+
+    /* Garante que as caixas fiquem empilhadas */
+    .OutBox {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Ajuste adicional para o RightBox em telas bem pequenas */
+    #RightBox {
+        width: 100%;
+        padding: 15px;
+        margin-top: 10px;
+    }
+}
+
 /* ==========================
    🔄 Variação de layout
    ========================== */
@@ -360,6 +403,60 @@
         background-color: var(--secondary);
     }
 
-.Ball1.swap, .Ball2.swap, .Ball3.swap, .Ball4.swap{
+.Ball1.swap, .Ball3.swap{
     background-color: var(--primary);
+}
+
+.Ball1.swap {
+    animation: desaparecer 0.7s ease-in-out forwards, pulsar 15s linear infinite;
+}
+
+.Ball3.swap {
+    animation: desaparecer 0.7s ease-in-out forwards, pulsar 30s linear infinite;
+}
+
+
+
+@keyframes pulsar {
+    0%{
+        left: -30vw;
+        bottom: -50vh;
+    }
+    25%{
+        left: -30vw;
+        bottom: 50vh;
+    }
+    50% {
+        left: 80vw;
+        bottom: 50vh;
+    }
+    75% {
+        left: 80vw;
+        bottom: -50vh;
+    }
+    100% {
+        left: -30vw;
+        bottom: -50vh;
+    }
+}
+
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes desaparecer {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }

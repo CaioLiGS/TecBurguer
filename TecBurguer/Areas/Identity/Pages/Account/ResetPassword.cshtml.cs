@@ -67,25 +67,13 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            public string Code { get; set; }
 
         }
 
-        public IActionResult OnGet(string code = null)
+        public IActionResult OnGet(string email)
         {
-            if (code == null)
-            {
-                return BadRequest("A code must be supplied for password reset.");
-            }
-            else
-            {
-                Input = new InputModel
-                {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
-                };
-                return Page();
-            }
+            Input = new InputModel { Email = email };
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -98,17 +86,29 @@ namespace TecBurguer.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
+                // Não revela se o usuário existe
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
-            if (result.Succeeded)
+            // Remove a senha antiga
+            var remove = await _userManager.RemovePasswordAsync(user);
+            if (!remove.Succeeded)
+            {
+                foreach (var error in remove.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return Page();
+            }
+
+            // Adiciona a nova senha
+            var add = await _userManager.AddPasswordAsync(user, Input.Password);
+            if (add.Succeeded)
             {
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
-            foreach (var error in result.Errors)
+            foreach (var error in add.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }

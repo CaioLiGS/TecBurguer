@@ -198,7 +198,10 @@ document.addEventListener('DOMContentLoaded', function () {
             outBox.classList.add('swap');
 
             for (let i = 1; i <= 4; i++){
-                document.querySelector(`.Ball${i}`).classList.add('swap');
+                if (i == 1 || i == 3) {
+                    document.querySelector(`.Ball${i}`).classList.add('swap');
+                }
+               
             }
 
             // Opcional: Redireciona após a animação

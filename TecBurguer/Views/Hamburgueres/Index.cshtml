@@ -4,56 +4,53 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="TituloCentral">Hambúrgueres</h1>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Preco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Imagem)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Preco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categoria)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Imagem)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdHamburguer">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdHamburguer">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdHamburguer">Delete</a>
-            </td>
-        </tr>
-}
+        <div style="display: flex;">
+            @foreach (var item in Model) {
+                <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+                    <img src=@Html.DisplayFor(modelItem => item.Imagem)
+                            class="ImagemHamburguer"
+                            onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+                    <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </h3>
+                    <p class="DescricaoHamburguer">
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </p>
+
+                    <div class="BottomInfoBurguer">
+                        <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+
+                        <div class="BotoesDoHamburguer">
+
+                            <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                               asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
+                                Detalhes
+                            </a>
+
+                            <a class="EditarHamburguer" asp-action="Edit" asp-route-id="@item.IdHamburguer" title="Editar">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+
+                            <a class="DeletarHamburguer" asp-action="Delete" asp-route-id="@item.IdHamburguer" title="Excluir">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
     </tbody>
 </table>
