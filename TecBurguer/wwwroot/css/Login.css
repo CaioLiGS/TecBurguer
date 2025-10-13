@@ -9,6 +9,7 @@
     --accent: #F2CC8F; /* bege areia */
     --dark: #3D405B; /* marrom café */
     --light: #faf3e0; /* branco quente */
+    --light-dark: #f6f3eb;
 }
 
 /* ==========================
@@ -35,7 +36,7 @@
     padding: 15px;
     text-align: center;
     color: var(--dark);
-    background-color: var(--light);
+    background-color: var(--light-dark);
     border-radius: 15px;
     transition: all 0.7s ease-in-out;
     z-index: 1;
