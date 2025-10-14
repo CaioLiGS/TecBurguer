@@ -282,18 +282,18 @@
         }
 
 .Ball1 {
-    width: 700px;
-    height: 700px;
+    width: 30vw;
+    height: 30vw;
     left: -30vw;
-    bottom: -50vh;
+    bottom: -30vh;
     animation: aparecer 0.7s ease-in-out forwards, pulsar 15s linear infinite;
 }
 
 .Ball3 {
-    width: 700px;
-    height: 700px;
+    width: 40vw;
+    height: 40vw;
     left: -30vw;
-    bottom: -50vh;
+    bottom: -30vh;
     animation: aparecer 0.7s ease-in-out forwards, pulsar 30s linear infinite;
 }
 
@@ -417,27 +417,26 @@
 }
 
 
-
 @keyframes pulsar {
     0%{
-        left: -30vw;
-        bottom: -50vh;
+        left: -20vw;
+        bottom: -30vh;
     }
     25%{
-        left: -30vw;
-        bottom: 50vh;
+        left: -20vw;
+        bottom: 70vh;
     }
     50% {
         left: 80vw;
-        bottom: 50vh;
+        bottom: 70vh;
     }
     75% {
         left: 80vw;
-        bottom: -50vh;
+        bottom: -30vh;
     }
     100% {
-        left: -30vw;
-        bottom: -50vh;
+        left: -20vw;
+        bottom: -30vh;
     }
 }
 

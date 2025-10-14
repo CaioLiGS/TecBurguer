@@ -227,8 +227,10 @@ namespace TecBurguer.Areas.Identity.Pages.Account
 
 
 
-        public async Task<IActionResult> OnPostConfirmAsync()
+        public async Task<IActionResult> OnPostConfirmAsync(string returnUrl = null)
         {
+            returnUrl ??= Url.Content("~/");
+
             var code = HttpContext.Session.GetString("ConfirmationCode");
             var email = HttpContext.Session.GetString("PendingEmail");
 
@@ -252,8 +254,13 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                     await _userManager.UpdateAsync(user);
                 }
 
+
                 ViewData["ConfirmationSuccess"] = true;
-                return Page();
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+                // Redireciona para a URL passada ou para home
+                return LocalRedirect(returnUrl);
             }
             ModelState.AddModelError("", "Código inválido.");
             ViewData["ShowConfirmation"] = true;

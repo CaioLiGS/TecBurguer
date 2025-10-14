@@ -88,7 +88,10 @@
                 
             </div>
 
-            <button id="registerSubmit" type="submit">Criar conta</button>
+            <button id="registerSubmit" type="submit">
+                <span class="button-text">Criar conta</span>
+                <span class="spinner" style="display:none;"></span>
+            </button>
         </form>
 
         
@@ -179,8 +182,6 @@
                 <p>Enviamos um código de confimação para o seu email, digite-o aqui para conferirmos se realmente é você!</p>
                 <input type="hidden" asp-for="ConfirmationCode" id="ConfirmationCode" value="" />
                 <script>
-                    // Avança automaticamente para o próximo campo ao digitar
-
                     const form = document.querySelector('form[method="post"]');
                     const hiddenInput = document.getElementById('ConfirmationCode');
 
@@ -207,6 +208,8 @@
                             }
                         });
                     });
+
+                    document.getElementById("RightBox").classList.add('swap');
                 </script>
                 <style>
                     .confirmation-code-boxes .code-box {
@@ -216,12 +219,6 @@
                         width: 1.5em;
                         display: inline-block;
                         border-radius: 10px;
-                    }
-
-                    #RightBox{
-                        left: 10%;
-                        width: 80%;
-                        border-radius: 15px 15px 15px 15px;
                     }
                 </style>
 

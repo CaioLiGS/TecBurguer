@@ -212,8 +212,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+
+/*
+
+        BANNER DO HOME
+
+*/
+
 document.addEventListener('DOMContentLoaded', function () {
-    // Seções que serão centralizadas
+
     const sections = [
         document.getElementById('BannerContent'),
         document.getElementById('OfertasDiarias'),
@@ -242,4 +249,23 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
         }
     }, { passive: false });
+});
+
+
+
+            /*
+            
+                LOGIN E REGISTRO
+            
+            */
+
+document.getElementById('registerForm').addEventListener('submit', function (e) {
+    const btn = document.getElementById('registerSubmit');
+    const text = btn.querySelector('.button-text');
+    const spinner = btn.querySelector('.spinner');
+
+    text.style.display = 'none';
+    spinner.style.display = 'inline-block';
+
+    btn.disabled = true;
 });

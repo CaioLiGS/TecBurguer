@@ -7,16 +7,16 @@
 <h1 class="TituloCentral">Hambúrgueres</h1>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="~/css/Hamburgueres.css" rel="stylesheet" />
 
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <tbody>
-        <div style="display: flex;">
+        <div class="CaixaExterna">
             @foreach (var item in Model) {
-                <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+
+                <div class="BlocoHamburguer">
+
                     <img src=@Html.DisplayFor(modelItem => item.Imagem)
                             class="ImagemHamburguer"
                             onerror="this.src='/css/Imagens/BurguerLogo.png'">
@@ -34,7 +34,7 @@
                         <div class="BotoesDoHamburguer">
 
                             <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                               asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
+                                asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
                                 Detalhes
                             </a>
 
@@ -51,6 +51,11 @@
                     </div>
                 </div>
             }
+
+            <a asp-action="Create" class="CriarNovoItem">
+                <img src="~/css/Imagens/BurguerLogo.png">
+                <p>+</p>
+             </a>
         </div>
     </tbody>
 </table>

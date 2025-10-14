@@ -75,6 +75,7 @@
 #RightBox {
     position: absolute;
     left: 50%;
+    width: 40%;
     border-radius: 0 15px 15px 0;
     background-color: var(--dark);
     color: var(--light);
@@ -290,10 +291,10 @@
 }
 
 .Ball1 {
-    width: 40vw;
-    height: 40vw;
+    width: 30vw;
+    height: 30vw;
     left: -30vw;
-    bottom: -50vh;
+    bottom: -30vh;
     animation: aparecer 0.7s ease-in-out forwards, pulsar 15s linear infinite;
 }
 
@@ -301,9 +302,10 @@
     width: 40vw;
     height: 40vw;
     left: -30vw;
-    bottom: -50vh;
+    bottom: -30vh;
     animation: aparecer 0.7s ease-in-out forwards, pulsar 30s linear infinite;
 }
+
 
 /* ==========================
    📱 Responsividade
@@ -414,7 +416,6 @@
 
 .Ball1.swap, .Ball3.swap {
     background-color: var(--secondary);
-    
 }
 
 .Ball1.swap {
@@ -425,34 +426,53 @@
     animation: desaparecer 0.7s ease-in-out forwards, pulsar 30s linear infinite;
 }
 
+#RightBox.swap {
+    left: 10%;
+    width: 80%;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-left-color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 @keyframes pulsar {
     0% {
-        left: -30vw;
-        bottom: -50vh;
-        
+        left: -20vw;
+        bottom: -30vh;
     }
 
     25% {
-        left: -30vw;
-        bottom: 50vh;
+        left: -20vw;
+        bottom: 70vh;
     }
 
     50% {
         left: 80vw;
-        bottom: 50vh;
-
+        bottom: 70vh;
     }
 
     75% {
         left: 80vw;
-        bottom: -50vh;
-
+        bottom: -30vh;
     }
 
     100% {
-        left: -30vw;
-        bottom: -50vh;
+        left: -20vw;
+        bottom: -30vh;
     }
 }
 

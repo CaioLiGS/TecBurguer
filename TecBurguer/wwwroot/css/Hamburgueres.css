@@ -1,0 +1,66 @@
+﻿:root {
+    --primary: #E07A5F; /* laranja queimado */
+    --primary-dark: #d45d47;
+    --secondary: #81B29A; /* verde oliva */
+    --secondary-dark: #6d9b85;
+    --accent: #F2CC8F; /* bege areia */
+    --dark: #3D405B; /* marrom café */
+    --light: #faf3e0; /* branco quente */
+    --light-dark: #f6f3eb;
+}
+
+body{
+    margin-top: 15vh;
+}
+
+.CaixaExterna{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    margin-top: 20px;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    background-color: var(--light-dark);
+    border-radius: 15px;
+    padding: 10px;
+
+    flex-wrap: wrap;
+
+    box-shadow: 5px 5px 20px #00000022
+}
+
+.CriarNovoItem {
+    display: flex;
+    background-color: #e07a5f2c;
+    border: 3px solid var(--dark);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    padding: 20px;
+    width: 280px;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 10px;
+    color: var(--dark);
+    text-decoration: none;
+}
+
+.CriarNovoItem img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.CriarNovoItem p{
+    font-size: 100px;
+}
+
+.CriarNovoItem:hover {
+    color: var(--dark);
+    transform: translateY(-2%);
+}
