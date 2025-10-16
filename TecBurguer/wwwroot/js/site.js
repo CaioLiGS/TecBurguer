@@ -220,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function () {
 */
 
 document.addEventListener('DOMContentLoaded', function () {
-
     const sections = [
         document.getElementById('BannerContent'),
         document.getElementById('OfertasDiarias'),
@@ -230,21 +229,30 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSection = 0;
     let isScrolling = false;
 
+   
+    if (currentSection === 3) {
+        sec.classList.add('active');
+    } else {
+        sec.classList.remove('active');
+    }
+
+    updateActiveSection();
+
     window.addEventListener('wheel', function (e) {
-        if (isScrolling) return; // Travado até terminar scroll
+        if (isScrolling) return;
 
         if (e.deltaY > 0 && currentSection < sections.length - 1) {
-            // Scroll para baixo
             currentSection++;
             isScrolling = true;
             sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => { isScrolling = false; }, 700); // Libera após animação
+            updateActiveSection();
+            setTimeout(() => { isScrolling = false; }, 700);
             e.preventDefault();
         } else if (e.deltaY < 0 && currentSection > 0) {
-            // Scroll para cima
             currentSection--;
             isScrolling = true;
             sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            updateActiveSection();
             setTimeout(() => { isScrolling = false; }, 700);
             e.preventDefault();
         }

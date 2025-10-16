@@ -13,21 +13,19 @@ body{
     margin-top: 15vh;
 }
 
-.CaixaExterna{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.CaixaExterna {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+    gap: 20px;
+
+    justify-items: center;
+
     width: 80vw;
-    margin-top: 20px;
-    margin-left: 10vw;
-    margin-right: 10vw;
+    margin: 20px auto;
     background-color: var(--light-dark);
     border-radius: 15px;
-    padding: 10px;
-
-    flex-wrap: wrap;
-
-    box-shadow: 5px 5px 20px #00000022
+    padding: 20px;
+    box-shadow: 5px 5px 20px #00000022;
 }
 
 .CriarNovoItem {

@@ -2,6 +2,18 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    var totalItens = Model.Count() + 1;
+    var colunas = (int)Math.Ceiling(totalItens / 2.0);
+
+    if (colunas < 3 && totalItens > 2)
+    {
+        colunas = 3;
+    }
+    else if (totalItens <= 2)
+    {
+        colunas = 2;
+    }
 }
 
 <h1 class="TituloCentral">Hambúrgueres</h1>
@@ -12,7 +24,7 @@
 
 <table class="table">
     <tbody>
-        <div class="CaixaExterna">
+        <div class="CaixaExterna" style="--grid-columns: @colunas;">
             @foreach (var item in Model) {
 
                 <div class="BlocoHamburguer">

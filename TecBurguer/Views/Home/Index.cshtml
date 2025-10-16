@@ -71,21 +71,16 @@
             proxima.className = "BurgerImageBanner";
             bannerWrapper.appendChild(proxima);
 
-            // força reflow para aplicar transição
             void proxima.offsetWidth;
 
-            // adiciona classe active para animar entrada
             proxima.classList.add("active");
 
-            // anima saída do atual
             if (atual) {
                 atual.classList.remove("active");
                 atual.classList.add("exit");
-
-                // remove o antigo após a animação
                 setTimeout(() => {
                     bannerWrapper.removeChild(atual);
-                }, 1000); // tempo igual ao transition
+                }, 1000); 
             }
 
             // avança índice
