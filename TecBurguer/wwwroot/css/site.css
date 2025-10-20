@@ -382,6 +382,7 @@ header {
 
 .ConteudoContent1{
     display: flex;
+    height: 100vh;
 }
 
 .BlocoHamburguer {
@@ -397,15 +398,29 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 10px;
-    background-color: var(--primary)
+    background-color: var(--primary);
+    opacity: 0;
+    transform: translateY(60px);
+    transition: transform 0.8s ease-out 0.3s, opacity 0.8s ease-out 0.3s;
+    
 }
 
-    .BlocoHamburguer:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
+#Cardapio.aparecer .ConteudoContent1 .BlocoHamburguer {
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#Cardapio.aparecer .ConteudoContent1 .BlocoHamburguer:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.BlocoHamburguer:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
 
 .ImagemHamburguer {
     width: 100%;
@@ -686,7 +701,6 @@ header {
         transform: translateY(0);
     }
 }
-}
 
 @media (max-width: 1080px) {
     .Box {
@@ -703,6 +717,18 @@ header {
     50% {
         transform: rotate(-45deg) translateY(-8px) translateX(8px);
     }
+}
+
+/*Subir o Hamburguer*/
+    @keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes floatUpDown {
@@ -953,6 +979,7 @@ header {
         .dropdown-content button:hover {
             background: rgba(255, 255, 255, 0.2);
         }
+
 .btn-carrinho {
     display: block;
     width: 100%;
@@ -979,6 +1006,117 @@ header {
     RECOMENDAÇÕES DO CHEFE
 
 */
-RecomendacoesDoChefe{
 
+.ConteudoRecomendacoesDoChefe {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .ConteudoRecomendacoesDoChefe img {
+        width: 45%;
+        height: auto;
+        border-radius: 15px;
+        object-fit: cover;
+    }
+
+    .recomendacoes-slider-container {
+        max-width: 700px; /* Largura máxima do slide */
+        position: relative;
+        margin: 40px auto; /* Centraliza e dá espaço */
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        overflow: hidden; /* Garante que as bordas arredondadas funcionem */
+    }
+
+/* Esconde todos os slides por padrão */
+.recomendacoes-slide {
+    display: none;
+}
+
+    .recomendacoes-slide img {
+        width: 100%;
+        height: 400px; /* Altura fixa para os slides */
+        object-fit: cover; /* Evita distorção da imagem */
+        vertical-align: middle;
+    }
+
+/* Estilo da descrição do slide */
+.recomendacoes-caption {
+    padding: 25px;
+    text-align: center;
+    background-color: #fafafa;
+    border-top: 1px solid #eee;
+}
+
+    .recomendacoes-caption h3 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .recomendacoes-caption p {
+        font-size: 1rem;
+        color: #666;
+        min-height: 40px; /* Evita que o slide "pule" se a descrição for curta */
+        margin-bottom: 20px;
+    }
+
+/* Botão "Saiba Mais" */
+.recomendacoes-saiba-mais-btn {
+    background-color: #d93a3f; /* Um vermelho que combina com seu site */
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+    .recomendacoes-saiba-mais-btn:hover {
+        background-color: #b02a2f;
+    }
+
+
+/* Bolinhas de navegação */
+.recomendacoes-dots {
+    text-align: center;
+    padding: 15px;
+    background-color: #fafafa; /* Mesmo fundo do caption */
+}
+
+.recomendacoes-dot {
+    cursor: pointer;
+    height: 13px;
+    width: 13px;
+    margin: 0 5px;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.4s ease;
+}
+
+    .active-dot, .recomendacoes-dot:hover {
+        background-color: #d93a3f; /* Cor ativa */
+    }
+
+/* Animação de Fade */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {
+        opacity: .4
+    }
+
+    to {
+        opacity: 1
+    }
 }

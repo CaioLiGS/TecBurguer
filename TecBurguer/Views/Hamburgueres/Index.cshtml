@@ -27,41 +27,85 @@
         <div class="CaixaExterna" style="--grid-columns: @colunas;">
             @foreach (var item in Model) {
 
-                <div class="BlocoHamburguer">
+                @if (item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario))
+                {
+                    <div class="BlocoHamburguer">
 
-                    <img src=@Html.DisplayFor(modelItem => item.Imagem)
-                            class="ImagemHamburguer"
-                            onerror="this.src='/css/Imagens/BurguerLogo.png'">
+                        <img src=@Html.DisplayFor(modelItem => item.Imagem)
+                             class="ImagemHamburguer"
+                             onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
-                    <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </h3>
-                    <p class="DescricaoHamburguer">
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </p>
+                        <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </h3>
+                        <p class="DescricaoHamburguer">
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </p>
 
-                    <div class="BottomInfoBurguer">
-                        <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+                        <div class="BottomInfoBurguer">
+                            <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
 
-                        <div class="BotoesDoHamburguer">
+                            <div class="BotoesDoHamburguer">
 
-                            <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                                asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
-                                Detalhes
-                            </a>
+                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                                   asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
+                                    Detalhes
+                                </a>
 
-                            <a class="EditarHamburguer" asp-action="Edit" asp-route-id="@item.IdHamburguer" title="Editar">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
+                                <a class="EditarHamburguer" asp-action="Edit" asp-route-id="@item.IdHamburguer" title="Editar">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
 
-                            <a class="DeletarHamburguer" asp-action="Delete" asp-route-id="@item.IdHamburguer" title="Excluir">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
+                                <a class="DeletarHamburguer" asp-action="Delete" asp-route-id="@item.IdHamburguer" title="Excluir">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+
+                            </div>
 
                         </div>
-
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="BlocoHamburguer">
+
+                        <h1 class="ForaDeEstoque">FORA DE ESTOQUE</h1>
+
+                        <img src=@Html.DisplayFor(modelItem => item.Imagem)
+                             class="ImagemHamburguer"
+                             onerror="this.src='/css/Imagens/BurguerLogo.png'">
+                                    
+                        <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </h3>
+                        <p class="DescricaoHamburguer">
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </p>
+
+                        <div class="BottomInfoBurguer">
+                            <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+
+                            <div class="BotoesDoHamburguer">
+
+                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                                   asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
+                                    Detalhes
+                                </a>
+
+                                <a class="EditarHamburguer" asp-action="Edit" asp-route-id="@item.IdHamburguer" title="Editar">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+
+                                <a class="DeletarHamburguer" asp-action="Delete" asp-route-id="@item.IdHamburguer" title="Excluir">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                
             }
 
             <a asp-action="Create" class="CriarNovoItem">
@@ -71,3 +115,35 @@
         </div>
     </tbody>
 </table>
+
+<style>
+    .BlocoHamburguer{
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .ForaDeEstoque {
+        position: absolute;
+        z-index: 10; 
+        
+        background-color: rgba(220, 53, 69, 0.85); 
+        backdrop-filter: blur(2px); 
+        color: white;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        /* A MÁGICA DA ROTAÇÃO E POSICIONAMENTO */
+        /* Faz a faixa ser mais larga que o card para cobrir as diagonais */
+        width: 150%;
+        /* Posiciona o centro da faixa no centro do card */
+        top: 50%;
+        left: 50%;
+        /* Gira a faixa e a move para o lugar certo */
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+</style>

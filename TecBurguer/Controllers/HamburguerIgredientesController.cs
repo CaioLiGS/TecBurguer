@@ -50,8 +50,8 @@ namespace TecBurguer.Controllers
         // GET: HamburguerIgredientes/Create
         public IActionResult Create()
         {
-            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "IdHamburguer");
-            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "IdIngrediente");
+            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "Nome");
+            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "Nome");
             return View();
         }
 
@@ -68,8 +68,8 @@ namespace TecBurguer.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "IdHamburguer", hamburguerIgrediente.IdHamburguer);
-            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "IdIngrediente", hamburguerIgrediente.IdIngrediente);
+            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "Nome", hamburguerIgrediente.IdHamburguer);
+            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "Nome", hamburguerIgrediente.IdIngrediente);
             return View(hamburguerIgrediente);
         }
 
@@ -86,8 +86,8 @@ namespace TecBurguer.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "IdHamburguer", hamburguerIgrediente.IdHamburguer);
-            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "IdIngrediente", hamburguerIgrediente.IdIngrediente);
+            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "Nome", hamburguerIgrediente.IdHamburguer);
+            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "Nome", hamburguerIgrediente.IdIngrediente);
             return View(hamburguerIgrediente);
         }
 
@@ -123,8 +123,8 @@ namespace TecBurguer.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "IdHamburguer", hamburguerIgrediente.IdHamburguer);
-            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "IdIngrediente", hamburguerIgrediente.IdIngrediente);
+            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "Nome", hamburguerIgrediente.IdHamburguer);
+            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "Nome", hamburguerIgrediente.IdIngrediente);
             return View(hamburguerIgrediente);
         }
 

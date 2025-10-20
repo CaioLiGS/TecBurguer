@@ -25,7 +25,6 @@
 //    }
 //});
 
-
 function toggleDropdown() {
     const menu = document.getElementById("dropdownMenu");
     menu.style.display = menu.style.display === "block" ? "none" : "block";
@@ -229,15 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSection = 0;
     let isScrolling = false;
 
-   
-    if (currentSection === 3) {
-        sec.classList.add('active');
-    } else {
-        sec.classList.remove('active');
-    }
-
-    updateActiveSection();
-
     window.addEventListener('wheel', function (e) {
         if (isScrolling) return;
 
@@ -245,17 +235,24 @@ document.addEventListener('DOMContentLoaded', function () {
             currentSection++;
             isScrolling = true;
             sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            updateActiveSection();
             setTimeout(() => { isScrolling = false; }, 700);
             e.preventDefault();
         } else if (e.deltaY < 0 && currentSection > 0) {
             currentSection--;
             isScrolling = true;
             sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            updateActiveSection();
             setTimeout(() => { isScrolling = false; }, 700);
             e.preventDefault();
         }
+
+        if (currentSection == 3) {
+            console.log('apareceu')
+            document.getElementById('Cardapio').classList.add("aparecer");
+
+        } else if (document.getElementById('Cardapio').classList.contains('aparecer')) {
+            document.getElementById('Cardapio').classList.remove("aparecer");
+        }
+
     }, { passive: false });
 });
 

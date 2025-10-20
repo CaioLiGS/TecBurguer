@@ -23,9 +23,11 @@ namespace TecBurguer.Controllers
         // GET: Hamburgueres8
         public async Task<IActionResult> Index()
         {
-              return _context.Hamburguers != null ? 
-                          View(await _context.Hamburguers.ToListAsync()) :
-                          Problem("Entity set 'DBTecBurguerContext.Hamburguers'  is null.");
+            var hamburgueresComIngredientes = _context.Hamburguers
+                .Include(h => h.HamburguerIgredientes)
+                .ThenInclude(hi => hi.IdIngredienteNavigation);
+
+            return View(await hamburgueresComIngredientes.ToListAsync());
         }
 
         // GET: Hamburgueres/Details/5
@@ -34,10 +36,13 @@ namespace TecBurguer.Controllers
             if (id == null || _context.Hamburguers == null)
             {
                 return NotFound();
-            }
+            }   
 
             var hamburguer = await _context.Hamburguers
+                .Include(h => h.HamburguerIgredientes)
+                .ThenInclude(hi => hi.IdIngredienteNavigation)
                 .FirstOrDefaultAsync(m => m.IdHamburguer == id);
+
             if (hamburguer == null)
             {
                 return NotFound();
