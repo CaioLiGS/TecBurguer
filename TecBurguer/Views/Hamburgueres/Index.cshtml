@@ -2,18 +2,6 @@
 
 @{
     ViewData["Title"] = "Index";
-
-    var totalItens = Model.Count() + 1;
-    var colunas = (int)Math.Ceiling(totalItens / 2.0);
-
-    if (colunas < 3 && totalItens > 2)
-    {
-        colunas = 3;
-    }
-    else if (totalItens <= 2)
-    {
-        colunas = 2;
-    }
 }
 
 <h1 class="TituloCentral">Hambúrgueres</h1>
@@ -21,10 +9,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="~/css/Hamburgueres.css" rel="stylesheet" />
 
-
 <table class="table">
     <tbody>
-        <div class="CaixaExterna" style="--grid-columns: @colunas;">
+        <div class="CaixaExterna">
             @foreach (var item in Model) {
 
                 @if (item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario))
@@ -115,35 +102,3 @@
         </div>
     </tbody>
 </table>
-
-<style>
-    .BlocoHamburguer{
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .ForaDeEstoque {
-        position: absolute;
-        z-index: 10; 
-        
-        background-color: rgba(220, 53, 69, 0.85); 
-        backdrop-filter: blur(2px); 
-        color: white;
-        padding: 15px 0;
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        /* A MÁGICA DA ROTAÇÃO E POSICIONAMENTO */
-        /* Faz a faixa ser mais larga que o card para cobrir as diagonais */
-        width: 150%;
-        /* Posiciona o centro da faixa no centro do card */
-        top: 50%;
-        left: 50%;
-        /* Gira a faixa e a move para o lugar certo */
-        transform: translate(-50%, -50%) rotate(-45deg);
-    }
-
-</style>

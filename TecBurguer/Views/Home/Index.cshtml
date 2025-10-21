@@ -1,237 +1,134 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using TecBurguer.Areas.Identity.Data
+﻿        @using Microsoft.AspNetCore.Identity
+        @using TecBurguer.Areas.Identity.Data
 
-@model IEnumerable<TecBurguer.Models.Hamburguer>
+        @model IEnumerable<TecBurguer.Models.Hamburguer>
 
-@inject UserManager<LoginCliente> UserManager
-@inject SignInManager<LoginCliente> SignInManager
+        @inject UserManager<LoginCliente> UserManager
+        @inject SignInManager<LoginCliente> SignInManager
 
-@{
-    ViewData["Title"] = "Home Page";
-}
-
-<style>
-    main{
-        margin-top: 0;
-    }
-
-.SetaHover {
-    position: absolute;
-    top: 50%;
-    left: -30px; 
-    font-size: 30px;
-    color: white;
-    transform: translateY(-50%);
-    opacity: 0; 
-    transition: all 0.5s ease;
-    pointer-events: none;
-}
-
-.ImagemWrapper:hover .SetaHover {
-    left: 10px;  
-    opacity: 1;
-}
-</style>
-
-
-
-<div class="BannerContent" id="BannerContent">
-    @* <img class="banner" src="~/css/Imagens/Banner.png"> *@
-    <div class="conteudoBannerContent">
-
-        <div class="BannerBall1"></div>
-        <div class="BannerBall2"></div>
-
-        <div class="bannerWrapper">
-            <img class="BurgerImageBanner active" id="bannerPrincipal" src="/css/Imagens/BurguerLogo.png" alt="Hamburguer">
-        </div>
-
-        <div class="textos">
-            <h1>TEC</h1>
-            <h1>BURGER</h1>
-        </div>
-    </div>
-
-    <script>
-        // Array de imagens vindo do Razor
-        var imagens = [
-            @foreach (var item in Model)
-            {
-                    @: "@Html.DisplayFor(modelItem => item.Imagem)",
-            }
-        ];
-
-        var index = 0;
-        var bannerWrapper = document.querySelector(".bannerWrapper");
-
-        function trocarImagem() {
-            var atual = document.querySelector(".BurgerImageBanner.active");
-
-            // cria novo elemento img
-            var proxima = document.createElement("img");
-            proxima.src = imagens[index];
-            proxima.className = "BurgerImageBanner";
-            bannerWrapper.appendChild(proxima);
-
-            void proxima.offsetWidth;
-
-            proxima.classList.add("active");
-
-            if (atual) {
-                atual.classList.remove("active");
-                atual.classList.add("exit");
-                setTimeout(() => {
-                    bannerWrapper.removeChild(atual);
-                }, 1000); 
-            }
-
-            // avança índice
-            index = (index + 1) % imagens.length;
+        @{
+            ViewData["Title"] = "Home Page";
         }
 
-        // troca a cada 10s
-        setInterval(trocarImagem, 10000);
+        <style>
+            main{
+                margin-top: 0;
+            }
 
-        // inicia
-        trocarImagem();
-    </script>
+        .SetaHover {
+            position: absolute;
+            top: 50%;
+            left: -30px; 
+            font-size: 30px;
+            color: white;
+            transform: translateY(-50%);
+            opacity: 0; 
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .ImagemWrapper:hover .SetaHover {
+            left: 10px;  
+            opacity: 1;
+        }
+        </style>
+
+
+
+        <div class="BannerContent" id="BannerContent">
+            @* <img class="banner" src="~/css/Imagens/Banner.png"> *@
+            <div class="conteudoBannerContent">
+
+                <div class="BannerBall1"></div>
+                <div class="BannerBall2"></div>
+
+                <div class="bannerWrapper">
+                    <img class="BurgerImageBanner active" id="bannerPrincipal" src="/css/Imagens/BurguerLogo.png" alt="Hamburguer">
+                </div>
+
+                <div class="textos">
+                    <h1>TEC</h1>
+                    <h1>BURGER</h1>
+                </div>
+            </div>
+
+            <script>
+                // Array de imagens vindo do Razor
+                var imagens = [
+                    @foreach (var item in Model)
+                    {
+                            @: "@Html.DisplayFor(modelItem => item.Imagem)",
+                    }
+                ];
+
+                var index = 0;
+                var bannerWrapper = document.querySelector(".bannerWrapper");
+
+                function trocarImagem() {
+                    var atual = document.querySelector(".BurgerImageBanner.active");
+
+                    // cria novo elemento img
+                    var proxima = document.createElement("img");
+                    proxima.src = imagens[index];
+                    proxima.className = "BurgerImageBanner";
+                    bannerWrapper.appendChild(proxima);
+
+                    void proxima.offsetWidth;
+
+                    proxima.classList.add("active");
+
+                    if (atual) {
+                        atual.classList.remove("active");
+                        atual.classList.add("exit");
+                        setTimeout(() => {
+                            bannerWrapper.removeChild(atual);
+                        }, 1000); 
+                    }
+
+                    // avança índice
+                    index = (index + 1) % imagens.length;
+                }
+
+                // troca a cada 10s
+                setInterval(trocarImagem, 10000);
+
+                // inicia
+                trocarImagem();
+            </script>
 
     
-    <div class="BannerOverlay">
-        <a href="#OfertasDiarias" class="ScrollDown" pointer>Saiba Mais</a>
-        <a href="#OfertasDiarias" class="ScrollDown" pointer>
-            <span class="arrow"></span>
-        </a>
-    </div>
-</div>
+            <div class="BannerOverlay">
+                <a href="#OfertasDiarias" class="ScrollDown" pointer>Saiba Mais</a>
+                <a href="#OfertasDiarias" class="ScrollDown" pointer>
+                    <span class="arrow"></span>
+                </a>
+            </div>
+        </div>
 
-<div class="Content1" id="OfertasDiarias">
-    <h2 class="OfertasDiariasTitle">OFERTAS DO DIA</h2>
+        <div class="Content1" id="OfertasDiarias">
+            <h2 class="OfertasDiariasTitle">OFERTAS DO DIA</h2>
 
-</div>
+        </div>
 
-<div class="Content2" id="RecomendacoesDoChefe">
-    <h2>RECOMENDAÇÕES DO CHEFE</h2>
+        <div class="Content2" id="RecomendacoesDoChefe">
+            <h2>RECOMENDAÇÕES DO CHEFE</h2>
 
-    <div class="ConteudoRecomendacoesDoChefe">
-        @foreach (var item in Model)
-        {
-            @if (item.Categoria == "Recomendação do chefe")
-            {
-                <img src="@item.Imagem">
-                <div>
-                    <h1>@item.Nome</h1>
-                    <p>@item.Descricao</p>
-                    <ul>
-                        <li></li>
-                    </ul>
-                    @if (SignInManager.IsSignedIn(User))
+            <div class="ConteudoRecomendacoesDoChefe">
+                @foreach (var item in Model)
+                {
+                    @if (item.Categoria == "Recomendação do chefe")
                     {
-                        <a class="CartBurguer"
-                            onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
-                            <img src="~/css/Imagens/IconCart.png">
-                        </a>
-                    }
-                    else
-                    {
-                        <a class="CartBurguer" onclick="mostrarBotaoLogin()">
-                            <img src="~/css/Imagens/IconCart.png">
-                        </a>
-                    }
-
-                    <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                        asp-action="Details" asp-route-id="@item.IdHamburguer">
-                        Saiba Mais
-                    </a>
-                </div>
-            }
-        }
-        
-    </div>
-
-    @* <div class="recomendacoes-slider-container">
-        
-        <div class="recomendacoes-slides-wrapper">
-            @foreach (var item in Model)
-            {
-                <div class="recomendacoes-slide fade">
-                    <img src="@Html.DisplayFor(modelItem => item.Imagem)" 
-                         alt="@Html.DisplayFor(modelItem => item.Nome)"
-                         onerror="this.src='/css/Imagens/BurguerLogo.png'">
-                    
-                    <div class="recomendacoes-caption">
-                        <h3>@Html.DisplayFor(modelItem => item.Nome)</h3>
-                        <p>@Html.DisplayFor(modelItem => item.Descricao)</p>
-                        <a class="recomendacoes-saiba-mais-btn" asp-controller="Hamburgueres"
-                           asp-action="Details" asp-route-id="@item.IdHamburguer">
-                            Ver Detalhes
-                        </a>
-                    </div>
-                </div>
-            }
-        </div>
-
-        <div class="recomendacoes-dots">
-            @for (int i = 0; i < Model.Count(); i++)
-            {
-                <span class="recomendacoes-dot" onclick="currentRecomendacaoSlide(@i)"></span>
-            }
-        </div>
-    </div> *@
-</div>
-
-<div id="FacaLogin" class="interface">
-    <img src="~/css/Imagens/BurguerLogo.png">
-    <div>
-        <h3>Quer fazer um pedido?</h3>
-        <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
-        <div>
-            <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
-                Criar conta
-            </a>
-            <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
-               Login
-           </a>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="Content1" id="Cardapio">
-    <h2>CARDAPIO</h2>
-
-    <div id="Cardapio" class="CarrosselWrapper" style="position: relative; display: flex; align-items: center;">
-        <!-- Seta esquerda -->
-        <button class="SetaCarrossel" onclick="scrollCarrossel('esquerda')"
-                style="position: absolute; left: -40px; z-index: 10;">
-            &#8592;
-        </button>
-
-        <!-- Container de hambúrgueres -->
-        <div class="ConteudoContent1" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px;">
-            @foreach (var item in Model)
-            {
-                <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
-                    <img src=@Html.DisplayFor(modelItem => item.Imagem)
-                         class="ImagemHamburguer"
-                         onerror="this.src='/css/Imagens/BurguerLogo.png'">
-
-                    <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </h3>
-                    <p class="DescricaoHamburguer">
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </p>
-
-                    <div class="BottomInfoBurguer">
-                        <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
-
-                        <div class="BotoesDoHamburguer">
+                        <img src="@item.Imagem">
+                        <div>
+                            <h1>@item.Nome</h1>
+                            <p>@item.Descricao</p>
+                            <ul>
+                                <li></li>
+                            </ul>
                             @if (SignInManager.IsSignedIn(User))
                             {
                                 <a class="CartBurguer"
-                                   onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                    onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
                                     <img src="~/css/Imagens/IconCart.png">
                                 </a>
                             }
@@ -243,101 +140,177 @@
                             }
 
                             <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                               asp-action="Details" asp-route-id="@item.IdHamburguer">
+                                asp-action="Details" asp-route-id="@item.IdHamburguer">
                                 Saiba Mais
                             </a>
                         </div>
-                    </div>
+                    }
+                }
+        
+            </div>
+
+    
+
+
+
+        <div id="FacaLogin" class="interface">
+            <img src="~/css/Imagens/BurguerLogo.png">
+            <div>
+                <h3>Quer fazer um pedido?</h3>
+                <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
+                <div>
+                    <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
+                        Criar conta
+                    </a>
+                    <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
+                       Login
+                   </a>
+
                 </div>
-            }
+            </div>
         </div>
 
-        <!-- Seta direita -->
-        <button class="SetaCarrossel" onclick="scrollCarrossel('direita')"
-                style="position: absolute; right: -40px; z-index: 10;">
-            &#8594;
-        </button>
-    </div>
 
-        <!-- Seta direita -->
-        <button class="SetaCarrossel" onclick="scrollCarrossel('direita')" 
-                style="position: absolute; right: -40px; z-index: 10;">&#8594;</button>
-    </div>
+        <div class="Content1" id="Cardapio">
+            <h2>CARDAPIO</h2>
 
-    <a>Acesse nosso cardapio completo</a>
-</div>
+            <div id="Cardapio" class="CarrosselWrapper" style="position: relative; display: flex; align-items: center;">
+                <!-- Seta esquerda -->
+                <button class="SetaCarrossel" onclick="scrollCarrossel('esquerda')"
+                        style="position: absolute; left: -40px; z-index: 10;">
+                    &#8592;
+                </button>
 
-<script>
-    function scrollCarrossel(direcao) {
-        const container = document.querySelector('.ConteudoContent1');
-        const scrollAmount = 300; // distância de rolagem em px
-        if (direcao === 'direita') {
-            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        } else {
-            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-        }
-    }
-    let recomendacaoSlideIndex = 0; // Índice do slide atual (começa em 0)
-    let recomendacaoTimer = null; // Variável para guardar o timer
+                <!-- Container de hambúrgueres -->
+                <div class="ConteudoContent1" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px;">
+                    @foreach (var item in Model)
+                    {
+                        <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+                            <img src=@Html.DisplayFor(modelItem => item.Imagem)
+                                 class="ImagemHamburguer"
+                                 onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
-    // Função principal para mostrar os slides
-    function showRecomendacaoSlides(n) {
-        let slides = document.getElementsByClassName("recomendacoes-slide");
-        let dots = document.getElementsByClassName("recomendacoes-dot");
+                            <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                                @Html.DisplayFor(modelItem => item.Nome)
+                            </h3>
+                            <p class="DescricaoHamburguer">
+                                @Html.DisplayFor(modelItem => item.Descricao)
+                            </p>
 
-        if (slides.length === 0) return; // Não faz nada se não houver slides
+                            <div class="BottomInfoBurguer">
+                                <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
 
-        // Esconde todos os slides
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
+                                <div class="BotoesDoHamburguer">
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <a class="CartBurguer"
+                                           onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                            <img src="~/css/Imagens/IconCart.png">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                            <img src="~/css/Imagens/IconCart.png">
+                                        </a>
+                                    }
 
-        // Remove a classe "active-dot" de todas as bolinhas
-        for (let i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active-dot", "");
-        }
+                                    <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                                       asp-action="Details" asp-route-id="@item.IdHamburguer">
+                                        Saiba Mais
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
 
-        // Garante que o índice 'n' esteja dentro dos limites (0 a slides.length - 1)
-        if (n >= slides.length) { recomendacaoSlideIndex = 0; } // Volta ao primeiro
-        else if (n < 0) { recomendacaoSlideIndex = slides.length - 1; } // Vai para o último
-        else { recomendacaoSlideIndex = n; } // Usa o índice passado
+                <!-- Seta direita -->
+                <button class="SetaCarrossel" onclick="scrollCarrossel('direita')"
+                        style="position: absolute; right: -40px; z-index: 10;">
+                    &#8594;
+                </button>
+            </div>
 
-        // Mostra o slide correto e marca a bolinha como ativa
-        slides[recomendacaoSlideIndex].style.display = "block";
-        dots[recomendacaoSlideIndex].className += " active-dot";
-    }
+                <!-- Seta direita -->
+                <button class="SetaCarrossel" onclick="scrollCarrossel('direita')" 
+                        style="position: absolute; right: -40px; z-index: 10;">&#8594;</button>
+            </div>
 
-    // Função para avançar automaticamente
-    function plusRecomendacaoSlides() {
-        showRecomendacaoSlides(recomendacaoSlideIndex + 1);
-    }
+            <a>Acesse nosso cardapio completo</a>
+        </div>
 
-    // Função para clique nas bolinhas
-    function currentRecomendacaoSlide(n) {
-        clearInterval(recomendacaoTimer); // Para o timer automático
-        showRecomendacaoSlides(n); // Mostra o slide clicado (índice 0, 1, 2...)
-        startRecomendacaoTimer(); // Reinicia o timer automático
-    }
+        <script>
+            function scrollCarrossel(direcao) {
+                const container = document.querySelector('.ConteudoContent1');
+                const scrollAmount = 300; // distância de rolagem em px
+                if (direcao === 'direita') {
+                    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                } else {
+                    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                }
+            }
+            let recomendacaoSlideIndex = 0; // Índice do slide atual (começa em 0)
+            let recomendacaoTimer = null; // Variável para guardar o timer
 
-    // Função para (re)iniciar o timer
-    function startRecomendacaoTimer() {
-         // Limpa timer antigo se existir
-        if (recomendacaoTimer) {
-            clearInterval(recomendacaoTimer);
-        }
-        // Troca o slide a cada 4 segundos (4000ms)
-        recomendacaoTimer = setInterval(plusRecomendacaoSlides, 4000);
-    }
+            // Função principal para mostrar os slides
+            function showRecomendacaoSlides(n) {
+                let slides = document.getElementsByClassName("recomendacoes-slide");
+                let dots = document.getElementsByClassName("recomendacoes-dot");
 
-    // Inicia tudo quando o DOM (a página) for carregado
-    document.addEventListener("DOMContentLoaded", function() {
-        let slides = document.getElementsByClassName("recomendacoes-slide");
-        if (slides.length > 0) {
-            showRecomendacaoSlides(0); // Mostra o primeiro slide
-            startRecomendacaoTimer(); // Inicia o timer
-        }
-    });
-</script>
+                if (slides.length === 0) return; // Não faz nada se não houver slides
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="~/js/site.js"></script>
+                // Esconde todos os slides
+                for (let i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+
+                // Remove a classe "active-dot" de todas as bolinhas
+                for (let i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active-dot", "");
+                }
+
+                // Garante que o índice 'n' esteja dentro dos limites (0 a slides.length - 1)
+                if (n >= slides.length) { recomendacaoSlideIndex = 0; } // Volta ao primeiro
+                else if (n < 0) { recomendacaoSlideIndex = slides.length - 1; } // Vai para o último
+                else { recomendacaoSlideIndex = n; } // Usa o índice passado
+
+                // Mostra o slide correto e marca a bolinha como ativa
+                slides[recomendacaoSlideIndex].style.display = "block";
+                dots[recomendacaoSlideIndex].className += " active-dot";
+            }
+
+            // Função para avançar automaticamente
+            function plusRecomendacaoSlides() {
+                showRecomendacaoSlides(recomendacaoSlideIndex + 1);
+            }
+
+            // Função para clique nas bolinhas
+            function currentRecomendacaoSlide(n) {
+                clearInterval(recomendacaoTimer); // Para o timer automático
+                showRecomendacaoSlides(n); // Mostra o slide clicado (índice 0, 1, 2...)
+                startRecomendacaoTimer(); // Reinicia o timer automático
+            }
+
+            // Função para (re)iniciar o timer
+            function startRecomendacaoTimer() {
+                 // Limpa timer antigo se existir
+                if (recomendacaoTimer) {
+                    clearInterval(recomendacaoTimer);
+                }
+                // Troca o slide a cada 4 segundos (4000ms)
+                recomendacaoTimer = setInterval(plusRecomendacaoSlides, 4000);
+            }
+
+            // Inicia tudo quando o DOM (a página) for carregado
+            document.addEventListener("DOMContentLoaded", function() {
+                let slides = document.getElementsByClassName("recomendacoes-slide");
+                if (slides.length > 0) {
+                    showRecomendacaoSlides(0); // Mostra o primeiro slide
+                    startRecomendacaoTimer(); // Inicia o timer
+                }
+            });
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="~/js/site.js"></script>

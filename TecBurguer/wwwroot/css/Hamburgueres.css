@@ -14,12 +14,10 @@ body{
 }
 
 .CaixaExterna {
-    display: grid;
-    grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
-    gap: 20px;
-
-    justify-items: center;
-
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     width: 80vw;
     margin: 20px auto;
     background-color: var(--light-dark);
@@ -36,7 +34,7 @@ body{
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     overflow: hidden;
     padding: 20px;
-    width: 280px;
+    width: 260px;
     height: 480px;
     display: flex;
     flex-direction: column;
@@ -61,4 +59,70 @@ body{
 .CriarNovoItem:hover {
     color: var(--dark);
     transform: translateY(-2%);
+}
+
+.BlocoHamburguer {
+    opacity: 1;
+    transform: translateY(0);
+    width: 260px;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.ForaDeEstoque {
+    position: absolute;
+    z-index: 10;
+    background-color: rgba(220, 53, 69, 0.85);
+    backdrop-filter: blur(2px);
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 150%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.row{
+    background-color: var(--accent);
+    border-radius: 15px;
+    margin: auto;
+    padding: 10px;
+    width: 50vw;
+    margin-top: 30px;
+}
+
+.row div form {
+    width: 100%;
+    display: flex;
+}
+
+.col-md-4 {
+    width: 100%;
+}
+
+    .col-md-4 div {
+        width: 50%;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+.form-group input{
+    width: 100%;
+    border-radius: 15px;
+
+    margin-bottom: 10px;
+}
+
+.form-group img{
+    width: 50%;
+    height: 100%;
+    object-fit: cover
 }

@@ -246,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (currentSection == 3) {
-            console.log('apareceu')
             document.getElementById('Cardapio').classList.add("aparecer");
 
         } else if (document.getElementById('Cardapio').classList.contains('aparecer')) {

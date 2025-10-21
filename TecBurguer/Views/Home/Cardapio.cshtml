@@ -1,47 +1,66 @@
 ﻿@model IEnumerable<TecBurguer.Models.Hamburguer>
 @using Microsoft.AspNetCore.Identity
 @using TecBurguer.Areas.Identity.Data
-
 @inject UserManager<LoginCliente> UserManager
 @inject SignInManager<LoginCliente> SignInManager
 
-@foreach (var item in Model)
-            {
-                <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
-                    <img src=@Html.DisplayFor(modelItem => item.Imagem) 
-                         class="ImagemHamburguer" 
-                         onerror="this.src='/css/Imagens/BurguerLogo.png'">
+<style>
+    .Conteudo {
+        display: flex;
+        flex-wrap: wrap;
+        width: 80vw;;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+        margin: auto
+    }
 
-                    <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </h3>
-                    <p class="DescricaoHamburguer">
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </p>
-                    
-                    <div class="BottomInfoBurguer">
-                        <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+    .BlocoHamburguer{
+        opacity: 1;
+    }
+</style>
 
-                        <div class="BotoesDoHamburguer">
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                <a class="CartBurguer"
-                                   onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
-                                   <img src="~/css/Imagens/IconCart.png">
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="CartBurguer" onclick="mostrarBotaoLogin()">
-                                    <img src="~/css/Imagens/IconCart.png">
-                                </a>
-                            }
 
-                            <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" 
-                               asp-action="Details" asp-route-id="@item.IdHamburguer">
-                               Saiba Mais
-                            </a>
+<div class="Conteudo">
+    @foreach (var item in Model)
+                {
+                
+                        <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+                            <img src=@Html.DisplayFor(modelItem => item.Imagem) 
+                                class="ImagemHamburguer" 
+                                onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+                            <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                                @Html.DisplayFor(modelItem => item.Nome)
+                            </h3>
+                            <p class="DescricaoHamburguer">
+                                @Html.DisplayFor(modelItem => item.Descricao)
+                            </p>
+                        
+                            <div class="BottomInfoBurguer">
+                                <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+
+                                <div class="BotoesDoHamburguer">
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <a class="CartBurguer"
+                                        onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                        <img src="~/css/Imagens/IconCart.png">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                            <img src="~/css/Imagens/IconCart.png">
+                                        </a>
+                                    }
+
+                                    <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" 
+                                    asp-action="Details" asp-route-id="@item.IdHamburguer">
+                                    Saiba Mais
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            }
+                }
+</div>
