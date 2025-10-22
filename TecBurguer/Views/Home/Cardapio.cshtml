@@ -5,62 +5,108 @@
 @inject SignInManager<LoginCliente> SignInManager
 
 <style>
+
+    .TituloCategoria {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #40210f;
+        margin: 40px 0 20px;
+        text-transform: uppercase;
+        border-bottom: 3px solid #ffcc00;
+        display: inline-block;
+    }
+
+    .ContainerCategoria {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 60px;
+    }
+
+        .banner img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #f9f0dc;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+    }
+
     .Conteudo {
         display: flex;
         flex-wrap: wrap;
-        width: 80vw;;
+        width: 80vw;
         justify-content: center;
         gap: 10px;
         padding: 10px;
-        margin: auto
+        margin: auto;
     }
 
-    .BlocoHamburguer{
+    .BlocoHamburguer {
         opacity: 1;
     }
+
+
 </style>
 
-
-<div class="Conteudo">
-    @foreach (var item in Model)
-                {
-                
-                        <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
-                            <img src=@Html.DisplayFor(modelItem => item.Imagem) 
-                                class="ImagemHamburguer" 
-                                onerror="this.src='/css/Imagens/BurguerLogo.png'">
-
-                            <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                                @Html.DisplayFor(modelItem => item.Nome)
-                            </h3>
-                            <p class="DescricaoHamburguer">
-                                @Html.DisplayFor(modelItem => item.Descricao)
-                            </p>
-                        
-                            <div class="BottomInfoBurguer">
-                                <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
-
-                                <div class="BotoesDoHamburguer">
-                                    @if (SignInManager.IsSignedIn(User))
-                                    {
-                                        <a class="CartBurguer"
-                                        onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
-                                        <img src="~/css/Imagens/IconCart.png">
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a class="CartBurguer" onclick="mostrarBotaoLogin()">
-                                            <img src="~/css/Imagens/IconCart.png">
-                                        </a>
-                                    }
-
-                                    <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" 
-                                    asp-action="Details" asp-route-id="@item.IdHamburguer">
-                                    Saiba Mais
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                }
+<div class="banner">
+    <img src="~/css/Imagens/minibanner.png" alt="Sanduíche">
 </div>
+
+@foreach (var grupo in Model.GroupBy(h => h.Categoria))
+{
+    <h2 class="TituloCategoria">@grupo.Key</h2>
+
+    <div class="ContainerCategoria">
+        @foreach (var item in grupo)
+        {
+            <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+                <img src="@Html.DisplayFor(modelItem => item.Imagem)" 
+                     class="ImagemHamburguer"
+                     onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+                <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </h3>
+
+                <p class="DescricaoHamburguer">
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </p>
+
+                <div class="BottomInfoBurguer">
+                    <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">
+                        R$ @item.Preco
+                    </h4>
+
+                    <div class="BotoesDoHamburguer">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a class="CartBurguer"
+                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                <img src="~/css/Imagens/IconCart.png">
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                <img src="~/css/Imagens/IconCart.png">
+                            </a>
+                        }
+
+                        <a class="SaibaMaisHamburguer"
+                           asp-controller="Hamburgueres"
+                           asp-action="Details"
+                           asp-route-id="@item.IdHamburguer">
+                            Saiba Mais
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div> 
+}
