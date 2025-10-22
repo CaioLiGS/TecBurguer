@@ -18,7 +18,9 @@ namespace TecBurguer.Controllers
 
         public IActionResult Index()
         {
-            var hamburgueres = _context.Hamburguers.ToList();
+            var hamburgueres = _context.Hamburguers.Include(h => h.HamburguerIgredientes)       
+                    .ThenInclude(hi => hi.IdIngredienteNavigation)
+                    .ToList();
             return View(hamburgueres);
         }
 

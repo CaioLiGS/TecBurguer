@@ -111,47 +111,72 @@
         </div>
 
         <div class="Content2" id="RecomendacoesDoChefe">
-            <h2>RECOMENDAÇÕES DO CHEFE</h2>
+            <h1>RECOMENDAÇÕES DO CHEFE</h1>
 
             <div class="ConteudoRecomendacoesDoChefe">
-                @foreach (var item in Model)
-                {
-                    @if (item.Categoria == "Recomendação do chefe")
-                    {
-                        <img src="@item.Imagem">
-                        <div>
-                            <h1>@item.Nome</h1>
-                            <p>@item.Descricao</p>
-                            <ul>
-                                <li></li>
-                            </ul>
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                <a class="CartBurguer"
-                                    onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
-                                    <img src="~/css/Imagens/IconCart.png">
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="CartBurguer" onclick="mostrarBotaoLogin()">
-                                    <img src="~/css/Imagens/IconCart.png">
-                                </a>
-                            }
 
-                            <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                                asp-action="Details" asp-route-id="@item.IdHamburguer">
-                                Saiba Mais
-                            </a>
-                        </div>
+                <div class="carrossel-wrapper">
+
+                    @foreach (var item in Model)
+                    {
+                        @if (item.Categoria == "Recomendação do chefe")
+                        {
+                            <div class="item-recomendacao">
+                                <img src="@item.Imagem">
+
+                                <div class="info">
+                                    <div>
+                                        <h2 class="TituloCentral" style="font-size: 3rem; color:var(--secondary-dark)">@item.Nome</h2>
+                                        <p>@item.Descricao</p>
+                                        <h5 style="margin-top: 10px; font-weight: bold; font-size: 0.9rem; text-align: left;">Ingredientes:</h5>
+                                        <ul style="text-align: left; margin-left: 20px; font-size: 0.85rem; padding-inline-start: 25px;">
+                                            @foreach (var ingrediente in item.HamburguerIgredientes)
+                                            {
+                                                @if (ingrediente.IdIngredienteNavigation != null)
+                                                {
+                                                    <li>@ingrediente.IdIngredienteNavigation.Nome</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+
+                                    <div class="BotoesRDC">
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <a class="CartBurguer"
+                                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')"
+                                               title="Adicionar ao carrinho"
+                                                style="width: 50%;">
+                                                <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                                <span class="cart-text">Adicionar ao carrinho</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="CartBurguer" onclick="mostrarBotaoLogin()"
+                                            style="width: 50%;">
+                                                <img src="~/css/Imagens/IconCart.png">
+                                            </a>
+                                        }
+
+                                        <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                                           asp-action="Details" asp-route-id="@item.IdHamburguer"
+                                            style="width: 50%; background-color: var(--dark)">
+                                            Saiba Mais
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
-                }
-        
+                    
+                </div>
+
+                <button class="prev-slide" onclick="prevSlide()">❮</button>
+                <button class="next-slide" onclick="nextSlide()">❯</button>
             </div>
 
-    
-
-
+        </div>
 
         <div id="FacaLogin" class="interface">
             <img src="~/css/Imagens/BurguerLogo.png">
@@ -170,19 +195,10 @@
             </div>
         </div>
 
-
         <div class="Content1" id="Cardapio">
             <h2>CARDAPIO</h2>
 
-            <div id="Cardapio" class="CarrosselWrapper" style="position: relative; display: flex; align-items: center;">
-                <!-- Seta esquerda -->
-                <button class="SetaCarrossel" onclick="scrollCarrossel('esquerda')"
-                        style="position: absolute; left: -40px; z-index: 10;">
-                    &#8592;
-                </button>
-
-                <!-- Container de hambúrgueres -->
-                <div class="ConteudoContent1" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px;">
+                <div id="Cardapio" class="ConteudoContent1" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px;">
                     @foreach (var item in Model)
                     {
                         <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
@@ -225,92 +241,8 @@
                     }
                 </div>
 
-                <!-- Seta direita -->
-                <button class="SetaCarrossel" onclick="scrollCarrossel('direita')"
-                        style="position: absolute; right: -40px; z-index: 10;">
-                    &#8594;
-                </button>
-            </div>
-
-                <!-- Seta direita -->
-                <button class="SetaCarrossel" onclick="scrollCarrossel('direita')" 
-                        style="position: absolute; right: -40px; z-index: 10;">&#8594;</button>
-            </div>
-
             <a>Acesse nosso cardapio completo</a>
         </div>
-
-        <script>
-            function scrollCarrossel(direcao) {
-                const container = document.querySelector('.ConteudoContent1');
-                const scrollAmount = 300; // distância de rolagem em px
-                if (direcao === 'direita') {
-                    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                } else {
-                    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                }
-            }
-            let recomendacaoSlideIndex = 0; // Índice do slide atual (começa em 0)
-            let recomendacaoTimer = null; // Variável para guardar o timer
-
-            // Função principal para mostrar os slides
-            function showRecomendacaoSlides(n) {
-                let slides = document.getElementsByClassName("recomendacoes-slide");
-                let dots = document.getElementsByClassName("recomendacoes-dot");
-
-                if (slides.length === 0) return; // Não faz nada se não houver slides
-
-                // Esconde todos os slides
-                for (let i = 0; i < slides.length; i++) {
-                    slides[i].style.display = "none";
-                }
-
-                // Remove a classe "active-dot" de todas as bolinhas
-                for (let i = 0; i < dots.length; i++) {
-                    dots[i].className = dots[i].className.replace(" active-dot", "");
-                }
-
-                // Garante que o índice 'n' esteja dentro dos limites (0 a slides.length - 1)
-                if (n >= slides.length) { recomendacaoSlideIndex = 0; } // Volta ao primeiro
-                else if (n < 0) { recomendacaoSlideIndex = slides.length - 1; } // Vai para o último
-                else { recomendacaoSlideIndex = n; } // Usa o índice passado
-
-                // Mostra o slide correto e marca a bolinha como ativa
-                slides[recomendacaoSlideIndex].style.display = "block";
-                dots[recomendacaoSlideIndex].className += " active-dot";
-            }
-
-            // Função para avançar automaticamente
-            function plusRecomendacaoSlides() {
-                showRecomendacaoSlides(recomendacaoSlideIndex + 1);
-            }
-
-            // Função para clique nas bolinhas
-            function currentRecomendacaoSlide(n) {
-                clearInterval(recomendacaoTimer); // Para o timer automático
-                showRecomendacaoSlides(n); // Mostra o slide clicado (índice 0, 1, 2...)
-                startRecomendacaoTimer(); // Reinicia o timer automático
-            }
-
-            // Função para (re)iniciar o timer
-            function startRecomendacaoTimer() {
-                 // Limpa timer antigo se existir
-                if (recomendacaoTimer) {
-                    clearInterval(recomendacaoTimer);
-                }
-                // Troca o slide a cada 4 segundos (4000ms)
-                recomendacaoTimer = setInterval(plusRecomendacaoSlides, 4000);
-            }
-
-            // Inicia tudo quando o DOM (a página) for carregado
-            document.addEventListener("DOMContentLoaded", function() {
-                let slides = document.getElementsByClassName("recomendacoes-slide");
-                if (slides.length > 0) {
-                    showRecomendacaoSlides(0); // Mostra o primeiro slide
-                    startRecomendacaoTimer(); // Inicia o timer
-                }
-            });
-        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="~/js/site.js"></script>

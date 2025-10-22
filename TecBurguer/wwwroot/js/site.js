@@ -254,6 +254,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }, { passive: false });
 });
+/*
+    RECOMENDAÇÕES DO CHEFE
+*/
+document.addEventListener("DOMContentLoaded", () => {
+    const wrapper = document.querySelector(".carrossel-wrapper  ");
+    const slides = document.querySelectorAll(".item-recomendacao");
+    let index = 0;
+
+    if (slides.length === 0) return;
+
+    function showSlide(i) {
+        const offset = -i * 100; 
+        wrapper.style.transform = `translateX(${offset}%)`;
+    }
+
+    function nextSlide() {
+        index = (index + 1) % slides.length;
+        showSlide(index);
+    }
+    function prevSlide() {
+        index = (index - 1 + slides.length) % slides.length;
+        showSlide(index);
+    }
+
+    window.nextSlide = nextSlide;
+    window.prevSlide = prevSlide;
+
+    // mostra o primeiro
+    showSlide(index);
+
+    // troca a cada 15 segundos
+    setInterval(nextSlide, 15000);
+});
 
 
 
