@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ public class PedidosController : ControllerBase
         }
 
         var pedido = await _context.Pedidos
-            .Include(p => p.IdUsuarioNavigation) 
+            .Include(p => p.IdUsuarioNavigation)
             .FirstOrDefaultAsync(p => p.IdPedido == id);
 
         if (pedido == null)

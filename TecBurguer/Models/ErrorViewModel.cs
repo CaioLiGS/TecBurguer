@@ -1,3 +1,4 @@
+
 namespace TecBurguer.Models
 {
     public class ErrorViewModel

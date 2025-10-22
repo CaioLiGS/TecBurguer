@@ -23,4 +23,3 @@ namespace TecBurguer.Models
         public virtual ICollection<Entregador> Entregadors { get; set; }
     }
 }
-

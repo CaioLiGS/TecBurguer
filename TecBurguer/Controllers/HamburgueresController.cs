@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace TecBurguer.Controllers
             if (id == null || _context.Hamburguers == null)
             {
                 return NotFound();
-            }   
+            }
 
             var hamburguer = await _context.Hamburguers
                 .Include(h => h.HamburguerIgredientes)
@@ -162,14 +163,14 @@ namespace TecBurguer.Controllers
             {
                 _context.Hamburguers.Remove(hamburguer);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool HamburguerExists(int id)
         {
-          return (_context.Hamburguers?.Any(e => e.IdHamburguer == id)).GetValueOrDefault();
+            return (_context.Hamburguers?.Any(e => e.IdHamburguer == id)).GetValueOrDefault();
         }
     }
 }
