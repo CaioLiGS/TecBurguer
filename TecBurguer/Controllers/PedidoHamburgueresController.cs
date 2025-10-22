@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TecBurguer.Models;
@@ -19,7 +20,7 @@ public class PedidoHamburgueresController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState); 
+            return BadRequest(ModelState);
         }
 
         _context.PedidoHamburgueres.Add(pedido);

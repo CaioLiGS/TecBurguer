@@ -162,14 +162,14 @@ namespace TecBurguer.Controllers
             {
                 _context.HamburguerIgredientes.Remove(hamburguerIgrediente);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool HamburguerIgredienteExists(int id)
         {
-          return (_context.HamburguerIgredientes?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.HamburguerIgredientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

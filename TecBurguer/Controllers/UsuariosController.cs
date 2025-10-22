@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,10 +26,10 @@ namespace TecBurguer.Controllers
         [HttpGet("Listar")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-          if (_context.Usuarios == null)
-          {
-              return NotFound();
-          }
+            if (_context.Usuarios == null)
+            {
+                return NotFound();
+            }
             return await _context.Usuarios.ToListAsync();
         }
 
@@ -36,10 +37,10 @@ namespace TecBurguer.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-          if (_context.Usuarios == null)
-          {
-              return NotFound();
-          }
+            if (_context.Usuarios == null)
+            {
+                return NotFound();
+            }
             var usuario = await _context.Usuarios.FindAsync(id);
 
             if (usuario == null)
@@ -86,10 +87,10 @@ namespace TecBurguer.Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
-          if (_context.Usuarios == null)
-          {
-              return Problem("Entity set 'DBTecBurguerContext.Usuarios'  is null.");
-          }
+            if (_context.Usuarios == null)
+            {
+                return Problem("Entity set 'DBTecBurguerContext.Usuarios'  is null.");
+            }
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 

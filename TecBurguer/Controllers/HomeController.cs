@@ -28,7 +28,7 @@ namespace TecBurguer.Controllers
             var hamburgueres = _context.Hamburguers.ToList();
             return View(hamburgueres);
         }
-        
+
         public IActionResult Entregadores()
         {
             var hamburgueres = _context.Hamburguers.ToList();

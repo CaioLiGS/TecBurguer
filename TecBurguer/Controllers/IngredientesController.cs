@@ -24,9 +24,9 @@ namespace TecBurguer.Controllers
         // GET: Ingredientes
         public async Task<IActionResult> Index()
         {
-              return _context.Ingredientes != null ? 
-                          View(await _context.Ingredientes.ToListAsync()) :
-                          Problem("Entity set 'DBTecBurguerContext.Ingredientes'  is null.");
+            return _context.Ingredientes != null ?
+                        View(await _context.Ingredientes.ToListAsync()) :
+                        Problem("Entity set 'DBTecBurguerContext.Ingredientes'  is null.");
         }
 
         // GET: Ingredientes/Details/5
@@ -152,14 +152,14 @@ namespace TecBurguer.Controllers
             {
                 _context.Ingredientes.Remove(ingrediente);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool IngredienteExists(int id)
         {
-          return (_context.Ingredientes?.Any(e => e.IdIngrediente == id)).GetValueOrDefault();
+            return (_context.Ingredientes?.Any(e => e.IdIngrediente == id)).GetValueOrDefault();
         }
     }
 }
