@@ -386,6 +386,7 @@ header {
     height: 100vh;
 }
 
+
 .BlocoHamburguer {
     display: flex;
     background: var(--light);
@@ -395,30 +396,30 @@ header {
     padding: 20px;
     width: 280px;
     height: 480px;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     margin: 10px;
     background-color: var(--primary);
+
     opacity: 0;
     transform: translateY(60px);
-    transition: transform 0.8s ease-out 0.3s, opacity 0.8s ease-out 0.3s;
-    
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #Cardapio.aparecer .ConteudoContent1 .BlocoHamburguer {
     opacity: 1;
     transform: translateY(0);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: animacaoAparecer 0.8s ease-out 0.3s;
 }
 
-#Cardapio.aparecer .ConteudoContent1 .BlocoHamburguer:hover {
+.BlocoHamburguer:hover {
     transform: translateY(-6px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-.BlocoHamburguer:hover {
+#Cardapio.aparecer .ConteudoContent1 .BlocoHamburguer:hover {
     transform: translateY(-6px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
@@ -690,10 +691,10 @@ header {
     }
 }
 
-@keyframes fadeIn {
+@keyframes animacaoAparecer {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(60px);
     }
 
     to {
@@ -702,12 +703,6 @@ header {
     }
 }
 
-@media (max-width: 1080px) {
-    .Box {
-        margin: 0;
-        width: 100%;
-    }
-}
 
 @keyframes bounce {
     0%, 100% {
@@ -717,18 +712,6 @@ header {
     50% {
         transform: rotate(-45deg) translateY(-8px) translateX(8px);
     }
-}
-
-/*Subir o Hamburguer*/
-    @keyframes subir {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @keyframes floatUpDown {
@@ -744,6 +727,22 @@ header {
         transform: translateY(15px);
     }
     /* volta à posição inicial */
+}
+
+@keyframes subir{
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-6px);
+    }
+}
+
+@media (max-width: 1080px) {
+    .Box {
+        margin: 0;
+        width: 100%;
+    }
 }
 
 /*
@@ -859,7 +858,7 @@ header {
         }
 
 #Cardapio{
-    height: 80vh; 
+    height: 100%; 
     align-items: center;
 }
 
@@ -1025,6 +1024,14 @@ header {
     overflow: hidden;
 }
 
+.TituloRDC {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-bottom: 3px solid var(--accent);
+    font-size: 3rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
 .carrossel-wrapper {
     display: flex;
     transition: transform 1s ease-in-out, opacity 1s ease-in-out;
@@ -1046,19 +1053,21 @@ header {
     transition: opacity 0.5s ease;
 }
 
-    .item-recomendacao img {
-        width: 45%;
-        border-radius: 15px;
-        object-fit: contain;
-    }
-
     .item-recomendacao .info {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        background-color: var(--secondary-dark);
+        border-radius: 50px;
+        justify-content: space-between; 
         width: 40%;
         height: 100%;
         margin-right: 5%;
+        padding: 20px;
+    }
+
+    .item-recomendacao .info div p{
+        font-size: 1.25rem;
+        margin-bottom: 20px;
     }
 
 .BotoesRDC {
@@ -1067,7 +1076,7 @@ header {
     align-items: center;
     align-content: center;
     flex-wrap: nowrap;
-    height: 10%;
+    height: 50px;
     gap: 20px;
 }
 
@@ -1081,6 +1090,8 @@ header {
 
     height: 100%;
 
+    border-radius: 20px;
+
     text-decoration: none;
     cursor: pointer;
 }
@@ -1089,12 +1100,12 @@ header {
         position: absolute; 
 
         top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(0%, -50%);
         opacity: 1; 
 
-        height: 80%;
-        max-height: 25px;
+        object-fit: contain;
+
+        height: 100%;
 
         transition: transform 0.4s ease-in-out, opacity 1s ease-in-out;
     }
@@ -1130,7 +1141,8 @@ header {
     }
 
 .ConteudoRecomendacoesDoChefe img {
-    width: 45%;
+    width: 40%;
+    margin-left: 20px;
     height: auto;
     border-radius: 15px;
     object-fit: contain;

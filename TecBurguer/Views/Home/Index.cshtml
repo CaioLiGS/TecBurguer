@@ -126,10 +126,10 @@
 
                                 <div class="info">
                                     <div>
-                                        <h2 class="TituloCentral" style="font-size: 3rem; color:var(--secondary-dark)">@item.Nome</h2>
+                                        <h2 class="TituloRDC" >@item.Nome</h2>
                                         <p>@item.Descricao</p>
-                                        <h5 style="margin-top: 10px; font-weight: bold; font-size: 0.9rem; text-align: left;">Ingredientes:</h5>
-                                        <ul style="text-align: left; margin-left: 20px; font-size: 0.85rem; padding-inline-start: 25px;">
+                                        <h5 style="margin-top: 10px; font-weight: bold; font-size: 1.5rem; text-align: left;">Ingredientes:</h5>
+                                        <ul style="text-align: left; margin-left: 20px; font-size: 1.25rem; padding-inline-start: 25px;">
                                             @foreach (var ingrediente in item.HamburguerIgredientes)
                                             {
                                                 @if (ingrediente.IdIngredienteNavigation != null)
@@ -153,15 +153,18 @@
                                         }
                                         else
                                         {
-                                            <a class="CartBurguer" onclick="mostrarBotaoLogin()"
-                                            style="width: 50%;">
-                                                <img src="~/css/Imagens/IconCart.png">
-                                            </a>
+                                        <a class="CartBurguer"
+                                           onclick="mostrarBotaoLogin()')"
+                                           title="Adicionar ao carrinho"
+                                           style="width: 50%;">
+                                            <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                            <span class="cart-text">Adicionar ao carrinho</span>
+                                        </a>
                                         }
 
                                         <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
                                            asp-action="Details" asp-route-id="@item.IdHamburguer"
-                                            style="width: 50%; background-color: var(--dark)">
+                                            style="width: 50%; background-color: var(--dark); border-radius: 20px;">
                                             Saiba Mais
                                         </a>
                                     </div>
