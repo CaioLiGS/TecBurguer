@@ -24,18 +24,7 @@
         margin-bottom: 60px;
     }
 
-        .banner img {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            width: 100vw;
-            background-color: #f9f0dc;
-            box-sizing: border-box;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-    }
+    
 
     .Conteudo {
         display: flex;
@@ -53,10 +42,6 @@
 
 
 </style>
-
-<div class="banner">
-    <img src="~/css/Imagens/minibanner.png" alt="Sanduíche">
-</div>
 
 @foreach (var grupo in Model.GroupBy(h => h.Categoria))
 {
