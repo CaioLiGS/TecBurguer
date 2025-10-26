@@ -245,13 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
         }
 
-        if (currentSection == 3) {
-            document.getElementById('Cardapio').classList.add("aparecer");
-
-        } else if (document.getElementById('Cardapio').classList.contains('aparecer')) {
-            document.getElementById('Cardapio').classList.remove("aparecer");
-        }
-
     }, { passive: false });
 });
 /*
@@ -289,12 +282,127 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+/*
 
-            /*
+    HAMBURGUERES DO CARDAPIO
+
+*/
+
+document.addEventListener("DOMContentLoaded", () => {
+    const SUPABASE_URL = "https://qspldknkkndxhlvsrbbl.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcGxka25ra25keGhsdnNyYmJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NzEyMTAsImV4cCI6MjA3MTQ0NzIxMH0.MSQyhPRtNzetoM08Zgbq5-UQiQKUiAp3Uo_1qR5i6l4";
+    const STORAGE_BUCKET = "hamburgueres";
+
+    const fileInput = document.getElementById('fileInput');
+    const linkInput = document.getElementById('LinkDaImagem');
+    const imgPreview = document.getElementById('ImagemDoLink');
+    const form = document.querySelector('form');
+    const uploadLabel = document.querySelector('.UploadLabel');
+
+    let selectedFile = null;
+    let imageURL = "";
+
+    linkInput.addEventListener('input', () => {
+
+        const url = linkInput.value.trim();
+
+        if (url.startsWith('http')) {
+            imgPreview.src = url;
+            imageURL = url;
+            selectedFile = null;
+        }
+    });
+
+
+    fileInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+
+        if (file) {
+            selectedFile = file;
+            imageURL = "";
+            imgPreview.src = URL.createObjectURL(file);
+
+            linkInput.disabled = true;
+            linkInput.value = file.name;
+
+            uploadLabel.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            uploadLabel.title = "Remover arquivo selecionado";
+
+        } else {
+
+            selectedFile = null;
+            linkInput.disabled = false;
+            linkInput.value = "";
+        }
+    });
+
+    uploadLabel.addEventListener('click', e => {
+
+        if (selectedFile) {
+
+            e.preventDefault();
+
+            selectedFile = null;
+            fileInput.value = "";
+            linkInput.disabled = false;
+            linkInput.value = "";
+            imgPreview.src = "/css/Imagens/BurguerLogo.png";
+
+            uploadLabel.innerHTML = '<i class="fa-solid fa-folder-open"></i>';
+            uploadLabel.title = "Selecionar imagem do computador";
+
+        }
+    });
+
+    document.getElementById("BotaoSubmit").addEventListener('click', async e => {
+        e.preventDefault();
+
+        const preco = document.querySelector('input[name="Preco"]').value.trim();
+
+        if (isNaN(preco)) {
+            return;
+        }
+
+        if (selectedFile) {
+            const fileName = `${Date.now()}_${selectedFile.name}`;
+
+            const { data, error } = await supabase.storage
+                .from('hamburgueres')
+                .upload(fileName, selectedFile);
+
+            if (error) {
+                alert("Erro ao enviar imagem: " + error.message);
+                return;
+            }
+
+            const { data: publicURL } = supabase
+                .storage
+                .from('hamburgueres')
+                .getPublicUrl(fileName);
+
+            imageURL = publicURL.publicUrl;
+        }
+
+        linkInput.disabled = false;
+        linkInput.value = imageURL;
+
+        form.submit();
+    });
+});
+
+$("#LinkDaImagem").blur(function () {
+    const input = document.getElementById("LinkDaImagem");
+    const img = document.getElementById("ImagemDoLink");
+
+    img.src = input.value
+});
+
+/*
             
-                LOGIN E REGISTRO
+    LOGIN E REGISTRO
             
-            */
+*/
+
 
 document.getElementById('registerForm').addEventListener('submit', function (e) {
     const btn = document.getElementById('registerSubmit');

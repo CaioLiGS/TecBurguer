@@ -401,25 +401,12 @@ header {
     justify-content: space-between;
     margin: 10px;
     background-color: var(--primary);
-
-    opacity: 0;
-    transform: translateY(60px);
-
+    opacity: 1;
+    transform: translateY(0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#Cardapio.aparecer .ConteudoContent1 .BlocoHamburguer {
-    opacity: 1;
-    transform: translateY(0);
-    animation: animacaoAparecer 0.8s ease-out 0.3s;
-}
-
 .BlocoHamburguer:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-#Cardapio.aparecer .ConteudoContent1 .BlocoHamburguer:hover {
     transform: translateY(-6px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
@@ -690,19 +677,6 @@ header {
         background-position: 0 0;
     }
 }
-
-@keyframes animacaoAparecer {
-    from {
-        opacity: 0;
-        transform: translateY(60px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 
 @keyframes bounce {
     0%, 100% {
@@ -1097,16 +1071,13 @@ header {
 }
 
     .BotoesRDC .CartBurguer .cart-icon {
-        position: absolute; 
-
+        position: absolute;
         top: 50%;
         transform: translate(0%, -50%);
-        opacity: 1; 
-
+        opacity: 1;
         object-fit: contain;
-
         height: 100%;
-
+        margin-left: 0;
         transition: transform 0.4s ease-in-out, opacity 1s ease-in-out;
     }
 

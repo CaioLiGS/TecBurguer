@@ -70,6 +70,10 @@ body{
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.BlocoHamburguer img{
+    width: 100%;
+}
+
 .ForaDeEstoque {
     position: absolute;
     z-index: 10;
@@ -90,13 +94,88 @@ body{
 }
 
 .row{
-    background-color: var(--accent);
-    border-radius: 15px;
+    background-color: var(--secondary);
+    border-radius: 20px;
     margin: auto;
-    padding: 10px;
+    padding: 20px;
     width: 50vw;
+    height: 60vh;
     margin-top: 30px;
 }
+
+form{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.Inputs {
+    width: 40%;
+    height: 100%;
+}
+
+.form-group input {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.PreencherImagem {
+    display: flex;
+    border-radius: 20px;
+    border: 5px solid var(--secondary-dark);
+    padding: 10px;
+    width: 50%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.LinkEArquivo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.LinkEArquivo input{
+    border: none;
+    border-bottom: 2px solid var(--secondary-dark);
+    width: 100%;
+    background-color: #00000000;
+    border-radius: 0;
+    transition: border 0.3s ease-in-out;
+}
+
+    .PreencherImagem img {
+        width: 100%;
+        height: 80%;
+        object-fit: cover;
+    }
+
+    .LinkEArquivo input:focus {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        border-bottom: 5px solid var(--dark);
+        width: 100%;
+        background-color: #00000000;
+        border-radius: 0;
+    }
+
+.UploadLabel {
+    width: 10%;
+    cursor: pointer;
+    color: var(--secondary-dark);
+}
+
+    .UploadLabel i {
+        font-size: 1.2rem;
+        
+    }
 
 .row div form {
     width: 100%;
@@ -105,25 +184,5 @@ body{
 
 .col-md-4 {
     width: 100%;
-}
-
-    .col-md-4 div {
-        width: 50%;
-    }
-
-    .form-group {
-        width: 100%;
-    }
-
-.form-group input{
-    width: 100%;
-    border-radius: 15px;
-
-    margin-bottom: 10px;
-}
-
-.form-group img{
-    width: 50%;
     height: 100%;
-    object-fit: cover
 }
