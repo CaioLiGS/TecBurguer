@@ -66,15 +66,15 @@
                             }
                             @if (User.IsInRole("Vendedor"))
                             {
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white" asp-area="" asp-controller="Home" asp-action="PedidoVendedor">Pedidos</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn btn-primary text-white" asp-area="" asp-controller="Home" asp-action="PedidoVendedor">Pedidos</a>
+                                </li>
                             }
                         </div>
 
                         <div class="ContentRight">
                             <div class="Cart">
-                                <a style="cursor: pointer;"><img src="~/css/Imagens/IconCart.png"></a>
+                                <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Cart"><img src="~/css/Imagens/IconCart.png"></a>
                                 <p class="QuantCart"></p>
                             </div>
                             @if (SignInManager.IsSignedIn(User))

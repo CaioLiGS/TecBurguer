@@ -94,7 +94,7 @@ body{
 }
 
 .row{
-    background-color: var(--secondary);
+    background-color: var(--primary);
     border-radius: 20px;
     margin: auto;
     padding: 20px;
@@ -124,7 +124,7 @@ form{
 .PreencherImagem {
     display: flex;
     border-radius: 20px;
-    border: 5px solid var(--secondary-dark);
+    border: 5px solid var(--primary-dark);
     padding: 10px;
     width: 50%;
     height: 100%;
@@ -143,12 +143,21 @@ form{
 
 .LinkEArquivo input{
     border: none;
-    border-bottom: 2px solid var(--secondary-dark);
+    border-bottom: 2px solid var(--primary-dark);
     width: 100%;
     background-color: #00000000;
+    color: white;
     border-radius: 0;
     transition: border 0.3s ease-in-out;
 }
+
+    .LinkEArquivo input:focus{
+        color: white;
+    }
+
+    .LinkEArquivo input::-webkit-input-placeholder {
+        color: #ffffff7f;
+    }
 
     .PreencherImagem img {
         width: 100%;
@@ -160,7 +169,7 @@ form{
         border: none;
         outline: none;
         box-shadow: none;
-        border-bottom: 5px solid var(--dark);
+        border-bottom: 5px solid var(--accent);
         width: 100%;
         background-color: #00000000;
         border-radius: 0;
@@ -169,7 +178,7 @@ form{
 .UploadLabel {
     width: 10%;
     cursor: pointer;
-    color: var(--secondary-dark);
+    color: var(--primary-dark);
 }
 
     .UploadLabel i {
@@ -186,3 +195,38 @@ form{
     width: 100%;
     height: 100%;
 }
+
+.Descricao {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-height: 50px;
+    max-height: 200px;
+    border-radius: 20px;
+    overflow-y: auto;
+    resize: none;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.form-group input{
+    padding: 10px;
+}
+
+.form-group label {
+    position: absolute;
+    font-size: 0.85rem;
+    padding: 0 2px;
+    left: 5px !important;
+    top: 30%;
+    transform: none;
+    color: var(--secondary-dark);
+    transition: all 0.25s ease-in-out;
+}
+
+    .form-group input:focus .form-group label,
+    .form-group input:not(:placeholder-shown) .form-group label {
+        top: 10%;
+    }
