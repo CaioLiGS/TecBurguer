@@ -30,215 +30,154 @@ function toggleDropdown() {
     menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-// Fecha se clicar fora
+// Fecha dropdown ao clicar fora
 window.onclick = function (event) {
     if (!event.target.matches('.btn-filtrar, .btn-filtrar *')) {
-        const dropdowns = document.getElementsByClassName("dropdown-content");
-        for (let i = 0; i < dropdowns.length; i++) {
-            dropdowns[i].style.display = "none";
-        }
+        document.querySelectorAll(".dropdown-content").forEach(dropdown => {
+            dropdown.style.display = "none";
+        });
     }
-}
+};
 
 function filtrar(categoria) {
-    const secoes = document.querySelectorAll(".section");
-    secoes.forEach(secao => {
-        if (categoria === "todos") {
-            secao.style.display = "block";
-        } else if (secao.querySelector("h2").innerText.toLowerCase().includes(categoria)) {
-            secao.style.display = "block";
-        } else {
-            secao.style.display = "none";
-        }
+    document.querySelectorAll(".section").forEach(secao => {
+        const titulo = secao.querySelector("h2").innerText.toLowerCase();
+        const mostrar = categoria === "todos" || titulo.includes(categoria);
+        secao.style.display = mostrar ? "block" : "none";
     });
 }
 
 function mostrarBotaoLogin() {
-    let interface = document.querySelector(".interface");
-
-    interface.classList.add("mostrar");
-    console.log(interface.className);
+    const interfaceBox = document.querySelector(".interface");
+    interfaceBox.classList.add("mostrar");
+    console.log(interfaceBox.className);
 }
 
-function adicionarPedidosHamburgueres(IdPedido, IdHamburguer) {
-    var url = '/api/pedidohamburgueres/create';
+function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer){
+    const url = `/api/pedidohamburgueres/update/${IdPedidoHamburguer}`;
 
-    console.log(IdPedido);
-    console.log(IdHamburguer);
+    axios.get('/api/pedidohamburgueres/listar').then(response => {
+        
+        response.data.forEach(item => {
+            if (item.id == IdPedidoHamburguer){
+                const dados = {id: IdPedidoHamburguer, idPedido: item.idPedido, idHamburguer: item.idHamburguer, quantidade: item.quantidade-1};
 
-    const dados = {
-        IdPedido: IdPedido,
-        IdHamburguer: IdHamburguer,
-        quantidade: 1
-    }
-
-    axios.get('/api/pedidohamburgueres/listar').then(function (response) {
-
-        criar = true;
-
-        for (var i = 0; i < response.data.length; i++) {
-            if (IdHamburguer == response.data[i].idHamburguer) {
-
-                criar = false;
-
-                dados.id = response.data[i].id;
-                dados.quantidade = response.data[i].quantidade + 1;
-
-                axios.put(`/api/pedidohamburgueres/update/${response.data[i].id}`, dados).then(response => {
-                    console.log('Criou pedidos', response.data);
-                    
-                }).catch(error => {
-                    console.error('Erro ao adicionar pedido:', error);
-                });
-
-                break;
-
+                axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
+                    .then(res => console.log('Atualizou pedido', res.data))
+                    .catch(err => console.error('Erro ao atualizar pedido:', err));
             }
-        }
+            
+        });
+    });
+    
+}
+
+function adicionarPedidosHamburgueres(idPedido, idHamburguer) {
+    const url = '/api/pedidohamburgueres/create';
+    const dados = { IdPedido: idPedido, IdHamburguer: idHamburguer, quantidade: 1 };
+
+    axios.get('/api/pedidohamburgueres/listar').then(response => {
+        let criar = true;
+
+        response.data.forEach(item => {
+            if (idHamburguer === item.idHamburguer) {
+                criar = false;
+                dados.id = item.id;
+                dados.quantidade = item.quantidade + 1;
+
+                axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
+                    .then(res => console.log('Atualizou pedido', res.data))
+                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+            }
+        });
 
         if (criar) {
             axios.post(url, dados)
-            .then(response => {
-                console.log('Sucesso! Resposta do servidor:', response.data);
-            })
-            .catch(error => {
-                console.error('Erro ao adicionar pedido:', error);
-            });
+                .then(res => console.log('Pedido criado com sucesso:', res.data))
+                .catch(err => console.error('Erro ao criar pedido:', err));
         }
     });
-   
 }
 
-function adicionarPedidos(nome, preco, user, idHamburguer) {
+function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
+    const url = '/api/pedidos/create';
     const dados = {
-        nome: "Pedido_" + user + nome,
+        nome: `Pedido_${idUsuario}${nome}`,
         PrecoTotal: preco,
         estado: "Decidindo",
-        IdUsuario: user
+        IdUsuario: idUsuario
     };
-
-    var url = '/api/pedidos/create';
 
     axios.post(url, dados)
         .then(response => {
-            console.log('Criou pedidos', response.data);
-
-            adicionarPedidosHamburgueres(response.data.idPedido, idHamburguer)
+            console.log('Pedido criado', response.data);
+            adicionarPedidosHamburgueres(response.data.idPedido, idHamburguer);
         })
-        .catch(error => {
-            console.error('Erro ao adicionar pedido:', error);
-        });
+        .catch(err => console.error('Erro ao adicionar pedido:', err));
 }
 
-function adicionarAoCarrinho(id, emailUsuario) {
-    console.log(emailUsuario);
-    
-    const elementoNome = document.getElementById("NomeBurguer_" + id);
-    const elementoPreco = document.getElementById("PrecoBurguer_" + id);
+function adicionarAoCarrinho(idHamburguer, emailUsuario) {
+    const elementoNome = document.getElementById(`NomeBurguer_${idHamburguer}`);
+    const elementoPreco = document.getElementById(`PrecoBurguer_${idHamburguer}`);
 
-    if (!elementoNome) {
-        console.error("Elemento 'NomeBurguer_' não encontrado.");
+    if (!elementoNome || !elementoPreco) {
+        console.error("Elemento do hambúrguer não encontrado.");
         return;
     }
 
     const nome = elementoNome.textContent;
     const preco = parseFloat(elementoPreco.textContent.replace('R$', ''));
 
-    // Pegando os usuários
-    axios.get('/api/usuarios/listar').then(function (response) {
+    axios.get('/api/usuarios/listar').then(response => {
+        const usuario = response.data.find(u => u.email === emailUsuario);
+        if (!usuario) return;
 
-        console.log(response.data);
+        const idUsuario = usuario.idUsuario;
 
-        // Pegando cada usuário
-        for (var i = 0; i < response.data.length; i++) {
-            if (emailUsuario == response.data[i].email) {
+        axios.get('/api/pedidos/listar').then(response => {
+            const pedidoExistente = response.data.find(p => p.idUsuario === idUsuario);
 
-                // IdUsuairo
-                var user = response.data[i].idUsuario;
+            if (pedidoExistente) {
+                const novosDados = {
+                    idPedido: pedidoExistente.idPedido,
+                    nome: pedidoExistente.nome,
+                    precoTotal: pedidoExistente.precoTotal + preco,
+                    estado: pedidoExistente.estado,
+                    idUsuario: pedidoExistente.idUsuario
+                };
 
-                console.log(user);
+                adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
 
-                // Verificando se esse usuário já tem pedido
-                axios.get('/api/pedidos/listar').then(function (response) {
-
-                    var possui = false;
-
-                    for (var i = 0; i < response.data.length; i++) {
-
-                        console.log(response.data[i])
-
-                        if (user == response.data[i].idUsuario) {
-
-                            possui = true;
-
-                            console.log("Adicionando novo hamburguer ao pedido");
-
-                            // Variaveis do pedido
-                            var idPedido = response.data[i].idPedido;
-
-                            var precoAnterior = response.data[i].precoTotal;
-
-                            var novosDados = {
-                                idPedido: idPedido,
-                                nome: response.data[i].nome,
-                                precoTotal: precoAnterior + preco,
-                                estado: response.data[i].estado,
-                                idUsuario: response.data[i].idUsuario
-                            }
-
-                            // Adicionando ao carrinho
-                            adicionarPedidosHamburgueres(idPedido, id);
-
-                            console.log(idPedido)
-
-                            axios.put(`/api/pedidos/update/${idPedido}`, novosDados)
-                                .then(response => {
-                                    console.log('Atualizou o preço total', response.data);
-                                })
-                                .catch(error => {
-                                    console.error('Erro ao atualizar valor:', error);
-                                });
-
-                            break;
-
-                        }
-                    }
-
-                    if (!possui) {
-                        adicionarPedidos(nome, preco, user, id);
-
-                    }
-                });
-                break;
+                axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
+                    .then(res => console.log('Preço atualizado', res.data))
+                    .catch(err => console.error('Erro ao atualizar valor:', err));
+            } else {
+                adicionarPedidos(nome, preco, idUsuario, idHamburguer);
             }
-        }
-
+        });
     });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.querySelector('.BottomRightBox a');
     const outBox = document.querySelector('.OutBox');
 
     if (loginBtn && outBox) {
-        loginBtn.addEventListener('click', function (e) {
+        loginBtn.addEventListener('click', e => {
             e.preventDefault();
             outBox.classList.add('swap');
 
-            for (let i = 1; i <= 4; i++){
-                if (i == 1 || i == 3) {
-                    document.querySelector(`.Ball${i}`).classList.add('swap');
-                }
-               
-            }
+            [1, 3].forEach(i => {
+                document.querySelector(`.Ball${i}`).classList.add('swap');
+            });
 
-            // Opcional: Redireciona após a animação
             setTimeout(() => {
                 window.location.href = loginBtn.href;
             }, 800);
         });
     }
 });
+
 
 
 /*
