@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TecBurguer.Areas.Identity.Data
-@using System.Globalization // Necessário para formatar a moeda
 
 @model IEnumerable<TecBurguer.Models.Pedido>
 
@@ -25,8 +24,6 @@
             {
                 itemsDoCarrinho.Add(hamburguer);
             }
-
-            
         }
         
     }
@@ -35,6 +32,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="~/js/site.js"></script>
+<link rel="stylesheet" href="~/css/Cart.css">
 
 <style>
     /* Estilos simples para os botões de quantidade */
@@ -119,7 +117,11 @@
                                     -
                                 </button>
                                 <span class="quantity-input">@hamburguer.Quantidade</span>
-                                <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade">
+                                <button 
+                                    class="btn quantity-btn btn-increase" 
+                                    data-id="@hamburguer.Id" 
+                                    aria-label="Aumentar quantidade" 
+                                    onclick="adicionarAoCarrinho(@hamburguer.IdHamburguer, '@UserManager.GetUserName(User)')">
                                     +
                                 </button>
                             </div>
@@ -163,67 +165,52 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const cartContainer = document.getElementById("cart-items-container");
+    //document.addEventListener("DOMContentLoaded", () => {
+    //    const cartContainer = document.getElementById("cart-items-container");
 
-        if (cartContainer) {
-            cartContainer.addEventListener("click", (event) => {
-                const target = event.target;
+    //    if (cartContainer) {
+    //        cartContainer.addEventListener("click", (event) => {
+    //            const target = event.target;
 
-                // Verifica se clicou no botão de aumentar
-                if (target.classList.contains("btn-increase")) {
-                    const hamburguerId = target.dataset.id;
-                    updateCartQuantity(hamburguerId, 'increase');
-                }
+    //            if (target.classList.contains("btn-increase")) {
+    //                const hamburguerId = target.dataset.id;
+    //                updateCartQuantity(hamburguerId, 'increase');
+    //            }
 
-                // Verifica se clicou no botão de diminuir
-                if (target.classList.contains("btn-decrease")) {
-                    const hamburguerId = target.dataset.id;
-                    updateCartQuantity(hamburguerId, 'decrease');
-                }
-            });
-        }
-    });
+    //            if (target.classList.contains("btn-decrease")) {
+    //                const hamburguerId = target.dataset.id;
+    //                updateCartQuantity(hamburguerId, 'decrease');
+    //            }
+    //        });
+    //    }
+    //});
 
-    /**
-     * ATENÇÃO: Esta função assume que você criará os seguintes Endpoints (APIs)
-     * no seu controlador para lidar com a adição e remoção de itens.
-     *
-     * 1. POST /api/carrinho/adicionar/{id} - Adiciona UMA unidade do hambúrguer ao pedido.
-     * 2. POST /api/carrinho/remover/{id}   - Remove UMA unidade do hambúrguer do pedido.
-     *
-     * Essas actions devem adicionar/remover uma linha da tabela 'PedidoHamburguer'
-     * e recalcular o 'PrecoTotal' do 'Pedido'.
-     */
-    async function updateCartQuantity(hamburguerId, action) {
+    //async function updateCartQuantity(hamburguerId, action) {
 
-        // Define a URL da API baseando-se na ação
-        let url = '';
-        if (action === 'increase') {
-            // URL fictícia da sua API para ADICIONAR
-            url = `/api/carrinho/adicionar/${hamburguerId}`;
-        } else if (action === 'decrease') {
-            // URL fictícia da sua API para REMOVER
-            url = `/api/carrinho/remover/${hamburguerId}`;
-        } else {
-            return; // Ação desconhecida
-        }
+    //    // Define a URL da API baseando-se na ação
+    //    let url = '';
+    //    if (action === 'increase') {
+    //        // URL fictícia da sua API para ADICIONAR
+    //        url = `/api/carrinho/adicionar/${hamburguerId}`;
+    //    } else if (action === 'decrease') {
+    //        // URL fictícia da sua API para REMOVER
+    //        url = `/api/carrinho/remover/${hamburguerId}`;
+    //    } else {
+    //        return; // Ação desconhecida
+    //   }
 
-        try {
-            // Faz a chamada POST para o seu backend
-            const response = await axios.post(url);
+    //    try {
+    //        // Faz a chamada POST para o seu backend
+    //        const response = await axios.post(url);
 
-            if (response.status === 200 || response.status === 204) {
-                // SUCESSO!
-                // A forma mais simples e segura de atualizar o carrinho
-                // é recarregar a página. O servidor já terá os novos totais.
-                location.reload();
-            } else {
-                alert("Houve um problema ao atualizar seu carrinho.");
-            }
-        } catch (error) {
-            console.error("Erro ao atualizar o carrinho:", error);
-            alert("Erro ao se comunicar com o servidor.");
-        }
-    }
+    //        if (response.status === 200 || response.status === 204) {
+    //            location.reload();
+    //        } else {
+    //            alert("Houve um problema ao atualizar seu carrinho.");
+    //        }
+    //    } catch (error) {
+    //        console.error("Erro ao atualizar o carrinho:", error);
+    //        alert("Erro ao se comunicar com o servidor.");
+    //    }
+    //}
 </script>
