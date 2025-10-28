@@ -5,6 +5,34 @@
 @inject SignInManager<LoginCliente> SignInManager
 
 <style>
+    .BarraPesquisa {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 140px;
+        margin-bottom: 30px;
+        gap: 15px;
+    }
+
+        .BarraPesquisa input {
+            width: 360px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 2px solid #ffcc00;
+            background-color: #fffdf5;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            color: #40210f;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+            .BarraPesquisa input:focus {
+                border-color: #40210f;
+                background-color: #fff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            }
 
     .TituloCategoria {
         font-size: 1.8rem;
@@ -42,6 +70,10 @@
 
 
 </style>
+
+<div class="BarraPesquisa">
+    <input type="text" id="pesquisa" placeholder="Pesquisar hambúrguer...">
+</div>
 
 @foreach (var grupo in Model.GroupBy(h => h.Categoria))
 {
@@ -95,3 +127,14 @@
         }
     </div> 
 }
+
+<script>
+    document.getElementById('pesquisa').addEventListener('input', function () {
+        const termo = this.value.toLowerCase();
+        const hamburgueres = document.querySelectorAll('.BlocoHamburguer');
+        hamburgueres.forEach(bloco => {
+            const nome = bloco.querySelector('.TituloHamburguer').textContent.toLowerCase();
+            bloco.style.display = nome.includes(termo) ? '' : 'none';
+        });
+    });
+</script>
