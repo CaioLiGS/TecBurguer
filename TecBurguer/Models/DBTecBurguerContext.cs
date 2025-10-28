@@ -167,6 +167,8 @@ namespace TecBurguer.Models
                     .WithMany(p => p.PedidoHamburgueres)
                     .HasForeignKey(d => d.IdPedido)
                     .HasConstraintName("FK__PedidoHam__IdPed__5441852A");
+
+                entity.Property(e => e.Quantidade).HasColumnType("int");
             });
 
             modelBuilder.Entity<Usuario>(entity =>

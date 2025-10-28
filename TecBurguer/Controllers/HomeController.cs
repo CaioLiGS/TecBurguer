@@ -26,8 +26,10 @@ namespace TecBurguer.Controllers
 
         public IActionResult Cart()
         {
-            var pedidos = _context.Pedidos.Include(p => p.PedidoHamburgueres)
-                .ThenInclude(ham => ham.IdHamburguerNavigation);
+            var pedidos = _context.Pedidos
+                .Include(p => p.PedidoHamburgueres)
+                .ThenInclude(ham => ham.IdHamburguerNavigation)
+                .Include(u => u.IdUsuarioNavigation);
 
             return View(pedidos.ToList());
         }

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TecBurguer.Models;
 
@@ -28,5 +29,51 @@ public class PedidoHamburgueresController : ControllerBase
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(Create), new { id = pedido.Id }, pedido);
+    }
+
+    [HttpGet("Listar")]
+    public async Task<ActionResult<IEnumerable<PedidoHamburguer>>> GetPedidoHamburgueres()
+    {
+        if (_context.PedidoHamburgueres == null)
+        {
+            return NotFound();
+        }
+
+        return await _context.PedidoHamburgueres.ToListAsync();
+    }
+
+    [HttpPut("update/{id}")]
+    public async Task<IActionResult> PutPedidoHamburgueres(int id, PedidoHamburguer pedidoHamburguer)
+    {
+
+        if (id != pedidoHamburguer.Id)
+        {
+            return BadRequest();
+        }
+
+        _context.Entry(pedidoHamburguer).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!PedidoHamburguerExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return NoContent();
+    }
+
+    private bool PedidoHamburguerExists(int id)
+    {
+        return (_context.PedidoHamburgueres?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

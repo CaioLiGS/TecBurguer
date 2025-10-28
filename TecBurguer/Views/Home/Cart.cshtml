@@ -10,27 +10,27 @@
 @{
     ViewData["Title"] = "Carrinho de Compras";
 
-    // O seu controlador retorna uma LISTA de pedidos.
-    // Assumimos que o "Carrinho" é o PRIMEIRO pedido dessa lista.
-    // (Idealmente, o controlador filtraria pedidos com "Estado == 'Carrinho'")
     var pedido = Model.FirstOrDefault();
 
-    // Vamos agrupar os itens do pedido para obter as quantidades corretas
-    // Isso transforma a lista de associações (ex: 2x X-Bacon) em
-    // um item agrupado (X-Bacon, Qtd: 2)
     List<dynamic> itemsDoCarrinho = new List<dynamic>();
 
-    if (pedido != null)
+    foreach (var item in Model)
     {
-        itemsDoCarrinho = pedido.PedidoHamburgueres
-        .GroupBy(ph => ph.IdHamburguerNavigation) // Agrupa pelo objeto Hamburguer
-        .Select(g => new
+        if (item.IdUsuarioNavigation?.Email == UserManager.GetUserName(User))
         {
-            Hamburguer = g.Key, // O objeto Hamburguer (com Nome, Preco, Imagem)
-            Quantidade = g.Count(), // Conta quantas vezes ele aparece
-            Subtotal = g.Key.Preco * g.Count() // Calcula o subtotal para esse grupo
-        }).ToList<dynamic>();
+
+            pedido = item;
+
+            foreach (var hamburguer in item.PedidoHamburgueres)
+            {
+                itemsDoCarrinho.Add(hamburguer);
+            }
+
+            
+        }
+        
     }
+    
 }
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -87,7 +87,7 @@
             <h1 class="mb-4">Seu Carrinho</h1>
         </div>
 
-        @if (pedido == null || !itemsDoCarrinho.Any())
+        @if (!itemsDoCarrinho.Any())
         {
             <div class="col-12">
                 <div class="alert alert-info" role="alert">
@@ -99,33 +99,33 @@
         {
             <div class="col-lg-8">
                 <div id="cart-items-container" class="list-group shadow-sm">
-                    @foreach (var item in itemsDoCarrinho)
+                    @foreach (var hamburguer in itemsDoCarrinho)
                     {
                         // Formatando os preços para exibição
-                        var precoUnitario = item.Hamburguer.Preco.ToString("C", new CultureInfo("pt-BR"));
-                        var subtotalItem = item.Subtotal.ToString("C", new CultureInfo("pt-BR"));
+                        var precoUnitario = hamburguer.IdHamburguerNavigation.Preco;
+                        var subtotalItem = pedido?.PrecoTotal;
 
                         <div class="list-group-item d-flex flex-wrap align-items-center p-3">
 
-                            <img src="@(item.Hamburguer.Imagem ?? "/images/placeholder.png")" alt="@item.Hamburguer.Nome" class="item-image rounded">
+                            <img src="@(hamburguer.IdHamburguerNavigation.Imagem ?? "/images/placeholder.png")" alt="@hamburguer.IdHamburguerNavigation.Nome" class="item-image rounded">
 
                             <div class="flex-grow-1 me-3" style="min-width: 150px;">
-                                <h5 class="mb-1">@item.Hamburguer.Nome</h5>
-                                <small class="text-muted">Preço Unitário: @precoUnitario</small>
+                                <h5 class="mb-1">@hamburguer.IdHamburguerNavigation.Nome</h5>
+                                <small class="text-muted">@hamburguer.IdHamburguerNavigation.Preco</small>
                             </div>
 
                             <div class="quantity-controls my-2 me-3">
-                                <button class="btn quantity-btn btn-decrease" data-id="@item.Hamburguer.IdHamburguer" aria-label="Diminuir quantidade">
+                                <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade">
                                     -
                                 </button>
-                                <span class="quantity-input">@item.Quantidade</span>
-                                <button class="btn quantity-btn btn-increase" data-id="@item.Hamburguer.IdHamburguer" aria-label="Aumentar quantidade">
+                                <span class="quantity-input">@hamburguer.Quantidade</span>
+                                <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade">
                                     +
                                 </button>
                             </div>
 
                             <div class="ms-lg-auto" style="min-width: 100px;">
-                                <h6 class="mb-0 text-lg-end">@subtotalItem</h6>
+                                <h6 class="mb-0 text-lg-end">R$ @(hamburguer.Quantidade * hamburguer.IdHamburguerNavigation.Preco)</h6>
                             </div>
                         </div>
                     }
@@ -139,7 +139,7 @@
 
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal</span>
-                            <span id="cart-subtotal">@pedido.PrecoTotal</span>
+                            <span id="cart-subtotal">@pedido?.PrecoTotal</span>
                         </div>
 
                         <div class="d-flex justify-content-between mb-3">
@@ -151,7 +151,7 @@
 
                         <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
                             <span>Total</span>
-                            <span id="cart-total">@pedido.PrecoTotal</span>
+                            <span id="cart-total">@pedido?.PrecoTotal</span>
                         </div>
 
                         <a href="#" class="btn btn-primary w-100">Finalizar Compra</a>

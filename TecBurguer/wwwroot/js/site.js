@@ -64,21 +64,49 @@ function adicionarPedidosHamburgueres(IdPedido, IdHamburguer) {
     var url = '/api/pedidohamburgueres/create';
 
     console.log(IdPedido);
+    console.log(IdHamburguer);
 
     const dados = {
         IdPedido: IdPedido,
-        IdHamburguer: IdHamburguer
+        IdHamburguer: IdHamburguer,
+        quantidade: 1
     }
 
-    console.log(dados);
+    axios.get('/api/pedidohamburgueres/listar').then(function (response) {
 
-    axios.post(url, dados)
-        .then(response => {
-            console.log('Sucesso! Resposta do servidor:', response.data);
-        })
-        .catch(error => {
-            console.error('Erro ao adicionar pedido:', error);
-        });
+        criar = true;
+
+        for (var i = 0; i < response.data.length; i++) {
+            if (IdHamburguer == response.data[i].idHamburguer) {
+
+                criar = false;
+
+                dados.id = response.data[i].id;
+                dados.quantidade = response.data[i].quantidade + 1;
+
+                axios.put(`/api/pedidohamburgueres/update/${response.data[i].id}`, dados).then(response => {
+                    console.log('Criou pedidos', response.data);
+                    
+                }).catch(error => {
+                    console.error('Erro ao adicionar pedido:', error);
+                });
+
+                break;
+
+            }
+        }
+
+        if (criar) {
+            axios.post(url, dados)
+            .then(response => {
+                console.log('Sucesso! Resposta do servidor:', response.data);
+            })
+            .catch(error => {
+                console.error('Erro ao adicionar pedido:', error);
+            });
+        }
+    });
+   
 }
 
 function adicionarPedidos(nome, preco, user, idHamburguer) {
@@ -147,11 +175,13 @@ function adicionarAoCarrinho(id, emailUsuario) {
 
                             // Variaveis do pedido
                             var idPedido = response.data[i].idPedido;
+
                             var precoAnterior = response.data[i].precoTotal;
+
                             var novosDados = {
                                 idPedido: idPedido,
                                 nome: response.data[i].nome,
-                                precoTotal: precoAnterior + response.data[i].precoTotal,
+                                precoTotal: precoAnterior + preco,
                                 estado: response.data[i].estado,
                                 idUsuario: response.data[i].idUsuario
                             }
@@ -159,7 +189,6 @@ function adicionarAoCarrinho(id, emailUsuario) {
                             // Adicionando ao carrinho
                             adicionarPedidosHamburgueres(idPedido, id);
 
-                            
                             console.log(idPedido)
 
                             axios.put(`/api/pedidos/update/${idPedido}`, novosDados)
@@ -218,35 +247,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
 */
 
-document.addEventListener('DOMContentLoaded', function () {
-    const sections = [
-        document.getElementById('BannerContent'),
-        document.getElementById('OfertasDiarias'),
-        document.getElementById('RecomendacoesDoChefe'),
-        document.getElementById('Cardapio')
-    ];
-    let currentSection = 0;
-    let isScrolling = false;
+//document.addEventListener('DOMContentLoaded', function () {
+//    const sections = [
+//        document.getElementById('BannerContent'),
+//        document.getElementById('OfertasDiarias'),
+//        document.getElementById('RecomendacoesDoChefe'),
+//        document.getElementById('Cardapio')
+//    ];
+//    let currentSection = 0;
+//    let isScrolling = false;
 
-    window.addEventListener('wheel', function (e) {
-        if (isScrolling) return;
+//    window.addEventListener('wheel', function (e) {
+//        if (isScrolling) return;
 
-        if (e.deltaY > 0 && currentSection < sections.length - 1) {
-            currentSection++;
-            isScrolling = true;
-            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => { isScrolling = false; }, 700);
-            e.preventDefault();
-        } else if (e.deltaY < 0 && currentSection > 0) {
-            currentSection--;
-            isScrolling = true;
-            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => { isScrolling = false; }, 700);
-            e.preventDefault();
-        }
+//        if (e.deltaY > 0 && currentSection < sections.length - 1) {
+//            currentSection++;
+//            isScrolling = true;
+//            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
+//            setTimeout(() => { isScrolling = false; }, 700);
+//            e.preventDefault();
+//        } else if (e.deltaY < 0 && currentSection > 0) {
+//            currentSection--;
+//            isScrolling = true;
+//            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
+//            setTimeout(() => { isScrolling = false; }, 700);
+//            e.preventDefault();
+//        }
 
-    }, { passive: false });
-});
+//    }, { passive: false });
+//});
 /*
     RECOMENDAÇÕES DO CHEFE
 */

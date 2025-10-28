@@ -11,6 +11,8 @@ namespace TecBurguer.Models
         public int? IdHamburguer { get; set; }
         public int? IdPedido { get; set; }
 
+        public int? Quantidade { get; set; }
+
         public virtual Hamburguer? IdHamburguerNavigation { get; set; }
         public virtual Pedido? IdPedidoNavigation { get; set; }
     }
