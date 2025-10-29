@@ -62,9 +62,16 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer){
             if (item.id == IdPedidoHamburguer){
                 const dados = {id: IdPedidoHamburguer, idPedido: item.idPedido, idHamburguer: item.idHamburguer, quantidade: item.quantidade-1};
 
-                axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
+                if (dados.quantidade <= 0){
+                    axios.delete(`/api/pedidohamburgueres/delete/${item.id}`)
+                    .then(res => console.log('Hamburguer removido', res.data))
+                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+                }
+                else{
+                    axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
                     .then(res => console.log('Atualizou pedido', res.data))
                     .catch(err => console.error('Erro ao atualizar pedido:', err));
+                }
             }
             
         });
