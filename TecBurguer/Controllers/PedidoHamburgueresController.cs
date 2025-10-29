@@ -76,4 +76,21 @@ public class PedidoHamburgueresController : ControllerBase
     {
         return (_context.PedidoHamburgueres?.Any(e => e.Id == id)).GetValueOrDefault();
     }
+
+    [HttpDelete("delete/{id}")]
+    public async Task<IActionResult> DeletePedidoHamburguer(int id)
+    {
+        var pedidoHamburguer = await _context.PedidoHamburgueres.FindAsync(id);
+    
+        if (pedidoHamburguer == null)
+        {
+            return NotFound();
+        }
+    
+        _context.PedidoHamburgueres.Remove(pedidoHamburguer);
+        await _context.SaveChangesAsync();
+    
+        return NoContent();
+    }
+
 }
