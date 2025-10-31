@@ -5,7 +5,7 @@
     --secondary: #81B29A; /* verde oliva */
     --secondary-dark: #6d9b85;
     --accent: #F2CC8F; /* bege areia */
-    --dark: #3D405B; /* marrom cafÈ */
+    --dark: #3D405B; /* marrom caf√© */
     --light: #FAF3E0; /* branco quente */
 }
 
@@ -239,7 +239,7 @@ header {
 
     .BurgerImageBanner.active {
         opacity: 1;
-        transform: translateX(0); /* posiÁ„o normal */
+        transform: translateX(0); /* posi√ß√£o normal */
         z-index: 2;
     }
 
@@ -534,7 +534,7 @@ header {
 
 /*
 
-       TELA DE CRIA«√O DE HAMBURUGUERES
+       TELA DE CRIA√á√ÉO DE HAMBURUGUERES
 
 */
 
@@ -558,7 +558,7 @@ header {
 }
 
 /*
-    FaÁa Login Tela
+    Fa√ßa Login Tela
 */
 
 .interface{
@@ -665,7 +665,7 @@ header {
 
 
 /*
-    ANIMA«’ES
+    ANIMA√á√ïES
 */
 
 @keyframes MoveBackground {
@@ -700,7 +700,7 @@ header {
     100% {
         transform: translateY(15px);
     }
-    /* volta ‡ posiÁ„o inicial */
+    /* volta √† posi√ß√£o inicial */
 }
 
 @keyframes subir{
@@ -720,7 +720,7 @@ header {
 }
 
 /*
-    BOT’ES GERAIS
+    BOT√ïES GERAIS
 */
 
 
@@ -782,8 +782,8 @@ header {
 }
 
 #profile i {
-    font-size: 24px; /* Tamanho do Ìcone */
-    margin-right: 8px; /* EspaÁo entre o Ìcone e o texto */
+    font-size: 24px; /* Tamanho do √≠cone */
+    margin-right: 8px; /* Espa√ßo entre o √≠cone e o texto */
 }
 
 #profile {
@@ -981,7 +981,7 @@ header {
 
 /*
 
-    RECOMENDA«’ES DO CHEFE
+    RECOMENDA√á√ïES DO CHEFE
 
 */
 
@@ -1140,4 +1140,117 @@ header {
     right: 10px;
 }
 
+/* --- RESPONSIVIDADE GERAL --- */
+
+/* Remove barra lateral causada por 100vw */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* Para tablets (largura at√© 1024px) */
+@media (max-width: 1024px) {
+
+    header nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ConteudoRecomendacoesDoChefe {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .TituloCentral {
+        font-size: 1.8rem;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+/* Para celulares (largura at√© 768px) */
+@media (max-width: 768px) {
+
+    /* Cabe√ßalho e menu */
+    header nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .TituloCentral {
+        font-size: 1.5rem;
+    }
+
+    /* Se√ß√µes principais empilham */
+    .ConteudoRecomendacoesDoChefe,
+    .ConteudoCardapio {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .HamburguerItem img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    /* Texto e bot√µes centralizados */
+    .Descricao, .Botao, .TextoCentral {
+        text-align: center;
+    }
+
+    .Botao button {
+        width: 80%;
+        max-width: 300px;
+        font-size: 1rem;
+    }
+
+    /* Rodap√© */
+    footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 10px;
+    }
+}
+
+/* Para celulares pequenos (at√© 480px) */
+@media (max-width: 480px) {
+
+    .TituloCentral {
+        font-size: 1.2rem;
+    }
+
+    .ConteudoRecomendacoesDoChefe,
+    .ConteudoCardapio {
+        gap: 10px;
+    }
+
+    .Botao button {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+
+    footer p {
+        font-size: 0.8rem;
+    }
+}
 
