@@ -256,6 +256,24 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(nextSlide, 15000);
 });
 
+/*
+    CARRINHO
+*/
+function FinalizarCompra(userName, pedido){
+
+    
+   axios.get('/api/usuarios/listar').then(response => {
+       const usuarioExistente = response.data.find(p => p.Email === userName);
+
+        if (usuarioExistente) {
+            if (usuario.Cep == null){
+                    document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
+                }else{
+                    pedido.Estado = "Cozinhando";
+                }
+        }
+  });
+}
 
 /*
 
@@ -360,8 +378,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         linkInput.disabled = false;
         linkInput.value = imageURL;
-
-        form.submit();
     });
 });
 
