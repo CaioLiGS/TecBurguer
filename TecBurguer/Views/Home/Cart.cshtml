@@ -18,16 +18,14 @@
         if (item.IdUsuarioNavigation?.Email == UserManager.GetUserName(User))
         {
 
-            pedido = item;
-
             foreach (var hamburguer in item.PedidoHamburgueres)
             {
-                itemsDoCarrinho.Add(hamburguer);
+                if (item.Estado == "Decidindo"){
+                    itemsDoCarrinho.Add(hamburguer);
+                }
             }
         }
-        
     }
-    
 }
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -113,7 +111,7 @@
                             </div>
 
                             <div class="quantity-controls my-2 me-3">
-                                <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade">
+                                <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade" onclick="RemoverQuantidadeHamburguerPedido(@hamburguer.IdHamburguer)">
                                     -
                                 </button>
                                 <span class="quantity-input">@hamburguer.Quantidade</span>
@@ -156,7 +154,7 @@
                             <span id="cart-total">@pedido?.PrecoTotal</span>
                         </div>
 
-                        <a href="#" class="btn btn-primary w-100">Finalizar Compra</a>
+                        <a href="#" class="btn btn-primary w-100" onclick="FinalizarCompra()">Finalizar Compra</a>
                     </div>
                 </div>
             </div>
