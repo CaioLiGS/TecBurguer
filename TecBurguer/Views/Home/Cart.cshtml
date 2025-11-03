@@ -54,7 +54,7 @@
                             </div>
 
                             <div class="quantity-controls my-2 me-3" role="group" aria-label="Controles de quantidade">
-                                <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade" onclick="RemoverQuantidadeHamburguerPedido(@hamburguer.Id)">-</button>
+                                <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade" onclick="RemoverQuantidadeHamburguerPedido(@hamburguer.Id, @hamburguer.IdHamburguerNavigation.Preco)">-</button>
                                 <span class="quantity-input" id="qty_@hamburguer.Id" aria-live="polite">@hamburguer.Quantidade</span>
                                 <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade" onclick="adicionarAoCarrinho('@hamburguer.IdHamburguerNavigation.Nome',@hamburguer.IdHamburguerNavigation.Preco,'@hamburguer.IdHamburguer','@UserManager.GetUserName(User)')">+</button>
                             </div>

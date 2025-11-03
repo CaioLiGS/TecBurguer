@@ -78,8 +78,6 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
                     .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
 
-                location.reload();
-
                 axios.get('/api/pedidos/listar').then(response => {
                     const pedidoExistente = response.data.find(p => p.idPedido === item.idPedido);
 
@@ -95,8 +93,12 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
                         axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
                             .then(res => console.log('Preço atualizado', res.data))
                             .catch(err => console.error('Erro ao atualizar valor:', err));
+
+                        location.reload();
                     }
                 });
+
+                
             }
             
         });
