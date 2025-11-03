@@ -39,10 +39,7 @@ public class PedidoHamburgueresController : ControllerBase
             return NotFound();
         }
 
-        var PedidoHamburgueres = _context.PedidoHamburgueres
-            .Include(h => h.IdHamburguerNavigation);
-
-        return await PedidoHamburgueres.ToListAsync();
+        return await _context.PedidoHamburgueres.ToListAsync();
     }
 
     [HttpPut("update/{id}")]
