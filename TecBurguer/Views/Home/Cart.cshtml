@@ -8,19 +8,15 @@
 
 @{
     ViewData["Title"] = "Carrinho de Compras";
-
     var pedido = Model.FirstOrDefault();
-
     List<dynamic> itemsDoCarrinho = new List<dynamic>();
-
     foreach (var item in Model)
     {
         if (item.IdUsuarioNavigation?.Email == UserManager.GetUserName(User))
         {
-
             foreach (var hamburguer in item.PedidoHamburgueres)
             {
-                if (item.Estado == "Decidindo"){
+                if (item.Estado == "Decidindo") {
                     itemsDoCarrinho.Add(hamburguer);
                 }
             }
@@ -29,53 +25,7 @@
 }
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="~/js/site.js"></script>
 <link rel="stylesheet" href="~/css/Cart.css">
-
-<style>
-    /* Estilos simples para os botões de quantidade */
-    .quantity-controls {
-        display: flex;
-        align-items: center;
-    }
-
-    .quantity-input {
-        width: 50px;
-        text-align: center;
-        border: 1px solid #ccc;
-        border-left: none;
-        border-right: none;
-        padding: 0.375rem 0.5rem;
-    }
-
-    .quantity-btn {
-        border: 1px solid #ccc;
-        background-color: #f8f9fa;
-        color: #333;
-        padding: 0.375rem 0.75rem;
-    }
-
-        .quantity-btn:hover {
-            background-color: #e2e6ea;
-        }
-
-    .btn-decrease {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .btn-increase {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    .item-image {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        margin-right: 1.5rem;
-    }
-</style>
 
 <div class="container my-5">
     <div class="row">
@@ -86,9 +36,7 @@
         @if (!itemsDoCarrinho.Any())
         {
             <div class="col-12">
-                <div class="alert alert-info" role="alert">
-                    Seu carrinho está vazio.
-                </div>
+                <div class="alert alert-info" role="alert">Seu carrinho está vazio.</div>
             </div>
         }
         else
@@ -97,31 +45,18 @@
                 <div id="cart-items-container" class="list-group shadow-sm">
                     @foreach (var hamburguer in itemsDoCarrinho)
                     {
-                        // Formatando os preços para exibição
                         var precoUnitario = hamburguer.IdHamburguerNavigation.Preco;
-                        var subtotalItem = pedido?.PrecoTotal;
-
                         <div class="list-group-item d-flex flex-wrap align-items-center p-3">
-
                             <img src="@(hamburguer.IdHamburguerNavigation.Imagem ?? "/images/placeholder.png")" alt="@hamburguer.IdHamburguerNavigation.Nome" class="item-image rounded">
-
                             <div class="flex-grow-1 me-3" style="min-width: 150px;">
                                 <h5 class="mb-1">@hamburguer.IdHamburguerNavigation.Nome</h5>
-                                <small class="text-muted">@hamburguer.IdHamburguerNavigation.Preco</small>
+                                <small class="text-muted">R$ @hamburguer.IdHamburguerNavigation.Preco</small>
                             </div>
 
-                            <div class="quantity-controls my-2 me-3">
-                                <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade" onclick="RemoverQuantidadeHamburguerPedido(@hamburguer.Id)">
-                                    -
-                                </button>
-                                <span class="quantity-input">@hamburguer.Quantidade</span>
-                                <button 
-                                    class="btn quantity-btn btn-increase" 
-                                    data-id="@hamburguer.Id" 
-                                    aria-label="Aumentar quantidade" 
-                                    onclick="adicionarAoCarrinho(@hamburguer.IdHamburguer, '@UserManager.GetUserName(User)')">
-                                    +
-                                </button>
+                            <div class="quantity-controls my-2 me-3" role="group" aria-label="Controles de quantidade">
+                                <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade" onclick="RemoverQuantidadeHamburguerPedido(@hamburguer.Id)">-</button>
+                                <span class="quantity-input" aria-live="polite">@hamburguer.Quantidade</span>
+                                <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade" onclick="adicionarAoCarrinho(@hamburguer.IdHamburguer, @System.Text.Json.JsonSerializer.Serialize(UserManager.GetUserName(User) ?? ""))">+</button>
                             </div>
 
                             <div class="ms-lg-auto" style="min-width: 100px;">
@@ -154,7 +89,16 @@
                             <span id="cart-total">@pedido?.PrecoTotal</span>
                         </div>
 
-                        <a href="#" class="btn btn-primary w-100" onclick="FinalizarCompra()">Finalizar Compra</a>
+                        <!-- Botão Finalizar dentro do resumo (chamada inline segura) -->
+                        <button id="finalizarPedidoBtnInline" type="button" class="btn btn-primary w-100"
+                                onclick="FinalizarCompra(@UserManager.GetUserName(User), @pedido)">
+                            Finalizar Compra
+                        </button>
+
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0">
+                        <!-- Mantive card-footer (pode ficar vazio ou conter info adicional) -->
                     </div>
                 </div>
             </div>
@@ -162,53 +106,55 @@
     </div>
 </div>
 
-<script>
-    //document.addEventListener("DOMContentLoaded", () => {
-    //    const cartContainer = document.getElementById("cart-items-container");
+<!-- Modal Bootstrap para CEP -->
+<div class="modal fade" id="cepModal" tabindex="-1" aria-labelledby="cepModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cepModalLabel">Finalizar Pedido - Informe seu CEP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Por favor, informe o CEP para prosseguir com a finalização do pedido.</p>
+        <div class="mb-3">
+            <label for="cepInput" class="form-label">CEP</label>
+            <input type="text" class="form-control" id="cepInput" placeholder="Ex: 01234567" maxlength="9" inputmode="numeric" pattern="\d*">
+            <div id="cepError" class="text-danger mt-2" style="display:block;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="ConfirmarFinalizacao()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    //    if (cartContainer) {
-    //        cartContainer.addEventListener("click", (event) => {
-    //            const target = event.target;
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            // garante que exista valor seguro do email no JS
+            window.__finalizarUserEmail = @System.Text.Json.JsonSerializer.Serialize(UserManager.GetUserName(User) ?? "");
 
-    //            if (target.classList.contains("btn-increase")) {
-    //                const hamburguerId = target.dataset.id;
-    //                updateCartQuantity(hamburguerId, 'increase');
-    //            }
+            // anexo redundante (fallback) caso queira usar evento em vez de onclick inline
+            function attach() {
+                const btn = document.getElementById('finalizarPedidoBtn');
+                if (!btn) return;
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (typeof FinalizarCompra === 'function') {
+                        FinalizarCompra(window.__finalizarUserEmail);
+                    } else {
+                        const modalEl = document.getElementById('cepModal');
+                        if (modalEl && window.bootstrap) new bootstrap.Modal(modalEl).show();
+                        else alert('Função de finalizar indisponível. Verifique console.');
+                    }
+                });
+            }
 
-    //            if (target.classList.contains("btn-decrease")) {
-    //                const hamburguerId = target.dataset.id;
-    //                updateCartQuantity(hamburguerId, 'decrease');
-    //            }
-    //        });
-    //    }
-    //});
-
-    //async function updateCartQuantity(hamburguerId, action) {
-
-    //    // Define a URL da API baseando-se na ação
-    //    let url = '';
-    //    if (action === 'increase') {
-    //        // URL fictícia da sua API para ADICIONAR
-    //        url = `/api/carrinho/adicionar/${hamburguerId}`;
-    //    } else if (action === 'decrease') {
-    //        // URL fictícia da sua API para REMOVER
-    //        url = `/api/carrinho/remover/${hamburguerId}`;
-    //    } else {
-    //        return; // Ação desconhecida
-    //   }
-
-    //    try {
-    //        // Faz a chamada POST para o seu backend
-    //        const response = await axios.post(url);
-
-    //        if (response.status === 200 || response.status === 204) {
-    //            location.reload();
-    //        } else {
-    //            alert("Houve um problema ao atualizar seu carrinho.");
-    //        }
-    //    } catch (error) {
-    //        console.error("Erro ao atualizar o carrinho:", error);
-    //        alert("Erro ao se comunicar com o servidor.");
-    //    }
-    //}
-</script>
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach);
+            else attach();
+        })();
+    </script>
+}
