@@ -15,25 +15,23 @@
                 margin-top: 0;
             }
 
-        .SetaHover {
-            position: absolute;
-            top: 50%;
-            left: -30px; 
-            font-size: 30px;
-            color: white;
-            transform: translateY(-50%);
-            opacity: 0; 
-            transition: all 0.5s ease;
-            pointer-events: none;
-        }
+            .SetaHover {
+                position: absolute;
+                top: 50%;
+                left: -30px; 
+                font-size: 30px;
+                color: white;
+                transform: translateY(-50%);
+                opacity: 0; 
+                transition: all 0.5s ease;
+                pointer-events: none;
+            }
 
-        .ImagemWrapper:hover .SetaHover {
-            left: 10px;  
-            opacity: 1;
-        }
+            .ImagemWrapper:hover .SetaHover {
+                left: 10px;  
+                opacity: 1;
+            }
         </style>
-
-
 
         <div class="BannerContent" id="BannerContent">
             @* <img class="banner" src="~/css/Imagens/Banner.png"> *@
@@ -144,7 +142,7 @@
                                         @if (SignInManager.IsSignedIn(User))
                                         {
                                             <a class="CartBurguer"
-                                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')"
+                                               onclick="adicionarAoCarrinho(@item.Nome, @item.Preco, @item.IdHamburguer, '@UserManager.GetUserName(User)')"
                                                title="Adicionar ao carrinho"
                                                 style="width: 50%;">
                                                 <img class="cart-icon" src="~/css/Imagens/IconCart.png">
@@ -153,13 +151,13 @@
                                         }
                                         else
                                         {
-                                        <a class="CartBurguer"
-                                           onclick="mostrarBotaoLogin()')"
-                                           title="Adicionar ao carrinho"
-                                           style="width: 50%;">
-                                            <img class="cart-icon" src="~/css/Imagens/IconCart.png">
-                                            <span class="cart-text">Adicionar ao carrinho</span>
-                                        </a>
+                                            <a class="CartBurguer"
+                                               onclick="mostrarBotaoLogin()"
+                                               title="Adicionar ao carrinho"
+                                               style="width: 50%;">
+                                                <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                                <span class="cart-text">Adicionar ao carrinho</span>
+                                            </a>
                                         }
 
                                         <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
@@ -223,7 +221,7 @@
                                     @if (SignInManager.IsSignedIn(User))
                                     {
                                         <a class="CartBurguer"
-                                           onclick="adicionarAoCarrinho(@item.Nome, @item.Preco, @item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                           onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
                                             <img src="~/css/Imagens/IconCart.png">
                                         </a>
                                     }
