@@ -78,6 +78,8 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
                     .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
 
+                location.reload();
+
                 axios.get('/api/pedidos/listar').then(response => {
                     const pedidoExistente = response.data.find(p => p.idPedido === item.idPedido);
 
@@ -146,17 +148,7 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
         .catch(err => console.error('Erro ao adicionar pedido:', err));
 }
 
-function adicionarAoCarrinho(idHamburguer, emailUsuario) {
-    const elementoNome = document.getElementById(`NomeBurguer_${idHamburguer}`);
-    const elementoPreco = document.getElementById(`PrecoBurguer_${idHamburguer}`);
-
-    if (!elementoNome || !elementoPreco) {
-        console.error("Elemento do hambúrguer não encontrado.");
-        return;
-    }
-
-    const nome = elementoNome.textContent;
-    const preco = parseFloat(elementoPreco.textContent.replace('R$', ''));
+function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario) {
 
     axios.get('/api/usuarios/listar').then(response => {
         const usuario = response.data.find(u => u.email === emailUsuario);
@@ -283,10 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
     CARRINHO
 */
 function FinalizarCompra(userName, pedido){
-
-    
-   axios.get('/api/usuarios/listar').then(response => {
-       const usuarioExistente = response.data.find(p => p.Email === userName);
+    axios.get('/api/usuarios/listar').then(response => {
+        const usuarioExistente = response.data.find(p => p.Email === userName);
 
         if (usuarioExistente) {
             if (usuario.Cep == null){
@@ -295,7 +285,7 @@ function FinalizarCompra(userName, pedido){
                 pedido.Estado = "Cozinhando";
             }
         }
-  });
+    });
 }
 
 /*

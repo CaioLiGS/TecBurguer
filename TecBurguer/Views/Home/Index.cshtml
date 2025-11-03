@@ -223,7 +223,7 @@
                                     @if (SignInManager.IsSignedIn(User))
                                     {
                                         <a class="CartBurguer"
-                                           onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                           onclick="adicionarAoCarrinho(@item.Nome, @item.Preco, @item.IdHamburguer, '@UserManager.GetUserName(User)')">
                                             <img src="~/css/Imagens/IconCart.png">
                                         </a>
                                     }
