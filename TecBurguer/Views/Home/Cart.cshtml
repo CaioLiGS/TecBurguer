@@ -55,12 +55,12 @@
 
                             <div class="quantity-controls my-2 me-3" role="group" aria-label="Controles de quantidade">
                                 <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade" onclick="RemoverQuantidadeHamburguerPedido(@hamburguer.Id)">-</button>
-                                <span class="quantity-input" aria-live="polite">@hamburguer.Quantidade</span>
-                                <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade" onclick="adicionarAoCarrinho(@hamburguer.IdHamburguer, @System.Text.Json.JsonSerializer.Serialize(UserManager.GetUserName(User) ?? ""))">+</button>
+                                <span class="quantity-input" id="qty_@hamburguer.Id" aria-live="polite">@hamburguer.Quantidade</span>
+                                <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade" onclick="adicionarAoCarrinho('@hamburguer.IdHamburguerNavigation.Nome',@hamburguer.IdHamburguerNavigation.Preco,'@hamburguer.IdHamburguer','@UserManager.GetUserName(User)')">+</button>
                             </div>
 
                             <div class="ms-lg-auto" style="min-width: 100px;">
-                                <h6 class="mb-0 text-lg-end">R$ @(hamburguer.Quantidade * hamburguer.IdHamburguerNavigation.Preco)</h6>
+                                <h6 class="mb-0 text-lg-end" id="itemSubtotal_@hamburguer.Id">R$ @(hamburguer.Quantidade * precoUnitario)</h6>
                             </div>
                         </div>
                     }
@@ -74,7 +74,7 @@
 
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal</span>
-                            <span id="cart-subtotal">@pedido?.PrecoTotal</span>
+                            <span id="cart-subtotal">R$ @pedido?.PrecoTotal</span>
                         </div>
 
                         <div class="d-flex justify-content-between mb-3">
@@ -86,12 +86,12 @@
 
                         <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
                             <span>Total</span>
-                            <span id="cart-total">@pedido?.PrecoTotal</span>
+                            <span id="cart-total">R$ @pedido?.PrecoTotal</span>
                         </div>
 
                         <!-- Botão Finalizar dentro do resumo (chamada inline segura) -->
                         <button id="finalizarPedidoBtnInline" type="button" class="btn btn-primary w-100"
-                                onclick="FinalizarCompra(@UserManager.GetUserName(User), @pedido)">
+                                onclick="FinalizarCompra(@UserManager.GetUserName(User), @pedido)" style="display: block;">
                             Finalizar Compra
                         </button>
 
