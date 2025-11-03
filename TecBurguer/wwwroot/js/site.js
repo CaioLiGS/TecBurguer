@@ -53,14 +53,19 @@ function mostrarBotaoLogin() {
     console.log(interfaceBox.className);
 }
 
-function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer){
+function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
     const url = `/api/pedidohamburgueres/update/${IdPedidoHamburguer}`;
 
     axios.get('/api/pedidohamburgueres/listar').then(response => {
         
         response.data.forEach(item => {
             if (item.id == IdPedidoHamburguer){
-                const dados = {id: IdPedidoHamburguer, idPedido: item.idPedido, idHamburguer: item.idHamburguer, quantidade: item.quantidade-1};
+                const dados = {
+                    id: IdPedidoHamburguer,
+                    idPedido: item.idPedido,
+                    idHamburguer: item.idHamburguer,
+                    quantidade: item.quantidade - 1
+                };
 
                 if (dados.quantidade <= 0){
                     axios.delete(`/api/pedidohamburgueres/delete/${item.id}`)
@@ -72,6 +77,24 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer){
                     .then(res => console.log('Atualizou pedido', res.data))
                     .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
+
+                axios.get('/api/pedidos/listar').then(response => {
+                    const pedidoExistente = response.data.find(p => p.idPedido === item.idPedido);
+
+                    if (pedidoExistente) {
+                        const novosDados = {
+                            idPedido: pedidoExistente.idPedido,
+                            nome: pedidoExistente.nome,
+                            precoTotal: pedidoExistente.precoTotal - preco,
+                            estado: pedidoExistente.estado,
+                            idUsuario: pedidoExistente.idUsuario
+                        };
+
+                        axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
+                            .then(res => console.log('Preço atualizado', res.data))
+                            .catch(err => console.error('Erro ao atualizar valor:', err));
+                    }
+                });
             }
             
         });
@@ -267,10 +290,10 @@ function FinalizarCompra(userName, pedido){
 
         if (usuarioExistente) {
             if (usuario.Cep == null){
-                    document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
-                }else{
-                    pedido.Estado = "Cozinhando";
-                }
+                document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
+            }else{
+                pedido.Estado = "Cozinhando";
+            }
         }
   });
 }
