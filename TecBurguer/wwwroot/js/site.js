@@ -112,7 +112,7 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer) {
         let criar = true;
 
         response.data.forEach(item => {
-            if (idHamburguer === item.idHamburguer) {
+            if (idHamburguer == item.idHamburguer) {
                 criar = false;
                 dados.id = item.id;
                 dados.quantidade = item.quantidade + 1;
@@ -152,6 +152,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario) {
 
     axios.get('/api/usuarios/listar').then(response => {
         const usuario = response.data.find(u => u.email === emailUsuario);
+
         if (!usuario) return;
 
         const idUsuario = usuario.idUsuario;
