@@ -91,10 +91,9 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
                         };
 
                         axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
-                            .then(res => console.log('Preço atualizado', res.data))
+                            .then(res => location.reload())
                             .catch(err => console.error('Erro ao atualizar valor:', err));
 
-                        location.reload();
                     }
                 });
 
@@ -277,15 +276,25 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
-function FinalizarCompra(userName, pedido){
+function FinalizarCompra(pedido){
     axios.get('/api/usuarios/listar').then(response => {
-        const usuarioExistente = response.data.find(p => p.Email === userName);
+        const usuarioExistente = response.data.find(p => pedido.IdUsuario == p.IdUsuario);
 
         if (usuarioExistente) {
             if (usuario.Cep == null){
                 document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
             }else{
-                pedido.Estado = "Cozinhando";
+                const novosDados = {
+                    idPedido: pedido.IdPedido,
+                    nome: pedido.nome,
+                    precoTotal: pedido.PrecoTotal,
+                    estado: "Cozinhando",
+                    idUsuario: pedido.IdUsuario
+                };
+
+                axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
+                    .then(res => location.reload())
+                    .catch(err => console.error('Erro ao atualizar valor:', err));
             }
         }
     });
