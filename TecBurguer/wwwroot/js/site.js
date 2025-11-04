@@ -283,33 +283,40 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
-function FinalizarCompra(IdPedido, NomePedido, PedidoPrecoTotal, pedidoIdUsuario){
+function FinalizarCompra(idPedido){
     axios.get('/api/usuarios/listar').then(response => {
         const usuarioExistente = response.data.find(p => pedido.IdUsuario == p.IdUsuario);
 
         if (usuarioExistente) {
-            if (usuario.Cep == null){
-                document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
-            } else {
-                if (document.getElementById("#cepInput").value != '') {
-                    const dados = {
-                        Cep: documentElementById("#cepInput").value
-                    }
-
-                    axios.patch(`/api/usuarios/update/${pedido.IdUsuario}`, dados);
-
-                    return
+            if (document.getElementById("#cepInput").value != '') {
+                const dados = {
+                    Cep: documentElementById("#cepInput").value
                 }
 
+                axios.patch(`/api/usuarios/update/${pedido.IdUsuario}`, dados);
+
                 const novosDados = {
-                    idPedido: IdPedido,
-                    nome: NomePedido,
-                    precoTotal: PedidoPrecoTotal,
                     estado: "Cozinhando",
-                    idUsuario: pedidoIdUsuario
                 };
 
-                axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
+                axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
+                    .then(res => location.reload())
+                    .catch(err => console.error('Erro ao atualizar valor:', err));
+
+                return;
+            }
+
+            if (usuario.Cep == null) {
+
+                document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
+
+            } else {
+
+                const novosDados = {
+                    estado: "Cozinhando",
+                };
+
+                axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
                     .then(res => location.reload())
                     .catch(err => console.error('Erro ao atualizar valor:', err));
             }
