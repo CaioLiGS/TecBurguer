@@ -5,108 +5,114 @@
 @inject SignInManager<LoginCliente> SignInManager
 
 <style>
-        .BarraPesquisa {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 140px;
-                margin-bottom: 30px;
-                gap: 15px;
-
+    /* Estilos da Barra de Pesquisa */
+    .BarraPesquisa {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 140px;
+        margin-bottom: 30px;
+        gap: 15px;
+        margin-left: 200px;
+        width: calc(100% - 200px);
     }
 
-                .BarraPesquisa input {
-                        width: 360px;
-                        padding: 12px 20px;
-                        border-radius: 25px;
-                        border: 2px solid #ffcc00;
-                        background-color: #fffdf5;
-                        font-size: 1rem;
-                        text-align: center;
-                        outline: none;
-                        color: #40210f;
-                        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-                        transition: all 0.3s ease;
-
+        .BarraPesquisa input {
+            width: 360px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 2px solid #ffcc00;
+            background-color: #fffdf5;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            color: #40210f;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
 
-                .BarraPesquisa input:focus {
-                        border-color: #40210f;
-                        background-color: #fff;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-
+            .BarraPesquisa input:focus {
+                border-color: #40210f;
+                background-color: #fff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            }
+    .MenuCategoria {
+        position: fixed;
+        top: 120px;
+        left: 0;
+        height: calc(100vh - 120px);
+        width: 200px;
+        display: block;
+        padding: 20px 0;
+        margin: 0;
+        background-color: #f7f7f7;
+        border-bottom: none;
+        box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        border-left: 5px solid #ffaa00;
     }
-        .MenuCategoria {
-                display: flex;
-                justify-content: center;
-                gap: 15px;
-                margin-bottom: 40px;
-                padding: 10px 0;
-                background-color: #f7f7f7;
-                border-bottom: 2px solid #ffcc00;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    }
-
-        .LinkCategoria {
-                text-decoration: none;
-                color: #40210f;
-                font-weight: 700;
-                padding: 8px 15px;
-                border-radius: 20px;
-                transition: all 0.3s ease;
-                border: 2px solid transparent;
-
-    }
-
-            .LinkCategoria:hover, .LinkCategoria.ativo {
-                    background-color: #ffcc00;
-                    color: #40210f;
-                    border-color: #40210f;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-
+    .LinkCategoria {
+        text-decoration: none;
+        color: #40210f;
+        font-weight: 700;
+        display: block;
+        border-left: 5px solid transparent;
+        padding: 10px 15px;
+        border-radius: 0;
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+        transition: all 0.3s ease;
     }
 
-            .LinkCategoria.ativo {
-                    background-color: #ffaa00;
-                    border-color: #40210f;
+        .LinkCategoria:hover, .LinkCategoria.ativo {
+            background-color: #ffcc00;
+            color: #40210f;
+            box-shadow: none;
+            border-left: 5px solid #40210f;
+            padding: 10px 15px;
+        }
 
-    }
-        .TituloCategoria {
-                font-size: 1.8rem;
-                font-weight: 900;
-                color: #40210f;
-                margin: 40px 0 20px;
-                text-transform: uppercase;
-                border-bottom: 3px solid #ffcc00;
-                display: inline-block;
-
-    }
-
-        .ContainerCategoria {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-                justify-content: center;
-                margin-bottom: 60px;
-
-    }
-
-        .Conteudo {
-                display: flex;
-                flex-wrap: wrap;
-                width: 80vw;
-                justify-content: center;
-                gap: 10px;
-                padding: 10px;
-                margin: auto;
-
+        .LinkCategoria.ativo {
+            background-color: #ffaa00;
+            border-left-color: #40210f !important;
+            padding: 10px 15px;
+        }
+    .TituloCategoria {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #40210f;
+        text-transform: uppercase;
+        border-bottom: 3px solid #ffcc00;
+        display: inline-block;
+        margin-left: 220px;
+        margin-top: 40px;
+        margin-bottom: 20px;
     }
 
-        .BlocoHamburguer {
-                opacity: 1;
-                display: block;
+    .ContainerCategoria {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: flex-start;
+        margin-bottom: 60px;
+        margin-left: 220px;
+        width: calc(100% - 240px); 
+    }
 
+    .Conteudo {
+        display: flex;
+        flex-wrap: wrap;
+        width: auto;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .BlocoHamburguer {
+        opacity: 1;
+        display: block;
     }
 </style>
 
