@@ -90,8 +90,70 @@ public class PedidosController : ControllerBase
         return NoContent();
     }
 
+    // ... (Seu método PutPedido termina aqui)
+
+    // PATCH: api/Pedidos/update/5
+    [HttpPatch("update/{id}")]
+    public async Task<IActionResult> PatchPedido(int id, [FromBody] Pedido dadosParciais)
+    {
+        // 1. Encontrar o pedido existente no banco
+        var pedidoDoBanco = await _context.Pedidos.FindAsync(id);
+        if (pedidoDoBanco == null)
+        {
+            return NotFound();
+        }
+
+        // 2. Aplicar manualmente as atualizações parciais
+        //    Isso garante que só mudamos o que veio na requisição
+        //    e não apagamos os outros campos para null.
+
+        if (dadosParciais.Nome != null)
+        {
+            pedidoDoBanco.Nome = dadosParciais.Nome;
+        }
+        if (dadosParciais.Descricao != null)
+        {
+            pedidoDoBanco.Descricao = dadosParciais.Descricao;
+        }
+        if (dadosParciais.PrecoTotal != null)
+        {
+            pedidoDoBanco.PrecoTotal = dadosParciais.PrecoTotal;
+        }
+        if (dadosParciais.Estado != null)
+        {
+            pedidoDoBanco.Estado = dadosParciais.Estado;
+        }
+        if (dadosParciais.IdUsuario != null)
+        {
+            pedidoDoBanco.IdUsuario = dadosParciais.IdUsuario;
+        }
+
+        // 3. Marcar a entidade como modificada e salvar
+        _context.Entry(pedidoDoBanco).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!PedidoExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return NoContent();
+    }
+
     private bool PedidoExists(int id)
     {
         return (_context.Pedidos?.Any(e => e.IdPedido == id)).GetValueOrDefault();
     }
+
+
 }
