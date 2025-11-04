@@ -290,7 +290,7 @@ function FinalizarCompra(idPedido, IdUsuario){
         if (usuarioExistente) {
             if (document.getElementById("cepInput").value != '') {
                 const dados = {
-                    Cep: documentElementById("cepInput").value
+                    Cep: document.getElementById("cepInput").value
                 }
 
                 axios.patch(`/api/usuarios/update/${pedido.IdUsuario}`, dados);
