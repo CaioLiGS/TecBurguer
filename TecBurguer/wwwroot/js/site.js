@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
 */
 function FinalizarCompra(idPedido, IdUsuario){
     axios.get('/api/usuarios/listar').then(response => {
-        const usuarioExistente = response.data.find(p => IdUsuario == p.IdUsuario);
+        const usuarioExistente = response.data.find(p => p.IdUsuario == IdUsuario);
 
         if (usuarioExistente) {
             if (document.getElementById("#cepInput").value != '') {
