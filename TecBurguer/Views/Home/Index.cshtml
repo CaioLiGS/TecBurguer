@@ -142,7 +142,7 @@
                                         @if (SignInManager.IsSignedIn(User))
                                         {
                                             <a class="CartBurguer"
-                                               onclick="adicionarAoCarrinho(@item.Nome, @item.Preco, @item.IdHamburguer, '@UserManager.GetUserName(User)')"
+                                               onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')"
                                                title="Adicionar ao carrinho"
                                                 style="width: 50%;">
                                                 <img class="cart-icon" src="~/css/Imagens/IconCart.png">
@@ -180,20 +180,40 @@
         </div>
 
         <div id="FacaLogin" class="interface">
-            <img src="~/css/Imagens/BurguerLogo.png">
-            <div>
-                <h3>Quer fazer um pedido?</h3>
-                <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
-                <div>
-                    <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
-                        Criar conta
-                    </a>
-                    <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
-                       Login
-                   </a>
 
+            <img src="~/css/Imagens/BurguerLogo.png">
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="ConteudoFacaLogin">
+                    <h3>Quer fazer um pedido?</h3>
+                    <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
+                    <div>
+                        <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
+                            Criar conta
+                        </a>
+                        <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
+                            Login
+                        </a>
+
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="ConteudoFacaLogin">
+                    <h3>Pedido adicionado ao carrinho</h3>
+                    <p>O hamburguer foi adicionado ao carrinho com sucesso!</p>
+                    <div>
+                        <a class="BotaoCriarConta" asp-area="Views" asp-page="/Home/Cart">
+                            Acessar carrinho
+                        </a>
+
+                    </div>
+                </div>
+            }
+
+            
         </div>
 
         <div class="Content1" id="Cardapio">

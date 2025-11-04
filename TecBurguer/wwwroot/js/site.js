@@ -293,7 +293,7 @@ function FinalizarCompra(idPedido, IdUsuario){
                     Cep: document.getElementById("cepInput").value
                 }
 
-                axios.patch(`/api/usuarios/update/${pedido.IdUsuario}`, dados);
+                axios.patch(`/api/usuarios/update/${IdUsuario}`, dados);
 
                 const novosDados = {
                     estado: "Cozinhando",
