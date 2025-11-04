@@ -5,87 +5,143 @@
 @inject SignInManager<LoginCliente> SignInManager
 
 <style>
-    .BarraPesquisa {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 140px;
-        margin-bottom: 30px;
-        gap: 15px;
+        .BarraPesquisa {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 140px;
+                margin-bottom: 30px;
+                gap: 15px;
+
     }
 
-        .BarraPesquisa input {
-            width: 360px;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 2px solid #ffcc00;
-            background-color: #fffdf5;
-            font-size: 1rem;
-            text-align: center;
-            outline: none;
-            color: #40210f;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+                .BarraPesquisa input {
+                        width: 360px;
+                        padding: 12px 20px;
+                        border-radius: 25px;
+                        border: 2px solid #ffcc00;
+                        background-color: #fffdf5;
+                        font-size: 1rem;
+                        text-align: center;
+                        outline: none;
+                        color: #40210f;
+                        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+                        transition: all 0.3s ease;
+
         }
 
-            .BarraPesquisa input:focus {
-                border-color: #40210f;
-                background-color: #fff;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            }
+                .BarraPesquisa input:focus {
+                        border-color: #40210f;
+                        background-color: #fff;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 
-    .TituloCategoria {
-        font-size: 1.8rem;
-        font-weight: 900;
-        color: #40210f;
-        margin: 40px 0 20px;
-        text-transform: uppercase;
-        border-bottom: 3px solid #ffcc00;
-        display: inline-block;
+    }
+        .MenuCategoria {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                margin-bottom: 40px;
+                padding: 10px 0;
+                background-color: #f7f7f7;
+                border-bottom: 2px solid #ffcc00;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
     }
 
-    .ContainerCategoria {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-        margin-bottom: 60px;
+        .LinkCategoria {
+                text-decoration: none;
+                color: #40210f;
+                font-weight: 700;
+                padding: 8px 15px;
+                border-radius: 20px;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+
     }
 
-    
+            .LinkCategoria:hover, .LinkCategoria.ativo {
+                    background-color: #ffcc00;
+                    color: #40210f;
+                    border-color: #40210f;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 
-    .Conteudo {
-        display: flex;
-        flex-wrap: wrap;
-        width: 80vw;
-        justify-content: center;
-        gap: 10px;
-        padding: 10px;
-        margin: auto;
     }
 
-    .BlocoHamburguer {
-        opacity: 1;
+            .LinkCategoria.ativo {
+                    background-color: #ffaa00;
+                    border-color: #40210f;
+
+    }
+        .TituloCategoria {
+                font-size: 1.8rem;
+                font-weight: 900;
+                color: #40210f;
+                margin: 40px 0 20px;
+                text-transform: uppercase;
+                border-bottom: 3px solid #ffcc00;
+                display: inline-block;
+
     }
 
+        .ContainerCategoria {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+                margin-bottom: 60px;
 
+    }
+
+        .Conteudo {
+                display: flex;
+                flex-wrap: wrap;
+                width: 80vw;
+                justify-content: center;
+                gap: 10px;
+                padding: 10px;
+                margin: auto;
+
+    }
+
+        .BlocoHamburguer {
+                opacity: 1;
+                display: block;
+
+    }
 </style>
 
 <div class="BarraPesquisa">
     <input type="text" id="pesquisa" placeholder="Pesquisar hambúrguer...">
 </div>
 
+@{
+    var categorias = Model.Select(h => h.Categoria)
+                          .Distinct()
+                          .Where(c => c != "Todos")
+                          .ToList();
+    categorias.Insert(0, "Todos");
+}
+
+<div class="MenuCategoria">
+    @foreach (var categoria in categorias)
+    {
+        <a href="#" class="LinkCategoria" data-categoria="@categoria.Replace(" ", "-")">
+            @categoria
+        </a>
+    }
+</div>
+
 @foreach (var grupo in Model.GroupBy(h => h.Categoria))
 {
-    <h2 class="TituloCategoria">@grupo.Key</h2>
+    <h2 class="TituloCategoria" id="Categoria_@grupo.Key.Replace(" ", "-")">@grupo.Key</h2>
 
-    <div class="ContainerCategoria">
+    <div class="ContainerCategoria" data-categoria-container="@grupo.Key.Replace(" ", "-")">
         @foreach (var item in grupo)
         {
-            <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
-                <img src="@Html.DisplayFor(modelItem => item.Imagem)" 
-                     class="ImagemHamburguer"
-                     onerror="this.src='/css/Imagens/BurguerLogo.png'">
+            <div class="BlocoHamburguer" data-categoria-item="@item.Categoria.Replace(" ", "-")" style="flex: 0 0 auto; width: 250px;">
+                <img src="@Html.DisplayFor(modelItem => item.Imagem)"
+                                class="ImagemHamburguer"
+                                onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
                 <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
                     @Html.DisplayFor(modelItem => item.Nome)
@@ -104,7 +160,7 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <a class="CartBurguer"
-                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
                                 <img src="~/css/Imagens/IconCart.png">
                             </a>
                         }
@@ -116,16 +172,16 @@
                         }
 
                         <a class="SaibaMaisHamburguer"
-                           asp-controller="Hamburgueres"
-                           asp-action="Details"
-                           asp-route-id="@item.IdHamburguer">
+                                         asp-controller="Hamburgueres"
+                                         asp-action="Details"
+                                         asp-route-id="@item.IdHamburguer">
                             Saiba Mais
                         </a>
                     </div>
                 </div>
             </div>
         }
-    </div> 
+    </div>
 }
 
 <script>
@@ -134,7 +190,59 @@
         const hamburgueres = document.querySelectorAll('.BlocoHamburguer');
         hamburgueres.forEach(bloco => {
             const nome = bloco.querySelector('.TituloHamburguer').textContent.toLowerCase();
-            bloco.style.display = nome.includes(termo) ? '' : 'none';
+            bloco.style.display = nome.includes(termo) ? 'block' : 'none';
         });
+        document.querySelectorAll('.TituloCategoria').forEach(titulo => {
+            const container = document.querySelector(`[data-categoria-container='${titulo.id.replace('Categoria_', '')}']`);
+            if (container) {
+                const blocosVisiveis = container.querySelectorAll('.BlocoHamburguer:not([style*="display: none"])');
+                titulo.style.display = blocosVisiveis.length > 0 ? 'inline-block' : 'none';
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const linksCategoria = document.querySelectorAll('.LinkCategoria');
+        const todosOsBlocos = document.querySelectorAll('.BlocoHamburguer');
+        const todosOsTitulos = document.querySelectorAll('.TituloCategoria');
+
+        function filtrarPorCategoria(categoriaAlvo) {
+            todosOsTitulos.forEach(titulo => titulo.style.display = 'none');
+            todosOsBlocos.forEach(bloco => bloco.style.display = 'none');
+            linksCategoria.forEach(link => {
+                if (link.dataset.categoria === categoriaAlvo) {
+                    link.classList.add('ativo');
+                } else {
+                    link.classList.remove('ativo');
+                }
+            });
+
+            if (categoriaAlvo === 'Todos') {
+                todosOsTitulos.forEach(titulo => titulo.style.display = 'inline-block');
+                todosOsBlocos.forEach(bloco => bloco.style.display = 'block');
+            } else {
+                document.getElementById('pesquisa').value = '';
+                const tituloAlvo = document.getElementById(`Categoria_${categoriaAlvo}`);
+                if (tituloAlvo) {
+                    tituloAlvo.style.display = 'inline-block';
+                }
+
+                document.querySelectorAll(`[data-categoria-item='${categoriaAlvo}']`).forEach(bloco => {
+                    bloco.style.display = 'block';
+                });
+            }
+            const primeiroTituloVisivel = document.querySelector('.TituloCategoria[style*="inline-block"]');
+            if (primeiroTituloVisivel) {
+                primeiroTituloVisivel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        linksCategoria.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const categoria = this.dataset.categoria;
+                filtrarPorCategoria(categoria);
+            });
+        });
+        filtrarPorCategoria('Todos');
     });
 </script>
