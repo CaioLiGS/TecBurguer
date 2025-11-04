@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
-function FinalizarCompra(idPedido){
+function FinalizarCompra(idPedido, IdUsuario){
     axios.get('/api/usuarios/listar').then(response => {
         const usuarioExistente = response.data.find(p => pedido.IdUsuario == p.IdUsuario);
 
