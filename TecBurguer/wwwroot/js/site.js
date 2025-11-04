@@ -285,12 +285,12 @@ document.addEventListener("DOMContentLoaded", () => {
 */
 function FinalizarCompra(idPedido, IdUsuario){
     axios.get('/api/usuarios/listar').then(response => {
-        const usuarioExistente = response.data.find(p => p.IdUsuario == IdUsuario);
+        const usuarioExistente = response.data.find(p => p.idUsuario == IdUsuario);
 
         if (usuarioExistente) {
-            if (document.getElementById("#cepInput").value != '') {
+            if (document.getElementById("cepInput").value != '') {
                 const dados = {
-                    Cep: documentElementById("#cepInput").value
+                    Cep: documentElementById("cepInput").value
                 }
 
                 axios.patch(`/api/usuarios/update/${pedido.IdUsuario}`, dados);
@@ -306,7 +306,7 @@ function FinalizarCompra(idPedido, IdUsuario){
                 return;
             }
 
-            if (usuario.Cep == null) {
+            if (response.Cep == null) {
 
                 document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
 
