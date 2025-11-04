@@ -173,12 +173,19 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario) {
                 adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
 
                 axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
-                    .then(res => console.log('Preço atualizado', res.data))
+                    .then(res => {
+                        document.querySelector('.interface').classList.add('mostrar');
+
+                        setTimeout(function () {
+                            document.querySelector('.interface').classList.remove('mostrar');
+                        }, 3000); 
+                    })
                     .catch(err => console.error('Erro ao atualizar valor:', err));
             } else {
                 adicionarPedidos(nome, preco, idUsuario, idHamburguer);
             }
         });
+
     });
 }
 
@@ -276,20 +283,30 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
-function FinalizarCompra(pedido){
+function FinalizarCompra(IdPedido, NomePedido, PedidoPrecoTotal, pedidoIdUsuario){
     axios.get('/api/usuarios/listar').then(response => {
         const usuarioExistente = response.data.find(p => pedido.IdUsuario == p.IdUsuario);
 
         if (usuarioExistente) {
             if (usuario.Cep == null){
                 document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
-            }else{
+            } else {
+                if (document.getElementById("#cepInput").value != '') {
+                    const dados = {
+                        Cep: documentElementById("#cepInput").value
+                    }
+
+                    axios.patch(`/api/usuarios/update/${pedido.IdUsuario}`, dados);
+
+                    return
+                }
+
                 const novosDados = {
-                    idPedido: pedido.IdPedido,
-                    nome: pedido.nome,
-                    precoTotal: pedido.PrecoTotal,
+                    idPedido: IdPedido,
+                    nome: NomePedido,
+                    precoTotal: PedidoPrecoTotal,
                     estado: "Cozinhando",
-                    idUsuario: pedido.IdUsuario
+                    idUsuario: pedidoIdUsuario
                 };
 
                 axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
