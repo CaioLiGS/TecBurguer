@@ -1,58 +1,71 @@
 ﻿:root {
-    --primary: #E07A5F; /* laranja queimado */
+    --primary: #D98F41;
     --primary-dark: #d45d47;
-    --secondary: #81B29A; /* verde oliva */
+    --secondary: #81B29A;
     --secondary-dark: #6d9b85;
-    --accent: #F2CC8F; /* bege areia */
-    --dark: #3D405B; /* marrom café */
-    --light: #FAF3E0; /* branco quente */
+    --accent: #F2CC8F;
+    --dark: #3D405B;
+    --light: #FAF3E0;
+    --bg: #FBF8F0;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* ======================================= */
-/* 1. CORREÇÃO GERAL E COR DE FUNDO */
-/* ======================================= */
 body {
-    /* Esta é a cor de fundo da sua imagem */
-    background-color: #FBF8F0;
-    font-family: Arial, sans-serif;
+    background-color: #D98F41;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark);
+    line-height: 1.6;
 }
 
 /* ======================================= */
-/* 2. CORREÇÃO DO LAYOUT DA PÁGINA (Lado a Lado) */
+/* CONTAINER PRINCIPAL */
 /* ======================================= */
 .product-page-container {
-    display: flex; /* <-- ISSO CRIA AS DUAS COLUNAS */
-    align-items: center;
+    display: flex;
+    align-items: flex-start;
     flex-wrap: wrap;
-    max-width: 1100px;
-    min-height: 70vh;
-    margin: 40px auto;
-    padding: 20px;
-    gap: 40px;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem;
+    gap: 4rem;
 }
 
-/* Coluna da Esquerda (Imagem) */
+/* ======================================= */
+/* COLUNA DA IMAGEM (ESQUERDA) */
+/* ======================================= */
 .product-image-column {
     flex: 1;
     min-width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 2rem;
+    position: sticky;
+    top: 2rem;
 }
 
 .product-image {
     width: 100%;
-    max-width: 450px;
+    max-width: 500px;
     height: auto;
-    border-radius: 8px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
 }
 
 /* ======================================= */
-/* BOTÃO COM ANIMAÇÃO (COMEÇA AQUI) */
+/* INTERFACE "FAÇA LOGIN" */
 /* ======================================= */
 
+
+/* ======================================= */
+/* BOTÃO "COMEÇAR PEDIDO" COM ANIMAÇÃO */
+/* ======================================= */
 .order-button {
     display: flex;
     align-items: center;
@@ -61,58 +74,45 @@ body {
     overflow: hidden;
     width: 100%;
     max-width: 400px;
-    background-color: #E07A5F;
-    margin-top: 24px;
-    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 12px;
     text-decoration: none;
     cursor: pointer;
-    height: 55px;
+    height: 60px;
     padding: 0;
-    transition: transform 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(224, 122, 95, 0.3);
+    border: none;
 }
 
-    .order-button:hover {
-        transform: scale(1.05);
-    }
+.order-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(224, 122, 95, 0.4);
+}
 
-/* --- O ÍCONE (Inicialmente Visível) --- */
 .button-icon {
     position: absolute;
     top: 50%;
     transform: translate(0%, -50%);
     opacity: 1;
-    /* MUDANÇA 1: ÍCONE MAIOR 
-      Aumentado de 35px para 40px. 
-      Sinta-se à vontade para aumentar mais se quiser.
-    */
     height: 40px;
     width: 40px;
     object-fit: contain;
-    /* MUDANÇA 2: TRANSIÇÃO MAIS RÁPIDA
-      Slide: 0.4s -> 0.3s
-      Fade-out: 1.0s -> 0.2s
-    */
     transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
+    filter: brightness(0) invert(1);
 }
 
-/* --- O TEXTO (Inicialmente Invisível) --- */
 .button-text {
     position: absolute;
     top: 50%;
     transform: translate(-100%, -50%);
     opacity: 0;
     white-space: nowrap;
-    color: #333;
+    color: white;
     font-weight: 700;
     font-size: 1.1rem;
-    /* MUDANÇA 2: TRANSIÇÃO MAIS RÁPIDA
-      Slide: 0.4s -> 0.3s
-      Fade-in: 0.5s -> 0.3s
-    */
     transition: transform 0.3s ease-in-out, opacity 0.3s ease;
 }
-
-/* --- A MÁGICA DO HOVER --- */
 
 .order-button:hover .button-icon {
     transform: translate(150%, -50%);
@@ -125,14 +125,8 @@ body {
 }
 
 /* ======================================= */
-/* 3. ESTILO DO ACCORDION (MANTENHA O SEU) */
+/* COLUNA DOS DETALHES (DIREITA) */
 /* ======================================= */
-.accordion-container {
-    margin-top: 30px;
-}
-
-
-/* Coluna da Direita (Textos) */
 .product-details-column {
     flex: 1.2;
     min-width: 320px;
@@ -140,101 +134,204 @@ body {
 
 .product-title {
     font-size: 2.8rem;
-    font-weight: 900;
-    color: #2b2b2b;
-    margin-bottom: 16px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
 }
 
 .product-description {
-    font-size: 1rem;
-    color: #4f4f4f;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    padding: 1.8rem;
+    background: white;
+    border-radius: 12px;
+    border-left: 4px solid var(--secondary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* ======================================= */
-/* 3. ESTILO DO ACCORDION (CORRIGIDO) */
+/* ACCORDION (INGREDIENTES) */
 /* ======================================= */
-
 .accordion-container {
-    margin-top: 30px;
+    margin-top: 2rem;
 }
 
 .accordion-item {
-    /* CORREÇÃO: Remove qualquer cor de fundo branca 
-      e usa a cor do 'body'
-    */
-    background-color: transparent;
-    /* Mantém apenas as linhas de separação sutis,
-      ao invés de uma caixa.
-    */
-    border: none; /* Remove a borda da caixa */
-    
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
 }
 
-/* O botão "Ingredientes" */
+.accordion-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 .accordion-trigger {
-    /* CORREÇÃO: Garante que o botão também não tenha fundo
-      e nem borda.
-    */
-    background-color: transparent;
+    background-color: white;
     border: none;
     outline: none;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 5px;
-    font-size: 1.1rem;
+    padding: 1.5rem 1.8rem;
+    font-size: 1.15rem;
     font-weight: 600;
-    color: #333; /* Cor do texto "Ingredientes" */
+    color: var(--dark);
     cursor: pointer;
     text-align: left;
+    transition: background-color 0.3s;
 }
 
-/* A seta */
+.accordion-trigger:hover {
+    background-color: var(--light);
+}
+
+.accordion-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
 .accordion-arrow {
-    font-size: 1rem;
-    color: #333; /* Cor da seta */
+    font-size: 1.2rem;
+    color: var(--primary);
     transition: transform 0.3s ease;
+    font-weight: bold;
 }
 
-/* Gira a seta quando o menu está aberto */
 .accordion-trigger.active .accordion-arrow {
     transform: rotate(180deg);
 }
 
-/* O conteúdo (onde sua lista <ul> está) */
 .accordion-content {
-    /* Começa fechado */
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
+    background: var(--light);
 }
 
-    /* Ajustes para a SUA lista <ul> */
-    .accordion-content ul {
-        text-align: left !important;
-        margin: 0 !important;
-        padding: 15px 20px 20px 40px !important; /* Ajusta o padding */
-        font-size: 1rem !important; /* Tamanho melhor para a lista */
-        list-style-type: disc; /* Garante que as bolinhas apareçam */
-    }
+.accordion-content ul {
+    text-align: left !important;
+    margin: 0 !important;
+    padding: 1.5rem 2rem !important;
+    font-size: 1.05rem !important;
+    list-style-type: none !important;
+    padding-inline-start: 2rem !important;
+}
 
-        .accordion-content ul li {
-            color: #4f4f4f;
-            margin-bottom: 8px; /* Espaço entre ingredientes */
-        }
+.accordion-content ul li {
+    color: #555;
+    margin-bottom: 0.8rem;
+    padding-left: 1.8rem;
+    position: relative;
+    font-size: 1.05rem;
+}
+
+.accordion-content ul li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
 
 /* ======================================= */
-/* 4. RESPONSIVO (Para Celular) */
+/* RESPONSIVO (Mobile) */
 /* ======================================= */
 @media (max-width: 768px) {
     .product-page-container {
-        flex-direction: column; /* Empilha as colunas */
-        text-align: center;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1rem;
+        margin: 1.5rem auto;
     }
 
-    .product-details-column {
-        text-align: left; /* Mantém o texto alinhado */
+    .product-image-column {
+        position: static;
+        width: 100%;
     }
+
+    .product-image {
+        max-width: 100%;
+    }
+
+    .product-title {
+        font-size: 2rem;
+    }
+
+    .product-description {
+        font-size: 1rem;
+        padding: 1.2rem;
+    }
+
+    .interface {
+        max-width: 100%;
+    }
+
+    #FacaLogin > div > div {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .BotaoCriarConta,
+    .BotaoLogin {
+        width: 100%;
+    }
+
+    .order-button {
+        max-width: 100%;
+    }
+
+    .accordion-content ul {
+        padding: 1.2rem 1.5rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .accordion-content ul li {
+        font-size: 0.95rem;
+    }
+}
+
+/* ======================================= */
+/* ANIMAÇÕES SUAVES */
+/* ======================================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.product-page-container > * {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ======================================= */
+/* MELHORIAS DE ACESSIBILIDADE */
+/* ======================================= */
+.order-button:focus,
+.accordion-trigger:focus,
+.BotaoCriarConta:focus,
+.BotaoLogin:focus {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ======================================= */
+/* AJUSTE PARA IMAGENS QUEBRADAS */
+/* ======================================= */
+img {
+    max-width: 100%;
+    height: auto;
 }
