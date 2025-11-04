@@ -14,10 +14,28 @@ namespace TecBurguer.Controllers
     public class HamburgueresController : Controller
     {
         private readonly DBTecBurguerContext _context;
-
         public HamburgueresController(DBTecBurguerContext context)
         {
             _context = context;
+        }
+
+        public IActionResult Index(string categoria)
+        {
+            var hamburgueres = _context.Hamburguers.AsQueryable();
+
+            if (!string.IsNullOrEmpty(categoria))
+            {
+                hamburgueres = hamburgueres.Where(h => h.Categoria == categoria);
+            }
+
+            ViewBag.Categorias = _context.Hamburguers
+                                         .Select(h => h.Categoria)
+                                         .Distinct()
+                                         .ToList();
+
+            ViewBag.CategoriaSelecionada = categoria;
+
+            return View(hamburgueres.ToList());
         }
 
         [Authorize(Roles = "Administrador")]
