@@ -563,7 +563,7 @@ header {
 
 .interface{
     position: fixed;
-    width: 22vw;
+    width: 420px;
     height: 150px;
     z-index: 1;
     background: linear-gradient(90deg, var(--accent), var(--primary));
@@ -573,13 +573,13 @@ header {
     justify-content: center;
     align-items: stretch;
     box-shadow: 2px 2px 10px #00000046;
-    left: 100vw;
+    right: -420px;
     bottom: 5vh;
     transition: all 1s ease-in-out;
 }
 
 .interface.mostrar{
-    left: 75vw;
+    right: 30px;
 }
 
 #FacaLogin img{
@@ -597,7 +597,7 @@ header {
     color: var(--dark);
     text-align: center;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 #FacaLogin div p {

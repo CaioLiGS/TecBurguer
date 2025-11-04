@@ -82,6 +82,85 @@ namespace TecBurguer.Controllers
             return NoContent();
         }
 
+        [HttpPatch("update/{id}")]
+        public async Task<IActionResult> PatchUsuario(int id, [FromBody] Usuario dadosParciais)
+        {
+            // 1. Encontrar o usuário existente no banco
+            var usuarioDoBanco = await _context.Usuarios.FindAsync(id);
+            if (usuarioDoBanco == null)
+            {
+                return NotFound();
+            }
+
+            // 2. Aplicar manualmente as atualizações parciais
+            //    Isso garante que só mudamos o que veio na requisição (ex: o CEP)
+            //    e não apagamos os outros campos (Nome, Email) para null.
+
+            if (dadosParciais.Nome != null)
+            {
+                usuarioDoBanco.Nome = dadosParciais.Nome;
+            }
+            if (dadosParciais.Email != null)
+            {
+                usuarioDoBanco.Email = dadosParciais.Email;
+            }
+            if (dadosParciais.Cep != null)
+            {
+                usuarioDoBanco.Cep = dadosParciais.Cep;
+            }
+            if (dadosParciais.Estado != null)
+            {
+                usuarioDoBanco.Estado = dadosParciais.Estado;
+            }
+            if (dadosParciais.Cidade != null)
+            {
+                usuarioDoBanco.Cidade = dadosParciais.Cidade;
+            }
+            if (dadosParciais.Bairro != null)
+            {
+                usuarioDoBanco.Bairro = dadosParciais.Bairro;
+            }
+            if (dadosParciais.Rua != null)
+            {
+                usuarioDoBanco.Rua = dadosParciais.Rua;
+            }
+            if (dadosParciais.Administrador != null)
+            {
+                usuarioDoBanco.Administrador = dadosParciais.Administrador;
+            }
+            if (dadosParciais.Administrador != null)
+            {
+                usuarioDoBanco.Administrador = dadosParciais.Administrador;
+            }
+            if (dadosParciais.Vendedor != null)
+            {
+                usuarioDoBanco.Vendedor = dadosParciais.Vendedor;
+            }
+            // OBS: Não atualize Senha ou NivelAcesso assim, a menos que seja intencional.
+
+            // 3. Marcar a entidade como modificada e salvar
+            //    (Opcional, pois o EF Core geralmente detecta mudanças, mas é uma boa prática)
+            _context.Entry(usuarioDoBanco).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // POST: api/Usuarios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
