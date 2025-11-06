@@ -136,7 +136,8 @@ header {
 }
 
 .Cart {
-    margin-right: 10px
+    margin-right: 10px;
+    position: relative;
 }
 
 .Cart a img{
@@ -151,10 +152,15 @@ header {
 
 .QuantCart {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 10px;
-    height: 10px;
+    background-color: red;
+    border-radius: 500px;
+    color: white;
+    font-size: 16px;
+    bottom: 20%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
 
 }
 
