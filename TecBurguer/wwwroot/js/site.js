@@ -1,30 +1,4 @@
-﻿//$("#Cep").blur(function () {
-//    var cep = $(this).val().replace(/\D/g, '');
-
-//    if (cep.length === 8) {
-//        $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function (data) {
-//            if (!("erro" in data)) {
-//                $("#Rua").val(data.logradouro);
-//                $("#Bairro").val(data.bairro);
-//                $("#Cidade").val(data.localidade);
-//            } else {
-//                alert("CEP não encontrado.");
-
-//            }
-//        });
-//    }
-//});
-
-//$("#Localidade").blur(function(){
-//    var localidade = $(this).val();
-
-//    if(localidade == "Condomínio"){
-//        $("#NumeroCasaLabel").text("Nome do condomínio / Complemento")
-//    } else {
-//        $("#NumeroCasaLabel").text("Numero da casa")
-//    }
-//});
-
+﻿
 function toggleDropdown() {
     const menu = document.getElementById("dropdownMenu");
     menu.style.display = menu.style.display === "block" ? "none" : "block";
@@ -53,13 +27,52 @@ function mostrarBotaoLogin() {
     console.log(interfaceBox.className);
 }
 
-function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
+
+function AumentarQuantidadeHamburguerPedido(IdPedidoHamburguer, preco) {
+    axios.get('/api/pedidohamburgueres/listar').then(resPH => {
+        const itemExistente = resPH.data.find(item => item.id === IdPedidoHamburguer);
+
+        if (itemExistente) {
+            const dadosPH = {
+                id: IdPedidoHamburguer,
+                idPedido: itemExistente.idPedido,
+                idHamburguer: itemExistente.idHamburguer,
+                quantidade: itemExistente.quantidade + 1
+            };
+
+            axios.put(`/api/pedidohamburgueres/update/${itemExistente.id}`, dadosPH)
+                .then(res => console.log('Quantidade do item aumentada:', res.data))
+                .catch(err => console.error('Erro ao atualizar quantidade:', err));
+
+            axios.get('/api/pedidos/listar').then(resP => {
+                const pedidoExistente = resP.data.find(p => p.idPedido === itemExistente.idPedido);
+
+                if (pedidoExistente) {
+                    const novosDadosPedido = {
+                        idPedido: pedidoExistente.idPedido,
+                        nome: pedidoExistente.nome,
+                        precoTotal: pedidoExistente.precoTotal + preco,
+                        estado: pedidoExistente.estado,
+                        idUsuario: pedidoExistente.idUsuario
+                    };
+
+                    axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDadosPedido)
+                        .then(res => location.reload())
+                        .catch(err => console.error('Erro ao atualizar valor total:', err));
+                }
+            });
+        }
+    });
+}
+
+
+function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco) {
     const url = `/api/pedidohamburgueres/update/${IdPedidoHamburguer}`;
 
     axios.get('/api/pedidohamburgueres/listar').then(response => {
-        
+
         response.data.forEach(item => {
-            if (item.id == IdPedidoHamburguer){
+            if (item.id == IdPedidoHamburguer) {
                 const dados = {
                     id: IdPedidoHamburguer,
                     idPedido: item.idPedido,
@@ -67,15 +80,15 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
                     quantidade: item.quantidade - 1
                 };
 
-                if (dados.quantidade <= 0){
+                if (dados.quantidade <= 0) {
                     axios.delete(`/api/pedidohamburgueres/delete/${item.id}`)
-                    .then(res => console.log('Hamburguer removido', res.data))
-                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+                        .then(res => console.log('Hamburguer removido', res.data))
+                        .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
-                else{
+                else {
                     axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
-                    .then(res => console.log('Atualizou pedido', res.data))
-                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+                        .then(res => console.log('Atualizou pedido', res.data))
+                        .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
 
                 axios.get('/api/pedidos/listar').then(response => {
@@ -97,12 +110,12 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
                     }
                 });
 
-                
+
             }
-            
+
         });
     });
-    
+
 }
 
 function adicionarPedidosHamburgueres(idPedido, idHamburguer) {
@@ -119,8 +132,8 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer) {
                 dados.quantidade = item.quantidade + 1;
 
                 axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
-                    .then(res => console.log('Atualizou pedido', res.data))
-                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+                    .then(res => console.log('Atualizou item do pedido', res.data))
+                    .catch(err => console.error('Erro ao atualizar item do pedido:', err));
             }
         });
 
@@ -145,6 +158,7 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
         .then(response => {
             console.log('Pedido criado', response.data);
             adicionarPedidosHamburgueres(response.data.idPedido, idHamburguer);
+            location.reload();
         })
         .catch(err => console.error('Erro ao adicionar pedido:', err));
 }
@@ -162,6 +176,8 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario) {
             const pedidoExistente = response.data.find(p => p.idUsuario === idUsuario);
 
             if (pedidoExistente) {
+                adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
+
                 const novosDados = {
                     idPedido: pedidoExistente.idPedido,
                     nome: pedidoExistente.nome,
@@ -170,15 +186,9 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario) {
                     idUsuario: pedidoExistente.idUsuario
                 };
 
-                adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
-
                 axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
                     .then(res => {
-                        document.querySelector('.interface').classList.add('mostrar');
-
-                        setTimeout(function () {
-                            document.querySelector('.interface').classList.remove('mostrar');
-                        }, 3000); 
+                        console.log('Valor Total do Pedido Atualizado:', res.data);
                     })
                     .catch(err => console.error('Erro ao atualizar valor:', err));
             } else {
@@ -209,55 +219,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-
-/*
-
-        BANNER DO HOME
-
-*/
-
-//document.addEventListener('DOMContentLoaded', function () {
-//    const sections = [
-//        document.getElementById('BannerContent'),
-//        document.getElementById('OfertasDiarias'),
-//        document.getElementById('RecomendacoesDoChefe'),
-//        document.getElementById('Cardapio')
-//    ];
-//    let currentSection = 0;
-//    let isScrolling = false;
-
-//    window.addEventListener('wheel', function (e) {
-//        if (isScrolling) return;
-
-//        if (e.deltaY > 0 && currentSection < sections.length - 1) {
-//            currentSection++;
-//            isScrolling = true;
-//            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-//            setTimeout(() => { isScrolling = false; }, 700);
-//            e.preventDefault();
-//        } else if (e.deltaY < 0 && currentSection > 0) {
-//            currentSection--;
-//            isScrolling = true;
-//            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-//            setTimeout(() => { isScrolling = false; }, 700);
-//            e.preventDefault();
-//        }
-
-//    }, { passive: false });
-//});
 /*
     RECOMENDAÇÕES DO CHEFE
 */
 document.addEventListener("DOMContentLoaded", () => {
-    const wrapper = document.querySelector(".carrossel-wrapper  ");
+    const wrapper = document.querySelector(".carrossel-wrapper  ");
     const slides = document.querySelectorAll(".item-recomendacao");
     let index = 0;
 
     if (slides.length === 0) return;
 
     function showSlide(i) {
-        const offset = -i * 100; 
+        const offset = -i * 100;
         wrapper.style.transform = `translateX(${offset}%)`;
     }
 
@@ -283,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
-function FinalizarCompra(idPedido, IdUsuario){
+function FinalizarCompra(idPedido, IdUsuario) {
     axios.get('/api/usuarios/listar').then(response => {
         const usuarioExistente = response.data.find(p => p.idUsuario == IdUsuario);
 
@@ -438,9 +411,9 @@ $("#LinkDaImagem").blur(function () {
 });
 
 /*
-            
+            
     LOGIN E REGISTRO
-            
+            
 */
 
 
