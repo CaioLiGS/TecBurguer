@@ -1,8 +1,28 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TecBurguer.Areas.Identity.Data
+@using TecBurguer.Models
+@using Microsoft.EntityFrameworkCore
 
 @inject SignInManager<LoginCliente> SignInManager
 @inject UserManager<LoginCliente> UserManager
+@inject DBTecBurguerContext _context
+
+@{
+    int totalItensCarrinho = 0;
+    if (SignInManager.IsSignedIn(User))
+    {
+        var userEmail = UserManager.GetUserName(User);
+
+        // Busca o pedido ativo (em "Decidindo") do usuário
+        var pedidoAtivo = _context.Pedidos
+            .FirstOrDefault(p => p.IdUsuarioNavigation!.Email == userEmail && p.Estado == "Decidindo");
+
+        if (pedidoAtivo != null)
+        {
+            totalItensCarrinho = pedidoAtivo.PedidoHamburgueres.Count();
+        }
+    }
+}
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -75,7 +95,12 @@
                         <div class="ContentRight">
                             <div class="Cart">
                                 <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Cart"><img src="~/css/Imagens/IconCart.png"></a>
-                                <p class="QuantCart"></p>
+                                <p class="QuantCart">
+                                    @if (totalItensCarrinho > 0)
+                                    {
+                                        @totalItensCarrinho
+                                    }
+                                </p>
                             </div>
                             @if (SignInManager.IsSignedIn(User))
                             {
