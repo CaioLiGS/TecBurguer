@@ -92,5 +92,43 @@ public class PedidoHamburgueresController : ControllerBase
     
         return NoContent();
     }
+    [HttpGet("ListarPorPedido/{idPedido}")]
+    public async Task<ActionResult<IEnumerable<PedidoHamburguerDto>>> GetPedidoHamburgueres(int idPedido)
+    {
+        if (_context.PedidoHamburgueres == null)
+        {
+            return NotFound();
+        }
 
+        // Aqui está a mágica:
+        // 1. Filtramos os itens SÓ do pedido que queremos (Where)
+        // 2. Fazemos o JOIN com a tabela Hamburgueres (Include)
+        // 3. Criamos a DTO com os dados que queremos (Select)
+        var pedidoHamburgueresDto = await _context.PedidoHamburgueres
+            .Where(ph => ph.IdPedido == idPedido) // Filtra pelo pedido
+            .Include(ph => ph.IdHamburguerNavigation) // "JOIN" com Hamburguer
+            .Select(ph => new PedidoHamburguerDto
+            {
+                Id = ph.Id,
+                IdPedido = ph.IdPedido,
+                IdHamburguer = ph.IdHamburguer,
+                Quantidade = ph.Quantidade,
+                PrecoUnitario = ph.IdHamburguerNavigation!.Preco,
+                NomeHamburguer = ph.IdHamburguerNavigation.Nome
+            })
+            .ToListAsync();
+
+        return pedidoHamburgueresDto;
+    }
+}
+
+// Coloque a classe DTO aqui no final do arquivo
+public class PedidoHamburguerDto
+{
+    public int? Id { get; set; }
+    public int? IdPedido { get; set; }
+    public int? IdHamburguer { get; set; }
+    public int? Quantidade { get; set; }
+    public decimal? PrecoUnitario { get; set; }
+    public string? NomeHamburguer { get; set; }
 }
