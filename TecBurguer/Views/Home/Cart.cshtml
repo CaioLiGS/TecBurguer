@@ -12,8 +12,13 @@
     List<dynamic> itemsDoCarrinho = new List<dynamic>();
     foreach (var item in Model)
     {
+        Console.WriteLine(item.IdUsuarioNavigation?.Email);
+        Console.WriteLine(UserManager.GetUserName(User));
         if (item.IdUsuarioNavigation?.Email == UserManager.GetUserName(User))
         {
+
+            pedido = item;
+
             foreach (var hamburguer in item.PedidoHamburgueres)
             {
                 if (item.Estado == "Decidindo") {
@@ -56,7 +61,7 @@
                             <div class="quantity-controls my-2 me-3" role="group" aria-label="Controles de quantidade">
                                 <button class="btn quantity-btn btn-decrease" data-id="@hamburguer.Id" aria-label="Diminuir quantidade" onclick="RemoverQuantidadeHamburguerPedido(@hamburguer.Id, @hamburguer.IdHamburguerNavigation.Preco)">-</button>
                                 <span class="quantity-input" id="qty_@hamburguer.Id" aria-live="polite">@hamburguer.Quantidade</span>
-                                <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade" onclick="adicionarAoCarrinho('@hamburguer.IdHamburguerNavigation.Nome',@hamburguer.IdHamburguerNavigation.Preco,'@hamburguer.IdHamburguer','@UserManager.GetUserName(User)')">+</button>
+                                <button class="btn quantity-btn btn-increase" data-id="@hamburguer.Id" aria-label="Aumentar quantidade" onclick="adicionarAoCarrinho('@hamburguer.IdHamburguerNavigation.Nome',@hamburguer.IdHamburguerNavigation.Preco,'@hamburguer.IdHamburguer','@UserManager.GetUserName(User)', true)">+</button>
                             </div>
 
                             <div class="ms-lg-auto" style="min-width: 100px;">
@@ -91,7 +96,7 @@
 
                         <!-- Botão Finalizar dentro do resumo (chamada inline segura) -->
                         <button id="finalizarPedidoBtnInline" type="button" class="btn btn-primary w-100"
-                                onclick="FinalizarCompra(@UserManager.GetUserName(User), @pedido)" style="display: block;">
+                                onclick="FinalizarCompra('@UserManager.GetUserName(User)', @pedido?.IdPedido)" style="display: block;">
                             Finalizar Compra
                         </button>
 
@@ -104,57 +109,29 @@
             </div>
         }
     </div>
+
 </div>
 
-<!-- Modal Bootstrap para CEP -->
-<div class="modal fade" id="cepModal" tabindex="-1" aria-labelledby="cepModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="cepModalLabel">Finalizar Pedido - Informe seu CEP</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div>
-      <div class="modal-body">
-        <p>Por favor, informe o CEP para prosseguir com a finalização do pedido.</p>
-        <div class="mb-3">
-            <label for="cepInput" class="form-label">CEP</label>
-            <input type="text" class="form-control" id="cepInput" placeholder="Ex: 01234567" maxlength="9" inputmode="numeric" pattern="\d*">
-            <div id="cepError" class="text-danger mt-2" style="display:block;"></div>
+<div id="PopUpNaoTemCEP">
+
+    <div class="popup-dialog">
+
+        <div class="popup-content">
+
+            <div class="popup-body">
+                <p>Por favor, informe o CEP para prosseguir com a finalização do pedido.</p>
+                <div class="mb-3">
+                    <label for="cepInput" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="cepInput" placeholder="Ex: 01234567" maxlength="9" inputmode="numeric" pattern="\d*">
+                    <div id="cepError" class="text-danger mt-2" style="display:block;"></div>
+                </div>
+            </div>
+
+            <div class="popup-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="FecharPopUp()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="FinalizarCompra('@UserManager.GetUserName(User)', @pedido?.IdPedido)">Confirmar</button>
+            </div>
+
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" onclick="ConfirmarFinalizacao()">Confirmar</button>
-      </div>
     </div>
-  </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        (function () {
-            // garante que exista valor seguro do email no JS
-            window.__finalizarUserEmail = @System.Text.Json.JsonSerializer.Serialize(UserManager.GetUserName(User) ?? "");
-
-            // anexo redundante (fallback) caso queira usar evento em vez de onclick inline
-            function attach() {
-                const btn = document.getElementById('finalizarPedidoBtn');
-                if (!btn) return;
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (typeof FinalizarCompra === 'function') {
-                        FinalizarCompra(window.__finalizarUserEmail);
-                    } else {
-                        const modalEl = document.getElementById('cepModal');
-                        if (modalEl && window.bootstrap) new bootstrap.Modal(modalEl).show();
-                        else alert('Função de finalizar indisponível. Verifique console.');
-                    }
-                });
-            }
-
-            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach);
-            else attach();
-        })();
-    </script>
-}

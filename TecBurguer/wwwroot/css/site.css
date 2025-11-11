@@ -1,12 +1,13 @@
 
 :root {
-    --primary: #E07A5F; /* laranja queimado */
-    --primary-dark: #d45d47;
-    --secondary: #81B29A; /* verde oliva */
-    --secondary-dark: #6d9b85;
-    --accent: #F2CC8F; /* bege areia */
-    --dark: #3D405B; /* marrom café */
-    --light: #FAF3E0; /* branco quente */
+    --primary: #8B2E2E;
+    --primary-dark: #6B1F1F;
+    --secondary: #D4A574;
+    --secondary-dark: #B8935F;
+    --accent: #E8C48A;
+    --dark: #1A1614;
+    --light: #3A3330;
+    --bg: #2C2520;
 }
 
 
@@ -136,7 +137,8 @@ header {
 }
 
 .Cart {
-    margin-right: 10px
+    margin-right: 10px;
+    position: relative;
 }
 
 .Cart a img{
@@ -151,11 +153,16 @@ header {
 
 .QuantCart {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 10px;
-    height: 10px;
-
+    background-color: red;
+    border-radius: 500px;
+    color: white;
+    font-size: 14px;
+    bottom: 20%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
 
 .dropdown-menu {
@@ -429,7 +436,7 @@ header {
 
 .DescricaoHamburguer {
     font-size: 0.95rem;
-    color: black;
+    color: white;
     opacity: 0.8;
     text-align: justify;
     margin-bottom: 20px;
@@ -484,7 +491,7 @@ header {
     text-align: center;
     padding: 12px;
     border-radius: 15px;
-    color: var(--light);
+    color: antiquewhite;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
@@ -1085,7 +1092,7 @@ header {
         position: absolute; 
         white-space: nowrap; 
 
-        color: #333;
+        color: #c8b7a4;
         font-weight: bold;
         font-size: 0.9rem;
         

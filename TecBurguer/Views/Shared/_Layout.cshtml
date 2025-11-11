@@ -1,8 +1,40 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TecBurguer.Areas.Identity.Data
+@using TecBurguer.Models
+@using Microsoft.EntityFrameworkCore
 
 @inject SignInManager<LoginCliente> SignInManager
 @inject UserManager<LoginCliente> UserManager
+@inject DBTecBurguerContext _context
+
+@{
+    int cartCount = 0;
+    if (SignInManager.IsSignedIn(User))
+    {
+
+        var identityUser = await UserManager.GetUserAsync(User);
+
+        if (identityUser != null)
+        {
+
+            var appUser = _context.Usuarios.FirstOrDefault(u => u.Email == identityUser.Email);
+
+            if (appUser != null)
+            {
+    
+                var pedido = _context.Pedidos
+                                     .Include(p => p.PedidoHamburgueres)
+                                     .FirstOrDefault(p => p.IdUsuario == appUser.IdUsuario && p.Estado == "Decidindo");
+
+                if (pedido != null)
+                {
+                    // 4. A soma da contagem
+                    cartCount = pedido.PedidoHamburgueres.Sum(ph => ph.Quantidade ?? 0);
+                }
+            }
+        }
+    }
+}
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -75,7 +107,13 @@
                         <div class="ContentRight">
                             <div class="Cart">
                                 <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Cart"><img src="~/css/Imagens/IconCart.png"></a>
-                                <p class="QuantCart"></p>
+                                    @if (cartCount != 0)
+                                    {
+                                        <p class="QuantCart">
+                                            @cartCount
+                                        </p>
+                                    }
+                                
                             </div>
                             @if (SignInManager.IsSignedIn(User))
                             {

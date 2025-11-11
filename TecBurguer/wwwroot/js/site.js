@@ -53,13 +53,50 @@ function mostrarBotaoLogin() {
     console.log(interfaceBox.className);
 }
 
-function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
-    const url = `/api/pedidohamburgueres/update/${IdPedidoHamburguer}`;
+//function AumentarQuantidadeHamburguerPedido(IdPedidoHamburguer, preco) {
+//    axios.get('/api/pedidohamburgueres/listar').then(resPH => {
+//        const itemExistente = resPH.data.find(item => item.id === IdPedidoHamburguer);
 
+//        if (itemExistente) {
+//            const dadosPH = {
+//                id: IdPedidoHamburguer,
+//                idPedido: itemExistente.idPedido,
+//                idHamburguer: itemExistente.idHamburguer,
+//                quantidade: itemExistente.quantidade + 1
+//            };
+
+//            axios.put(`/api/pedidohamburgueres/update/${itemExistente.id}`, dadosPH)
+//                .then(res => console.log('Quantidade do item aumentada:', res.data))
+//                .catch(err => console.error('Erro ao atualizar quantidade:', err));
+
+//            axios.get('/api/pedidos/listar').then(resP => {
+//                const pedidoExistente = resP.data.find(p => p.idPedido === itemExistente.idPedido);
+
+//                if (pedidoExistente) {
+
+//                    const novosDadosPedido = {
+//                        idPedido: pedidoExistente.idPedido,
+//                        nome: pedidoExistente.nome,
+//                        precoTotal: pedidoExistente.precoTotal + preco,
+//                        estado: pedidoExistente.estado,
+//                        idUsuario: pedidoExistente.idUsuario
+//                    };
+
+//                    axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDadosPedido)
+//                        .then(res => location.reload())
+//                        .catch(err => console.error('Erro ao atualizar valor total:', err));
+//                }
+//            });
+//        }
+//    });
+//}
+
+function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
+    const url = `/api/pedidohamburgueres/update/${IdPedidoHamburguer}`;
     axios.get('/api/pedidohamburgueres/listar').then(response => {
-        
+
         response.data.forEach(item => {
-            if (item.id == IdPedidoHamburguer){
+            if (item.id == IdPedidoHamburguer) {
                 const dados = {
                     id: IdPedidoHamburguer,
                     idPedido: item.idPedido,
@@ -67,45 +104,62 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer, preco){
                     quantidade: item.quantidade - 1
                 };
 
-                if (dados.quantidade <= 0){
+                if (dados.quantidade <= 0) {
                     axios.delete(`/api/pedidohamburgueres/delete/${item.id}`)
-                    .then(res => console.log('Hamburguer removido', res.data))
-                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+                        .then(res => {
+                            CalcularPrecoTotal(item.idPedido)
+                        })
+                        .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
-                else{
+                else {
+
                     axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
-                    .then(res => console.log('Atualizou pedido', res.data))
-                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+                        .then(res => {
+                            CalcularPrecoTotal(item.idPedido)
+                        })
+                        .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
-
-                axios.get('/api/pedidos/listar').then(response => {
-                    const pedidoExistente = response.data.find(p => p.idPedido === item.idPedido);
-
-                    if (pedidoExistente) {
-                        const novosDados = {
-                            idPedido: pedidoExistente.idPedido,
-                            nome: pedidoExistente.nome,
-                            precoTotal: pedidoExistente.precoTotal - preco,
-                            estado: pedidoExistente.estado,
-                            idUsuario: pedidoExistente.idUsuario
-                        };
-
-                        axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
-                            .then(res => location.reload())
-                            .catch(err => console.error('Erro ao atualizar valor:', err));
-
-                    }
-                });
-
-                
             }
-            
         });
     });
-    
 }
 
-function adicionarPedidosHamburgueres(idPedido, idHamburguer) {
+function CalcularPrecoTotal(idPedido) {
+
+    console.log(idPedido);
+
+    const novosDados = {
+        precoTotal: 0,
+    };
+
+    axios.get(`/api/pedidohamburgueres/ListarPorPedido/${idPedido}`)
+        .then(response => {
+
+            precoTotalCalculado = 0
+
+            response.data.forEach(item => {
+                precoTotalCalculado += item.quantidade * item.precoUnitario;
+            });
+
+            novosDados.precoTotal = Math.round(precoTotalCalculado * 100) / 100;
+
+            axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
+                .then(res => {
+                    location.reload();
+
+                    setTimeout(function () {
+                        document.querySelector('.interface').classList.add('mostrar');
+                    }, 1000);
+
+                    setTimeout(function () {
+                        document.querySelector('.interface').classList.remove('mostrar'); document.querySelector('.interface').classList.remove('mostrar');
+                    }, 4000); 
+                })
+                .catch(err => console.error('Erro ao atualizar valor:', err));
+        });
+}
+
+function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
     const url = '/api/pedidohamburgueres/create';
     const dados = { IdPedido: idPedido, IdHamburguer: idHamburguer, quantidade: 1 };
 
@@ -113,20 +167,25 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer) {
         let criar = true;
 
         response.data.forEach(item => {
+
             if (idHamburguer == item.idHamburguer) {
                 criar = false;
                 dados.id = item.id;
                 dados.quantidade = item.quantidade + 1;
 
                 axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
-                    .then(res => console.log('Atualizou pedido', res.data))
-                    .catch(err => console.error('Erro ao atualizar pedido:', err));
+                    .then(res => {
+                        CalcularPrecoTotal(idPedido, update);
+                    })
+                    .catch(err => console.error('Erro ao atualizar item do pedido:', err));
             }
         });
 
         if (criar) {
             axios.post(url, dados)
-                .then(res => console.log('Pedido criado com sucesso:', res.data))
+                .then(res => {
+                    CalcularPrecoTotal(idPedido, update);
+                })
                 .catch(err => console.error('Erro ao criar pedido:', err));
         }
     });
@@ -149,7 +208,7 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
         .catch(err => console.error('Erro ao adicionar pedido:', err));
 }
 
-function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario) {
+function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = false) {
 
     axios.get('/api/usuarios/listar').then(response => {
         const usuario = response.data.find(u => u.email === emailUsuario);
@@ -162,30 +221,13 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario) {
             const pedidoExistente = response.data.find(p => p.idUsuario === idUsuario);
 
             if (pedidoExistente) {
-                const novosDados = {
-                    idPedido: pedidoExistente.idPedido,
-                    nome: pedidoExistente.nome,
-                    precoTotal: pedidoExistente.precoTotal + preco,
-                    estado: pedidoExistente.estado,
-                    idUsuario: pedidoExistente.idUsuario
-                };
+                adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer, update);
 
-                adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
-
-                axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
-                    .then(res => {
-                        document.querySelector('.interface').classList.add('mostrar');
-
-                        setTimeout(function () {
-                            document.querySelector('.interface').classList.remove('mostrar');
-                        }, 3000); 
-                    })
-                    .catch(err => console.error('Erro ao atualizar valor:', err));
             } else {
                 adicionarPedidos(nome, preco, idUsuario, idHamburguer);
             }
-        });
 
+        });
     });
 }
 
@@ -194,10 +236,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const outBox = document.querySelector('.OutBox');
 
     if (loginBtn && outBox) {
-        loginBtn.addEventListener('click', e => {
-            e.preventDefault();
-            outBox.classList.add('swap');
 
+        loginBtn.addEventListener('click', e => {
+
+            e.preventDefault();
+
+            outBox.classList.add('swap');
             [1, 3].forEach(i => {
                 document.querySelector(`.Ball${i}`).classList.add('swap');
             });
@@ -208,47 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-
-
-/*
-
-        BANNER DO HOME
-
-*/
-
-//document.addEventListener('DOMContentLoaded', function () {
-//    const sections = [
-//        document.getElementById('BannerContent'),
-//        document.getElementById('OfertasDiarias'),
-//        document.getElementById('RecomendacoesDoChefe'),
-//        document.getElementById('Cardapio')
-//    ];
-//    let currentSection = 0;
-//    let isScrolling = false;
-
-//    window.addEventListener('wheel', function (e) {
-//        if (isScrolling) return;
-
-//        if (e.deltaY > 0 && currentSection < sections.length - 1) {
-//            currentSection++;
-//            isScrolling = true;
-//            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-//            setTimeout(() => { isScrolling = false; }, 700);
-//            e.preventDefault();
-//        } else if (e.deltaY < 0 && currentSection > 0) {
-//            currentSection--;
-//            isScrolling = true;
-//            sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'center' });
-//            setTimeout(() => { isScrolling = false; }, 700);
-//            e.preventDefault();
-//        }
-
-//    }, { passive: false });
-//});
 /*
     RECOMENDAÇÕES DO CHEFE
 */
+
 document.addEventListener("DOMContentLoaded", () => {
     const wrapper = document.querySelector(".carrossel-wrapper  ");
     const slides = document.querySelectorAll(".item-recomendacao");
@@ -257,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (slides.length === 0) return;
 
     function showSlide(i) {
-        const offset = -i * 100; 
+        const offset = -i * 100;
         wrapper.style.transform = `translateX(${offset}%)`;
     }
 
@@ -283,35 +290,45 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
-function FinalizarCompra(idPedido, IdUsuario){
+
+function FinalizarCompra(username, idPedido) {
+
     axios.get('/api/usuarios/listar').then(response => {
-        const usuarioExistente = response.data.find(p => p.idUsuario == IdUsuario);
+        console.log(username);
+
+        const usuarioExistente = response.data.find(p => p.email == username);
 
         if (usuarioExistente) {
-            if (document.getElementById("cepInput").value != '') {
+
+            if (document.getElementById("cepInput").value != '' && (usuarioExistente.cep != null || usuarioExistente.cep == "")) {
+
                 const dados = {
+
                     Cep: document.getElementById("cepInput").value
+
                 }
 
-                axios.patch(`/api/usuarios/update/${IdUsuario}`, dados);
+                axios.patch(`/api/usuarios/update/${usuarioExistente.idUsuario}`, dados);
 
                 const novosDados = {
                     estado: "Cozinhando",
                 };
 
                 axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
-                    .then(res => location.reload())
+                    .then(res => {
+                        location.reload();
+                    })
                     .catch(err => console.error('Erro ao atualizar valor:', err));
 
                 return;
             }
 
-            if (response.Cep == null) {
+            console.log(usuarioExistente.cep)
 
+            if (usuarioExistente.cep == null || usuarioExistente.cep == "") {
                 document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
-
+                console.log('apareceu')
             } else {
-
                 const novosDados = {
                     estado: "Cozinhando",
                 };
@@ -324,10 +341,12 @@ function FinalizarCompra(idPedido, IdUsuario){
     });
 }
 
+function FecharPopUp(){
+    document.getElementById("PopUpNaoTemCEP").classList.remove("Aparecer");
+}
+
 /*
-
     HAMBURGUERES DO CARDAPIO
-
 */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -345,7 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let imageURL = "";
 
     linkInput.addEventListener('input', () => {
-
         const url = linkInput.value.trim();
 
         if (url.startsWith('http')) {
@@ -354,7 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedFile = null;
         }
     });
-
 
     fileInput.addEventListener('change', e => {
         const file = e.target.files[0];
@@ -369,19 +386,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             uploadLabel.innerHTML = '<i class="fa-solid fa-xmark"></i>';
             uploadLabel.title = "Remover arquivo selecionado";
-
         } else {
-
             selectedFile = null;
             linkInput.disabled = false;
             linkInput.value = "";
         }
+
     });
 
     uploadLabel.addEventListener('click', e => {
-
         if (selectedFile) {
-
             e.preventDefault();
 
             selectedFile = null;
@@ -392,7 +406,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             uploadLabel.innerHTML = '<i class="fa-solid fa-folder-open"></i>';
             uploadLabel.title = "Selecionar imagem do computador";
-
         }
     });
 
@@ -424,7 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             imageURL = publicURL.publicUrl;
         }
-
         linkInput.disabled = false;
         linkInput.value = imageURL;
     });
@@ -436,13 +448,9 @@ $("#LinkDaImagem").blur(function () {
 
     img.src = input.value
 });
-
 /*
-            
     LOGIN E REGISTRO
-            
 */
-
 
 document.getElementById('registerForm').addEventListener('submit', function (e) {
     const btn = document.getElementById('registerSubmit');

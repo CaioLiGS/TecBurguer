@@ -1,270 +1,270 @@
-﻿        @using Microsoft.AspNetCore.Identity
-        @using TecBurguer.Areas.Identity.Data
+﻿@using Microsoft.AspNetCore.Identity
+@using TecBurguer.Areas.Identity.Data
 
-        @model IEnumerable<TecBurguer.Models.Hamburguer>
+@model IEnumerable<TecBurguer.Models.Hamburguer>
 
-        @inject UserManager<LoginCliente> UserManager
-        @inject SignInManager<LoginCliente> SignInManager
+@inject UserManager<LoginCliente> UserManager
+@inject SignInManager<LoginCliente> SignInManager
 
-        @{
-            ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    main{
+        margin-top: 0;
+    }
+
+    .SetaHover {
+        position: absolute;
+        top: 50%;
+        left: -30px; 
+        font-size: 30px;
+        color: white;
+        transform: translateY(-50%);
+        opacity: 0; 
+        transition: all 0.5s ease;
+        pointer-events: none;
+    }
+
+    .ImagemWrapper:hover .SetaHover {
+        left: 10px;  
+        opacity: 1;
+    }
+</style>
+
+<div class="BannerContent" id="BannerContent">
+    @* <img class="banner" src="~/css/Imagens/Banner.png"> *@
+    <div class="conteudoBannerContent">
+
+        <div class="BannerBall1"></div>
+        <div class="BannerBall2"></div>
+
+        <div class="bannerWrapper">
+            <img class="BurgerImageBanner active" id="bannerPrincipal" src="/css/Imagens/BurguerLogo.png" alt="Hamburguer">
+        </div>
+
+        <div class="textos">
+            <h1>TEC</h1>
+            <h1>BURGER</h1>
+        </div>
+    </div>
+
+    <script>
+        // Array de imagens vindo do Razor
+        var imagens = [
+            @foreach (var item in Model)
+            {
+                    @: "@Html.DisplayFor(modelItem => item.Imagem)",
+            }
+        ];
+
+        var index = 0;
+        var bannerWrapper = document.querySelector(".bannerWrapper");
+
+        function trocarImagem() {
+            var atual = document.querySelector(".BurgerImageBanner.active");
+
+            // cria novo elemento img
+            var proxima = document.createElement("img");
+            proxima.src = imagens[index];
+            proxima.className = "BurgerImageBanner";
+            bannerWrapper.appendChild(proxima);
+
+            void proxima.offsetWidth;
+
+            proxima.classList.add("active");
+
+            if (atual) {
+                atual.classList.remove("active");
+                atual.classList.add("exit");
+                setTimeout(() => {
+                    bannerWrapper.removeChild(atual);
+                }, 1000); 
+            }
+
+            // avança índice
+            index = (index + 1) % imagens.length;
         }
 
-        <style>
-            main{
-                margin-top: 0;
-            }
+        // troca a cada 10s
+        setInterval(trocarImagem, 10000);
 
-            .SetaHover {
-                position: absolute;
-                top: 50%;
-                left: -30px; 
-                font-size: 30px;
-                color: white;
-                transform: translateY(-50%);
-                opacity: 0; 
-                transition: all 0.5s ease;
-                pointer-events: none;
-            }
-
-            .ImagemWrapper:hover .SetaHover {
-                left: 10px;  
-                opacity: 1;
-            }
-        </style>
-
-        <div class="BannerContent" id="BannerContent">
-            @* <img class="banner" src="~/css/Imagens/Banner.png"> *@
-            <div class="conteudoBannerContent">
-
-                <div class="BannerBall1"></div>
-                <div class="BannerBall2"></div>
-
-                <div class="bannerWrapper">
-                    <img class="BurgerImageBanner active" id="bannerPrincipal" src="/css/Imagens/BurguerLogo.png" alt="Hamburguer">
-                </div>
-
-                <div class="textos">
-                    <h1>TEC</h1>
-                    <h1>BURGER</h1>
-                </div>
-            </div>
-
-            <script>
-                // Array de imagens vindo do Razor
-                var imagens = [
-                    @foreach (var item in Model)
-                    {
-                            @: "@Html.DisplayFor(modelItem => item.Imagem)",
-                    }
-                ];
-
-                var index = 0;
-                var bannerWrapper = document.querySelector(".bannerWrapper");
-
-                function trocarImagem() {
-                    var atual = document.querySelector(".BurgerImageBanner.active");
-
-                    // cria novo elemento img
-                    var proxima = document.createElement("img");
-                    proxima.src = imagens[index];
-                    proxima.className = "BurgerImageBanner";
-                    bannerWrapper.appendChild(proxima);
-
-                    void proxima.offsetWidth;
-
-                    proxima.classList.add("active");
-
-                    if (atual) {
-                        atual.classList.remove("active");
-                        atual.classList.add("exit");
-                        setTimeout(() => {
-                            bannerWrapper.removeChild(atual);
-                        }, 1000); 
-                    }
-
-                    // avança índice
-                    index = (index + 1) % imagens.length;
-                }
-
-                // troca a cada 10s
-                setInterval(trocarImagem, 10000);
-
-                // inicia
-                trocarImagem();
-            </script>
+        // inicia
+        trocarImagem();
+    </script>
 
     
-            <div class="BannerOverlay">
-                <a href="#OfertasDiarias" class="ScrollDown" pointer>Saiba Mais</a>
-                <a href="#OfertasDiarias" class="ScrollDown" pointer>
-                    <span class="arrow"></span>
-                </a>
-            </div>
-        </div>
+    <div class="BannerOverlay">
+        <a href="#OfertasDiarias" class="ScrollDown" pointer>Saiba Mais</a>
+        <a href="#OfertasDiarias" class="ScrollDown" pointer>
+            <span class="arrow"></span>
+        </a>
+    </div>
+</div>
 
-        <div class="Content1" id="OfertasDiarias">
-            <h2 class="OfertasDiariasTitle">OFERTAS DO DIA</h2>
+<div class="Content1" id="OfertasDiarias">
+    <h2 class="OfertasDiariasTitle">OFERTAS DO DIA</h2>
 
-        </div>
+</div>
 
-        <div class="Content2" id="RecomendacoesDoChefe">
-            <h1>RECOMENDAÇÕES DO CHEFE</h1>
+<div class="Content2" id="RecomendacoesDoChefe">
+    <h1>RECOMENDAÇÕES DO CHEFE</h1>
 
-            <div class="ConteudoRecomendacoesDoChefe">
+    <div class="ConteudoRecomendacoesDoChefe">
 
-                <div class="carrossel-wrapper">
+        <div class="carrossel-wrapper">
 
-                    @foreach (var item in Model)
-                    {
-                        @if (item.Categoria == "Recomendação do chefe")
-                        {
-                            <div class="item-recomendacao">
-                                <img src="@item.Imagem">
+            @foreach (var item in Model)
+            {
+                @if (item.Categoria == "Recomendação do chefe")
+                {
+                    <div class="item-recomendacao">
+                        <img src="@item.Imagem">
 
-                                <div class="info">
-                                    <div>
-                                        <h2 class="TituloRDC" >@item.Nome</h2>
-                                        <p>@item.Descricao</p>
-                                        <h5 style="margin-top: 10px; font-weight: bold; font-size: 1.5rem; text-align: left;">Ingredientes:</h5>
-                                        <ul style="text-align: left; margin-left: 20px; font-size: 1.25rem; padding-inline-start: 25px;">
-                                            @foreach (var ingrediente in item.HamburguerIgredientes)
-                                            {
-                                                @if (ingrediente.IdIngredienteNavigation != null)
-                                                {
-                                                    <li>@ingrediente.IdIngredienteNavigation.Nome</li>
-                                                }
-                                            }
-                                        </ul>
-                                    </div>
-
-                                    <div class="BotoesRDC">
-                                        @if (SignInManager.IsSignedIn(User))
+                        <div class="info">
+                            <div>
+                                <h2 class="TituloRDC" >@item.Nome</h2>
+                                <p>@item.Descricao</p>
+                                <h5 style="margin-top: 10px; font-weight: bold; font-size: 1.5rem; text-align: left;">Ingredientes:</h5>
+                                <ul style="text-align: left; margin-left: 20px; font-size: 1.25rem; padding-inline-start: 25px;">
+                                    @foreach (var ingrediente in item.HamburguerIgredientes)
+                                    {
+                                        @if (ingrediente.IdIngredienteNavigation != null)
                                         {
-                                            <a class="CartBurguer"
-                                               onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')"
-                                               title="Adicionar ao carrinho"
-                                                style="width: 50%;">
-                                                <img class="cart-icon" src="~/css/Imagens/IconCart.png">
-                                                <span class="cart-text">Adicionar ao carrinho</span>
-                                            </a>
+                                            <li>@ingrediente.IdIngredienteNavigation.Nome</li>
                                         }
-                                        else
-                                        {
-                                            <a class="CartBurguer"
-                                               onclick="mostrarBotaoLogin()"
-                                               title="Adicionar ao carrinho"
-                                               style="width: 50%;">
-                                                <img class="cart-icon" src="~/css/Imagens/IconCart.png">
-                                                <span class="cart-text">Adicionar ao carrinho</span>
-                                            </a>
-                                        }
-
-                                        <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                                           asp-action="Details" asp-route-id="@item.IdHamburguer"
-                                            style="width: 50%; background-color: var(--dark); border-radius: 20px;">
-                                            Saiba Mais
-                                        </a>
-                                    </div>
-                                </div>
+                                    }
+                                </ul>
                             </div>
-                        }
-                    }
-                    
-                </div>
 
-                <button class="prev-slide" onclick="prevSlide()">❮</button>
-                <button class="next-slide" onclick="nextSlide()">❯</button>
-            </div>
-
-        </div>
-
-        <div id="FacaLogin" class="interface">
-
-            <img src="~/css/Imagens/BurguerLogo.png">
-
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <div class="ConteudoFacaLogin">
-                    <h3>Pedido adicionado ao carrinho</h3>
-                    <p>O hamburguer foi adicionado ao carrinho com sucesso!</p>
-                    <div>
-                        <a class="BotaoCriarConta" style="width: 100%; background-color: var(--dark); color: white; text-align: center;" asp-area="" asp-controller="Home" asp-action="Cart">
-                            Acessar carrinho
-                        </a>
-
-                    </div>
-                </div>
-                
-            }
-            else
-            {
-                <div class="ConteudoFacaLogin">
-                    <h3>Quer fazer um pedido?</h3>
-                    <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
-                    <div>
-                        <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
-                            Criar conta
-                        </a>
-                        <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
-                            Login
-                        </a>
-
-                    </div>
-                </div>
-            }
-
-            
-        </div>
-
-        <div class="Content1" id="Cardapio">
-            <h2>CARDAPIO</h2>
-
-                <div id="Cardapio" class="ConteudoContent1" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px;">
-                    @foreach (var item in Model)
-                    {
-                        <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
-                            <img src=@Html.DisplayFor(modelItem => item.Imagem)
-                                 class="ImagemHamburguer"
-                                 onerror="this.src='/css/Imagens/BurguerLogo.png'">
-
-                            <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                                @Html.DisplayFor(modelItem => item.Nome)
-                            </h3>
-                            <p class="DescricaoHamburguer">
-                                @Html.DisplayFor(modelItem => item.Descricao)
-                            </p>
-
-                            <div class="BottomInfoBurguer">
-                                <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
-
-                                <div class="BotoesDoHamburguer">
-                                    @if (SignInManager.IsSignedIn(User))
-                                    {
-                                        <a class="CartBurguer"
-                                           onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
-                                            <img src="~/css/Imagens/IconCart.png">
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a class="CartBurguer" onclick="mostrarBotaoLogin()">
-                                            <img src="~/css/Imagens/IconCart.png">
-                                        </a>
-                                    }
-
-                                    <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                                       asp-action="Details" asp-route-id="@item.IdHamburguer">
-                                        Saiba Mais
+                            <div class="BotoesRDC">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <a class="CartBurguer"
+                                        onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')"
+                                        title="Adicionar ao carrinho"
+                                        style="width: 50%;">
+                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                        <span class="cart-text">Adicionar ao carrinho</span>
                                     </a>
-                                </div>
+                                }
+                                else
+                                {
+                                    <a class="CartBurguer"
+                                        onclick="mostrarBotaoLogin()"
+                                        title="Adicionar ao carrinho"
+                                        style="width: 50%;">
+                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                        <span class="cart-text">Adicionar ao carrinho</span>
+                                    </a>
+                                }
+
+                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                                    asp-action="Details" asp-route-id="@item.IdHamburguer"
+                                    style="width: 50%; background-color: var(--dark); border-radius: 20px;">
+                                    Saiba Mais
+                                </a>
                             </div>
                         </div>
-                    }
-                </div>
-
-            <a>Acesse nosso cardapio completo</a>
+                    </div>
+                }
+            }
+                    
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="~/js/site.js"></script>
+        <button class="prev-slide" onclick="prevSlide()">❮</button>
+        <button class="next-slide" onclick="nextSlide()">❯</button>
+    </div>
+
+</div>
+
+<div id="FacaLogin" class="interface">
+
+    <img src="~/css/Imagens/BurguerLogo.png">
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="ConteudoFacaLogin">
+            <h3>Pedido adicionado ao carrinho</h3>
+            <p>O hamburguer foi adicionado ao carrinho com sucesso!</p>
+            <div>
+                <a class="BotaoCriarConta" style="width: 100%; background-color: var(--dark); color: white; text-align: center;" asp-area="" asp-controller="Home" asp-action="Cart">
+                    Acessar carrinho
+                </a>
+
+            </div>
+        </div>
+                
+    }
+    else
+    {
+        <div class="ConteudoFacaLogin">
+            <h3>Quer fazer um pedido?</h3>
+            <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
+            <div>
+                <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
+                    Criar conta
+                </a>
+                <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
+                    Login
+                </a>
+
+            </div>
+        </div>
+    }
+
+            
+</div>
+
+<div class="Content1" id="Cardapio">
+    <h2>CARDAPIO</h2>
+
+        <div id="Cardapio" class="ConteudoContent1" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px;">
+            @foreach (var item in Model)
+            {
+                <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+                    <img src=@Html.DisplayFor(modelItem => item.Imagem)
+                            class="ImagemHamburguer"
+                            onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+                    <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </h3>
+                    <p class="DescricaoHamburguer">
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </p>
+
+                    <div class="BottomInfoBurguer">
+                        <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+
+                        <div class="BotoesDoHamburguer">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <a class="CartBurguer"
+                                    onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
+                                    <img src="~/css/Imagens/IconCart.png">
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                    <img src="~/css/Imagens/IconCart.png">
+                                </a>
+                            }
+
+                            <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                                asp-action="Details" asp-route-id="@item.IdHamburguer">
+                                Saiba Mais
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    <a>Acesse nosso cardapio completo</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="~/js/site.js"></script>
