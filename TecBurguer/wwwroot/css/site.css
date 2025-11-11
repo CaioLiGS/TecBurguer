@@ -1,12 +1,13 @@
 
 :root {
-    --primary: #E07A5F; /* laranja queimado */
-    --primary-dark: #d45d47;
-    --secondary: #81B29A; /* verde oliva */
-    --secondary-dark: #6d9b85;
-    --accent: #F2CC8F; /* bege areia */
-    --dark: #3D405B; /* marrom café */
-    --light: #FAF3E0; /* branco quente */
+    --primary: #8B2E2E;
+    --primary-dark: #6B1F1F;
+    --secondary: #D4A574;
+    --secondary-dark: #B8935F;
+    --accent: #E8C48A;
+    --dark: #1A1614;
+    --light: #3A3330;
+    --bg: #2C2520;
 }
 
 
