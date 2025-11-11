@@ -19,24 +19,24 @@ namespace TecBurguer.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string categoria)
-        {
-            var hamburgueres = _context.Hamburguers.AsQueryable();
+        //public IActionResult Index(string categoria)
+        //{
+        //    var hamburgueres = _context.Hamburguers.AsQueryable();
 
-            if (!string.IsNullOrEmpty(categoria))
-            {
-                hamburgueres = hamburgueres.Where(h => h.Categoria == categoria);
-            }
+        //    if (!string.IsNullOrEmpty(categoria))
+        //    {
+        //        hamburgueres = hamburgueres.Where(h => h.Categoria == categoria);
+        //    }
 
-            ViewBag.Categorias = _context.Hamburguers
-                                         .Select(h => h.Categoria)
-                                         .Distinct()
-                                         .ToList();
+        //    ViewBag.Categorias = _context.Hamburguers
+        //                                 .Select(h => h.Categoria)
+        //                                 .Distinct()
+        //                                 .ToList();
 
-            ViewBag.CategoriaSelecionada = categoria;
+        //    ViewBag.CategoriaSelecionada = categoria;
 
-            return View(hamburgueres.ToList());
-        }
+        //    return View(hamburgueres.ToList());
+        //}
 
         [Authorize(Roles = "Administrador")]
         // GET: Hamburgueres8

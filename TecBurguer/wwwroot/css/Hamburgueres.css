@@ -9,7 +9,7 @@
     --light-dark: #f6f3eb;
 }
 
-body{
+body {
     margin-top: 15vh;
 }
 
@@ -46,20 +46,20 @@ body{
     text-decoration: none;
 }
 
-.CriarNovoItem img {
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
+    .CriarNovoItem img {
+        width: 100%;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
 
-.CriarNovoItem p{
-    font-size: 100px;
-}
+    .CriarNovoItem p {
+        font-size: 100px;
+    }
 
-.CriarNovoItem:hover {
-    color: var(--dark);
-    transform: translateY(-2%);
-}
+    .CriarNovoItem:hover {
+        color: var(--dark);
+        transform: translateY(-2%);
+    }
 
 .BlocoHamburguer {
     opacity: 1;
@@ -70,9 +70,9 @@ body{
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.BlocoHamburguer img{
-    width: 100%;
-}
+    .BlocoHamburguer img {
+        width: 100%;
+    }
 
 .ForaDeEstoque {
     position: absolute;
@@ -93,7 +93,7 @@ body{
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.row{
+.row {
     background-color: var(--primary);
     border-radius: 20px;
     margin: auto;
@@ -103,7 +103,7 @@ body{
     margin-top: 30px;
 }
 
-form{
+form {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -141,39 +141,39 @@ form{
     width: 100%;
 }
 
-.LinkEArquivo input{
-    border: none;
-    border-bottom: 2px solid var(--primary-dark);
-    width: 100%;
-    background-color: #00000000;
-    color: white;
-    border-radius: 0;
-    transition: border 0.3s ease-in-out;
-}
-
-    .LinkEArquivo input:focus{
-        color: white;
-    }
-
-    .LinkEArquivo input::-webkit-input-placeholder {
-        color: #ffffff7f;
-    }
-
-    .PreencherImagem img {
-        width: 100%;
-        height: 80%;
-        object-fit: cover;
-    }
-
-    .LinkEArquivo input:focus {
+    .LinkEArquivo input {
         border: none;
-        outline: none;
-        box-shadow: none;
-        border-bottom: 5px solid var(--accent);
+        border-bottom: 2px solid var(--primary-dark);
         width: 100%;
         background-color: #00000000;
+        color: white;
         border-radius: 0;
+        transition: border 0.3s ease-in-out;
     }
+
+        .LinkEArquivo input:focus {
+            color: white;
+        }
+
+        .LinkEArquivo input::-webkit-input-placeholder {
+            color: #ffffff7f;
+        }
+
+.PreencherImagem img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+}
+
+.LinkEArquivo input:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-bottom: 5px solid var(--accent);
+    width: 100%;
+    background-color: #00000000;
+    border-radius: 0;
+}
 
 .UploadLabel {
     width: 10%;
@@ -183,7 +183,6 @@ form{
 
     .UploadLabel i {
         font-size: 1.2rem;
-        
     }
 
 .row div form {
@@ -211,22 +210,114 @@ form{
     margin-bottom: 18px;
 }
 
-.form-group input{
+    .form-group input {
+        padding: 10px;
+    }
+
+    .form-group label {
+        position: absolute;
+        font-size: 0.85rem;
+        padding: 0 5px;
+        left: 15px; /* <<< MUDADO DE 10px PARA 15px */
+        top: 18px;
+        transform: translateY(-50%);
+        color: var(--secondary-dark);
+        transition: all 0.25s ease-in-out;
+        pointer-events: none;
+        background-color: transparent;
+    }
+
+
+    .form-group label {
+        position: absolute;
+        font-size: 0.85rem;
+        padding: 0 5px;
+        left: 10px;
+        /* * MUDANÇA PRINCIPAL:
+     * Alinhamos o label exatamente onde o texto vai começar (18px)
+     * e o centralizamos verticalmente nessa linha.
+    */
+        top: 18px;
+        transform: translateY(-50%);
+        color: var(--secondary-dark);
+        transition: all 0.25s ease-in-out;
+        pointer-events: none;
+        background-color: transparent;
+    }
+
+    /* 3. ESTADO "FLUTUANDO" (QUANDO FOCADO OU PREENCHIDO) */
+    /* Esta regra é a mesma de antes, mas é bom confirmar que ela está assim */
+    .form-group input:focus ~ label,
+    .form-group input:not(:placeholder-shown) ~ label,
+    .form-group textarea:focus ~ label,
+    .form-group textarea:not(:placeholder-shown) ~ label {
+        top: 0;
+        transform: translateY(-50%);
+        font-size: 0.75rem;
+        color: var(--dark);
+        background-color: var(--primary); /* Cor de fundo (a mesma do .row) */
+    }
+
+    /* --- INÍCIO DAS MUDANÇAS APLICADAS --- */
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        border: none; /* Adicionei isso para garantir que não haja borda interna */
+        /* * MUDANÇA PRINCIPAL:
+     * Damos mais espaço em cima (18px) para o texto não bater no label.
+     * E menos espaço embaixo (6px) para não ficar muito alto.
+    */
+        padding: 18px 10px 6px 10px;
+        /* ADIÇÕES PARA PERSONALIZAR OS INPUTS */
+        background-color: var(--light); /* Fundo "branco quente" */
+        color: var(--dark); /* Texto "marrom café" */
+        transition: box-shadow 0.3s ease; /* Transição para o foco */
+    }
+
+        /* NOVA REGRA: EFEITO DE FOCO (BRILHO) PARA OS INPUTS */
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none; /* Remove a borda padrão do navegador */
+            /* Adiciona um "brilho" na cor de destaque da paleta */
+            box-shadow: 0 0 0 3px var(--accent);
+        }
+
+
+/* REGRA MODIFICADA: ESTILO DO BOTÃO "CRIAR" (USANDO VARIÁVEIS) */
+#BotaoSubmit {
+    text-align: center;
+    width: 100%;
     padding: 10px;
+    /* Usando as cores da sua paleta */
+    background-color: var(--dark); /* Fundo "marrom café" */
+    color: var(--light); /* Texto "branco quente" */
+
+    border: none;
+    border-radius: 15px; /* Mesmo radius dos inputs */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.form-group label {
-    position: absolute;
-    font-size: 0.85rem;
-    padding: 0 2px;
-    left: 5px !important;
-    top: 30%;
-    transform: none;
-    color: var(--secondary-dark);
-    transition: all 0.25s ease-in-out;
+    /* REGRA MODIFICADA: EFEITO HOVER DO BOTÃO "CRIAR" (USANDO VARIÁVEIS) */
+    #BotaoSubmit:hover {
+        background-color: var(--secondary-dark); /* "Verde escuro" no hover */
+    }
+
+
+/* REGRAS MODIFICADAS: ESTILO DO LINK "VOLTAR À LISTA" (USANDO VARIÁVEIS) */
+/* (Substitui as regras #BotaoSubmit + a) */
+.form-group a {
+    display: block; /* Faz o link pular para a linha de baixo */
+    text-align: center; /* Centraliza o texto */
+    margin-top: 10px; /* Adiciona um espaço acima dele */
+    color: var(--dark); /* Cor "marrom café" */
+    text-decoration: none; /* Remove o sublinhado */
 }
 
-    .form-group input:focus .form-group label,
-    .form-group input:not(:placeholder-shown) .form-group label {
-        top: 10%;
+    .form-group a:hover {
+        text-decoration: underline; /* Adiciona sublinhado no hover */
+        color: var(--light); /* Muda para "branco quente" no hover */
     }
