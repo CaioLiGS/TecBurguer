@@ -156,13 +156,13 @@ header {
     background-color: red;
     border-radius: 500px;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     bottom: 20%;
     left: 50%;
     width: 20px;
     height: 20px;
     text-align: center;
-
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
 
 .dropdown-menu {
