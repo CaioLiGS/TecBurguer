@@ -436,7 +436,7 @@ header {
 
 .DescricaoHamburguer {
     font-size: 0.95rem;
-    color: black;
+    color: white;
     opacity: 0.8;
     text-align: justify;
     margin-bottom: 20px;
@@ -491,7 +491,7 @@ header {
     text-align: center;
     padding: 12px;
     border-radius: 15px;
-    color: var(--light);
+    color: antiquewhite;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
@@ -1092,7 +1092,7 @@ header {
         position: absolute; 
         white-space: nowrap; 
 
-        color: #333;
+        color: #c8b7a4;
         font-weight: bold;
         font-size: 0.9rem;
         
