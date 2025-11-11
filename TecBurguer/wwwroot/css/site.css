@@ -267,12 +267,8 @@ header {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: clamp(7.5rem, 9vw, 12rem);
     letter-spacing: 15px;
-    background-image: url("Imagens/TextoFundo.gif");
     background-size: cover;
     background-position: center;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
 }
 
 .BannerBall1, .BannerBall2 {
