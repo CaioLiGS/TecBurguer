@@ -8,18 +8,30 @@
 @inject DBTecBurguerContext _context
 
 @{
-    int totalItensCarrinho = 0;
+    int cartCount = 0;
     if (SignInManager.IsSignedIn(User))
     {
-        var userEmail = UserManager.GetUserName(User);
 
-        // Busca o pedido ativo (em "Decidindo") do usuário
-        var pedidoAtivo = _context.Pedidos
-            .FirstOrDefault(p => p.IdUsuarioNavigation!.Email == userEmail && p.Estado == "Decidindo");
+        var identityUser = await UserManager.GetUserAsync(User);
 
-        if (pedidoAtivo != null)
+        if (identityUser != null)
         {
-            totalItensCarrinho = pedidoAtivo.PedidoHamburgueres.Count();
+
+            var appUser = _context.Usuarios.FirstOrDefault(u => u.Email == identityUser.Email);
+
+            if (appUser != null)
+            {
+    
+                var pedido = _context.Pedidos
+                                     .Include(p => p.PedidoHamburgueres)
+                                     .FirstOrDefault(p => p.IdUsuario == appUser.IdUsuario && p.Estado == "Decidindo");
+
+                if (pedido != null)
+                {
+                    // 4. A soma da contagem
+                    cartCount = pedido.PedidoHamburgueres.Sum(ph => ph.Quantidade ?? 0);
+                }
+            }
         }
     }
 }
@@ -95,12 +107,13 @@
                         <div class="ContentRight">
                             <div class="Cart">
                                 <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Cart"><img src="~/css/Imagens/IconCart.png"></a>
-                                <p class="QuantCart">
-                                    @if (totalItensCarrinho > 0)
+                                    @if (cartCount != 0)
                                     {
-                                        @totalItensCarrinho
+                                        <p class="QuantCart">
+                                            @cartCount
+                                        </p>
                                     }
-                                </p>
+                                
                             </div>
                             @if (SignInManager.IsSignedIn(User))
                             {

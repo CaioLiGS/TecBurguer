@@ -106,53 +106,25 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
 
                 if (dados.quantidade <= 0) {
                     axios.delete(`/api/pedidohamburgueres/delete/${item.id}`)
-                        .then(res => console.log('Hamburguer removido', res.data))
+                        .then(res => {
+                            CalcularPrecoTotal(item.idPedido)
+                        })
                         .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
                 else {
 
                     axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
-                        .then(res => console.log('Atualizou pedido', res.data))
+                        .then(res => {
+                            CalcularPrecoTotal(item.idPedido)
+                        })
                         .catch(err => console.error('Erro ao atualizar pedido:', err));
                 }
-
-                axios.get('/api/pedidos/listar').then(response => {
-                    const pedidoExistente = response.data.find(p => p.idPedido === item.idPedido);
-                    if (pedidoExistente) {
-                        const novosDados = {
-                            idPedido: pedidoExistente.idPedido,
-                            nome: pedidoExistente.nome,
-                            precoTotal: 0,
-                            estado: pedidoExistente.estado,
-                            idUsuario: pedidoExistente.idUsuario
-                        };
-
-                        axios.get(`/api/pedidohamburgueres/ListarPorPedido/${pedidoExistente.idPedido}`)
-                            .then(response => {
-
-                                precoTotalCalculado = 0
-
-                                response.data.forEach(item => {
-                                    precoTotalCalculado += item.quantidade * item.precoUnitario;
-                                });
-
-                                novosDados.precoTotal = Math.round(precoTotalCalculado * 100) / 100;
-
-                                axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDados)
-                                    .then(res => {
-                                        console.log('Valor Total do Pedido Atualizado:', res.data.precoTotal);
-                                        location.reload();
-                                    })
-                                    .catch(err => console.error('Erro ao atualizar valor:', err));
-                        });
-                    }
-                });
             }
         });
     });
 }
 
-function CalcularPrecoTotal(idPedido, update) {
+function CalcularPrecoTotal(idPedido) {
 
     console.log(idPedido);
 
@@ -173,9 +145,15 @@ function CalcularPrecoTotal(idPedido, update) {
 
             axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
                 .then(res => {
-                    if (update) {
-                        location.reload();
-                    }
+                    location.reload();
+
+                    setTimeout(function () {
+                        document.querySelector('.interface').classList.add('mostrar');
+                    }, 1000);
+
+                    setTimeout(function () {
+                        document.querySelector('.interface').classList.remove('mostrar'); document.querySelector('.interface').classList.remove('mostrar');
+                    }, 4000); 
                 })
                 .catch(err => console.error('Erro ao atualizar valor:', err));
         });
@@ -244,12 +222,6 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = f
 
             if (pedidoExistente) {
                 adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer, update);
-
-                document.querySelector('.interface').classList.add('mostrar');
-
-                setTimeout(function () {
-                    document.querySelector('.interface').classList.remove('mostrar'); document.querySelector('.interface').classList.remove('mostrar');
-                }, 3000); 
 
             } else {
                 adicionarPedidos(nome, preco, idUsuario, idHamburguer);
