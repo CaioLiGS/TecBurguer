@@ -328,7 +328,7 @@ function FinalizarCompra(username, idPedido) {
 
         if (usuarioExistente) {
 
-            if (document.getElementById("cepInput").value != '' && usuarioExistente.cep != null) {
+            if (document.getElementById("cepInput").value != '' && (usuarioExistente.cep != null || usuarioExistente.cep == "")) {
 
                 const dados = {
 
@@ -353,8 +353,9 @@ function FinalizarCompra(username, idPedido) {
 
             console.log(usuarioExistente.cep)
 
-            if (usuarioExistente.cep == null) {
+            if (usuarioExistente.cep == null || usuarioExistente.cep == "") {
                 document.getElementById("PopUpNaoTemCEP").classList.add("Aparecer");
+                console.log('apareceu')
             } else {
                 const novosDados = {
                     estado: "Cozinhando",
@@ -366,6 +367,10 @@ function FinalizarCompra(username, idPedido) {
             }
         }
     });
+}
+
+function FecharPopUp(){
+    document.getElementById("PopUpNaoTemCEP").classList.remove("Aparecer");
 }
 
 /*
