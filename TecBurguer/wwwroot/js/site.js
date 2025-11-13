@@ -126,7 +126,7 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
 
 function CalcularPrecoTotal(idPedido) {
 
-    console.log(idPedido);
+    console.log('Calculando preço total para pedido:', idPedido);
 
     const novosDados = {
         precoTotal: 0,
@@ -134,17 +134,23 @@ function CalcularPrecoTotal(idPedido) {
 
     axios.get(`/api/pedidohamburgueres/ListarPorPedido/${idPedido}`)
         .then(response => {
+            console.log('Items do pedido recebidos:', response.data);
 
-            precoTotalCalculado = 0
+            let precoTotalCalculado = 0;
 
             response.data.forEach(item => {
-                precoTotalCalculado += item.quantidade * item.precoUnitario;
+                const subtotal = (item.quantidade * item.precoUnitario);
+                precoTotalCalculado += subtotal;
+                console.log(`Item: ${item.nomeHamburguer}, Qtd: ${item.quantidade}, Preço Unitário: ${item.precoUnitario}, Subtotal: ${subtotal}`);
             });
 
             novosDados.precoTotal = Math.round(precoTotalCalculado * 100) / 100;
+            
+            console.log('Preço total calculado:', novosDados.precoTotal);
 
             axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
                 .then(res => {
+                    console.log('Pedido atualizado com sucesso');
                     location.reload();
 
                     setTimeout(function () {
@@ -152,10 +158,16 @@ function CalcularPrecoTotal(idPedido) {
                     }, 1000);
 
                     setTimeout(function () {
-                        document.querySelector('.interface').classList.remove('mostrar'); document.querySelector('.interface').classList.remove('mostrar');
+                        document.querySelector('.interface').classList.remove('mostrar');
                     }, 4000); 
                 })
-                .catch(err => console.error('Erro ao atualizar valor:', err));
+                .catch(err => {
+                    console.error('Erro ao atualizar pedido:', err.response?.data || err.message);
+                });
+        })
+        .catch(err => {
+            console.error('Erro ao buscar items do pedido:', err);
+            alert('Erro ao calcular total. Por favor, tente novamente.');
         });
 }
 
@@ -163,71 +175,116 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
     const url = '/api/pedidohamburgueres/create';
     const dados = { IdPedido: idPedido, IdHamburguer: idHamburguer, quantidade: 1 };
 
+    console.log('Iniciando adicionarPedidosHamburgueres:', { idPedido, idHamburguer });
+
     axios.get('/api/pedidohamburgueres/listar').then(response => {
+        console.log('Items do carrinho recebidos:', response.data);
+        
         let criar = true;
 
         response.data.forEach(item => {
 
-            if (idHamburguer == item.idHamburguer) {
+            if (idHamburguer == item.idHamburguer && item.idPedido === idPedido) {
                 criar = false;
                 dados.id = item.id;
                 dados.quantidade = item.quantidade + 1;
 
+                console.log('Item já existe, atualizando quantidade:', dados);
+
                 axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
                     .then(res => {
+                        console.log('Quantidade atualizada com sucesso');
                         CalcularPrecoTotal(idPedido, update);
                     })
-                    .catch(err => console.error('Erro ao atualizar item do pedido:', err));
+                    .catch(err => {
+                        console.error('Erro ao atualizar item do pedido:', err.response?.data || err.message);
+                        alert('Erro ao atualizar item. Por favor, tente novamente.');
+                    });
             }
         });
 
         if (criar) {
+            console.log('Criando novo item:', dados);
+            
             axios.post(url, dados)
                 .then(res => {
+                    console.log('Item criado com sucesso:', res.data);
                     CalcularPrecoTotal(idPedido, update);
                 })
-                .catch(err => console.error('Erro ao criar pedido:', err));
+                .catch(err => {
+                    console.error('Erro ao criar pedido:', err.response?.data || err.message);
+                    alert('Erro ao adicionar item. Por favor, tente novamente.');
+                });
         }
+    }).catch(err => {
+        console.error('Erro ao buscar items do carrinho:', err);
+        alert('Erro ao buscar carrinho. Por favor, tente novamente.');
     });
 }
 
 function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
     const url = '/api/pedidos/create';
+    
     const dados = {
-        nome: `Pedido_${idUsuario}${nome}`,
-        PrecoTotal: preco,
+        nome: `Pedido_${idUsuario}_${nome}`,
+        PrecoTotal: parseFloat(preco),
         estado: "Decidindo",
         IdUsuario: idUsuario
     };
 
+    console.log('Criando novo pedido:', dados);
+
     axios.post(url, dados)
         .then(response => {
-            console.log('Pedido criado', response.data);
+            console.log('Pedido criado com sucesso:', response.data);
             adicionarPedidosHamburgueres(response.data.idPedido, idHamburguer);
         })
-        .catch(err => console.error('Erro ao adicionar pedido:', err));
+        .catch(err => {
+            console.error('Erro ao criar pedido:', err.response?.data || err.message);
+            alert('Erro ao criar pedido. Por favor, tente novamente.');
+        });
 }
 
 function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = false) {
 
+    console.log('Iniciando adicionarAoCarrinho', { nome, preco, idHamburguer, emailUsuario, update });
+
     axios.get('/api/usuarios/listar').then(response => {
+        console.log('Usuários recebidos:', response.data);
+        
         const usuario = response.data.find(u => u.email === emailUsuario);
 
-        if (!usuario) return;
+        if (!usuario) {
+            console.error('Usuário não encontrado com email:', emailUsuario);
+            alert('Erro: Usuário não encontrado');
+            return;
+        }
 
+        console.log('Usuário encontrado:', usuario);
         const idUsuario = usuario.idUsuario;
 
         axios.get('/api/pedidos/listar').then(response => {
+            console.log('Pedidos recebidos:', response.data);
+            
             const pedidoExistente = response.data.find(p => p.idUsuario === idUsuario);
 
             if (pedidoExistente) {
+                console.log('Pedido existente encontrado:', pedidoExistente);
                 adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer, update);
 
             } else {
+                console.log('Nenhum pedido existente, criando novo');
                 adicionarPedidos(nome, preco, idUsuario, idHamburguer);
             }
 
+        }).catch(err => {
+            console.error('Erro ao buscar pedidos:', err);
+            alert('Erro ao buscar pedidos. Por favor, tente novamente.');
         });
+        
+    }).catch(err => {
+        console.error('Erro ao buscar usuários:', err);
+        alert('Erro ao buscar usuários. Por favor, tente novamente.');
     });
 }
 
@@ -316,7 +373,8 @@ function FinalizarCompra(username, idPedido) {
 
                 axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
                     .then(res => {
-                        location.reload();
+                        // Redirecionar para página de confirmação
+                        window.location.href = `/Home/OrderConfirmation/${idPedido}`;
                     })
                     .catch(err => console.error('Erro ao atualizar valor:', err));
 
@@ -334,7 +392,10 @@ function FinalizarCompra(username, idPedido) {
                 };
 
                 axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
-                    .then(res => location.reload())
+                    .then(res => {
+                        // Redirecionar para página de confirmação
+                        window.location.href = `/Home/OrderConfirmation/${idPedido}`;
+                    })
                     .catch(err => console.error('Erro ao atualizar valor:', err));
             }
         }

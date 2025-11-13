@@ -1,4 +1,129 @@
-ï»¿@model IEnumerable<TecBurguer.Models.Hamburguer>
+@model IEnumerable<TecBurguer.Models.Entregador>
 
-<h1>Entregador</h1>
-<p>Perfil do Entregador</p>
+@{
+    ViewData["Title"] = "Entregadores";
+}
+
+<link rel="stylesheet" href="~/css/Entregadores.css">
+
+<div class="entregadores-container">
+    <div class="entregadores-header">
+        <h1>Nossos Entregadores</h1>
+        <p class="subtitle">Conheça nossos profissionais de entrega</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="no-data-message">
+            <p>Nenhum entregador encontrado no momento.</p>
+        </div>
+    }
+    else
+    {
+        <div class="entregadores-grid">
+            @foreach (var entregador in Model)
+            {
+                <div class="entregador-card">
+                    <!-- Header com fundo vermelho -->
+                    <div class="card-header">
+                        <button class="close-btn">×</button>
+                        <p class="objective">Meu objetivo principal é</p>
+                        <h2>realizar entregas rápidas e seguras</h2>
+                    </div>
+
+                    <!-- Conteúdo principal -->
+                    <div class="card-content">
+                        <!-- Avatar e informações básicas -->
+                        <div class="avatar-section">
+                            <div class="avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <h3 class="entregador-nome">@entregador.Nome</h3>
+                            <div class="entregador-meta">
+                                <span class="badge-cargo">
+                                    <i class="fas fa-motorcycle"></i> @(string.IsNullOrEmpty(entregador.Veiculo) ? "Motociclista" : entregador.Veiculo)
+                                </span>
+                                @if (entregador.IdPedidoNavigation != null)
+                                {
+                                    <span class="badge-status status-ocupado">
+                                        <i class="fas fa-clock"></i> Em entrega
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge-status status-disponivel">
+                                        <i class="fas fa-check-circle"></i> Disponível
+                                    </span>
+                                }
+                            </div>
+
+                            <!-- Avaliação e números -->
+                            <div class="stats-section">
+                                <div class="stat-box">
+                                    <span class="stat-number">@entregador.Avaliacao</span>
+                                    <span class="stat-label">
+                                        <i class="fas fa-star"></i> Avaliação
+                                    </span>
+                                </div>
+                                <div class="stat-divider"></div>
+                                <div class="stat-box">
+                                    <span class="stat-number">@(entregador.IdPedidoNavigation?.IdPedido ?? 0)</span>
+                                    <span class="stat-label">
+                                        <i class="fas fa-box"></i> Entregas
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Interesses/Skills -->
+                            <div class="interests-section">
+                                <p class="interests-title">Suas habilidades</p>
+                                <div class="interests-list">
+                                    <span class="interest-tag">
+                                        <i class="fas fa-clock"></i> Entrega Rápida
+                                    </span>
+                                    <span class="interest-tag">
+                                        <i class="fas fa-map"></i> Navegação
+                                    </span>
+                                    <span class="interest-tag">
+                                        <i class="fas fa-shield-alt"></i> Segurança
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Descrição -->
+                            <div class="description-section">
+                                <p class="description-title">Status do Pedido Atual</p>
+                                @if (entregador.IdPedidoNavigation != null)
+                                {
+                                    <p class="description-text">
+                                        Pedido #@entregador.IdPedidoNavigation.IdPedido - 
+                                        @entregador.IdPedidoNavigation.Estado
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="description-text">
+                                        Pronto para realizar a próxima entrega!
+                                    </p>
+                                }
+                            </div>
+
+                            <!-- Botões de ação -->
+                            <div class="action-buttons">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-phone"></i> Contatar
+                                </button>
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-eye"></i> Perfil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

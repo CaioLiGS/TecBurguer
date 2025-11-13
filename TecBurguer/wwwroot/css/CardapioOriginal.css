@@ -1,0 +1,605 @@
+/* ========================================
+   CARDÁPIO - ESTILIZAÇÃO ORIGINAL COM RESPONSIVIDADE DE BOTÕES
+   ======================================== */
+
+.BarraPesquisa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 140px;
+    margin-bottom: 30px;
+    gap: 15px;
+    margin-left: 200px;
+    width: calc(100% - 200px);
+}
+
+.BarraPesquisa input {
+    width: 360px;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 2px solid #ffcc00;
+    background-color: #fffdf5;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    color: #3D405B;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.BarraPesquisa input::placeholder {
+    color: #3D405B;
+    opacity: 0.6;
+}
+
+.BarraPesquisa input:focus {
+    border-color: #40210f;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    color: #3D405B;
+}
+
+.MenuCategoria {
+    position: fixed;
+    top: 120px;
+    left: 0;
+    height: calc(100vh - 120px);
+    width: 200px;
+    display: block;
+    padding: 20px 0;
+    margin: 0;
+    background-color: #f7f7f7;
+    border-bottom: none;
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    border-left: 5px solid #ffaa00;
+    overflow-y: auto;
+}
+
+.MenuCategoria::-webkit-scrollbar {
+    width: 6px;
+}
+
+.MenuCategoria::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.MenuCategoria::-webkit-scrollbar-thumb {
+    background: #ffaa00;
+    border-radius: 3px;
+}
+
+.LinkCategoria {
+    text-decoration: none;
+    color: #000;
+    font-weight: 700;
+    display: block;
+    border-left: 5px solid transparent;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.LinkCategoria:hover,
+.LinkCategoria.ativo {
+    background-color: #ffcc00;
+    color: #000;
+    box-shadow: none;
+    border-left: 5px solid #40210f;
+    padding: 10px 15px;
+}
+
+.LinkCategoria.ativo {
+    background-color: #ffaa00;
+    border-left-color: #40210f !important;
+    color: #000;
+    padding: 10px 15px;
+}
+
+.TituloCategoria {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    border-bottom: 3px solid #ffcc00;
+    display: inline-block;
+    margin-left: 220px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.ContainerCategoria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 60px;
+    margin-left: 220px;
+    width: calc(100% - 240px);
+    color: #000;
+}
+
+.Conteudo {
+    display: flex;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px;
+    margin: 0;
+    color: #fff;
+}
+
+.BlocoHamburguer {
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 250px;
+    width: 250px;
+    background: linear-gradient(135deg, #E07A5F, #d45d47);
+    border-radius: 8px;
+    padding: 0;
+    overflow: visible;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.BlocoHamburguer:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.ImagemHamburguer {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    flex-shrink: 0;
+    border-radius: 8px 8px 0 0;
+}
+
+.TituloHamburguer {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 10px 10px 5px 10px;
+    text-align: center;
+    min-height: 2.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 1.3;
+}
+
+.DescricaoHamburguer {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 5px 10px;
+    text-align: center;
+    line-height: 1.3;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.BottomInfoBurguer {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.PrecoBurguer {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #F2CC8F;
+    text-align: center;
+    margin: 0;
+    padding: 5px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.BotoesDoHamburguer {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    min-height: 44px;
+    width: 100%;
+}
+
+.CartBurguer {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.CartBurguer:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.CartBurguer:active {
+    transform: scale(0.95);
+}
+
+.CartBurguer img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.SaibaMaisHamburguer {
+    flex: 1 1 auto;
+    min-width: 80px;
+    height: 44px;
+    padding: 0 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.SaibaMaisHamburguer:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.SaibaMaisHamburguer:active {
+    transform: translateY(0);
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 1200px) {
+    .BarraPesquisa {
+        margin-left: 150px;
+        width: calc(100% - 150px);
+    }
+
+    .MenuCategoria {
+        width: 150px;
+    }
+
+    .TituloCategoria {
+        margin-left: 170px;
+    }
+
+    .ContainerCategoria {
+        margin-left: 170px;
+        width: calc(100% - 190px);
+    }
+
+    .BlocoHamburguer {
+        width: 230px;
+        flex: 0 0 230px;
+    }
+
+    .DescricaoHamburguer {
+        min-height: 65px;
+    }
+}
+
+@media (max-width: 992px) {
+    .BarraPesquisa {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 100px;
+        margin-bottom: 20px;
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+
+    .BarraPesquisa input {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .MenuCategoria {
+        position: static;
+        height: auto;
+        width: 100%;
+        border-left: none;
+        border-bottom: 3px solid #ffaa00;
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        gap: 5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .LinkCategoria {
+        flex-shrink: 0;
+        padding: 8px 12px;
+        border-left: none;
+        border-radius: 4px 4px 0 0;
+        white-space: nowrap;
+        font-size: 13px;
+    }
+
+    .LinkCategoria:hover,
+    .LinkCategoria.ativo {
+        border-left: none;
+        border-bottom: 3px solid #ffaa00;
+        border-radius: 0;
+    }
+
+    .TituloCategoria {
+        margin-left: 15px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+    }
+
+    .ContainerCategoria {
+        margin-left: 15px;
+        margin-right: 15px;
+        width: calc(100% - 30px);
+        justify-content: center;
+    }
+
+    .BlocoHamburguer {
+        width: 240px;
+        flex: 0 0 240px;
+    }
+
+    .DescricaoHamburguer {
+        min-height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .BarraPesquisa {
+        margin-top: 80px;
+        padding: 15px 12px;
+    }
+
+    .BarraPesquisa input {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .TituloCategoria {
+        margin-left: 12px;
+        font-size: 1.3rem;
+    }
+
+    .ContainerCategoria {
+        margin-left: 12px;
+        margin-right: 12px;
+        width: calc(100% - 24px);
+        gap: 15px;
+    }
+
+    .BlocoHamburguer {
+        width: 180px;
+        flex: 0 0 180px;
+    }
+
+    .ImagemHamburguer {
+        height: 150px;
+    }
+
+    .TituloHamburguer {
+        font-size: 1rem;
+        margin: 8px;
+        min-height: 2em;
+    }
+
+    .DescricaoHamburguer {
+        font-size: 0.7rem;
+        margin: 3px 6px;
+        min-height: 55px;
+    }
+
+    .BotoesDoHamburguer {
+        gap: 6px;
+        min-height: 40px;
+    }
+
+    .CartBurguer {
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        padding: 0;
+    }
+
+    .CartBurguer img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .SaibaMaisHamburguer {
+        height: 40px;
+        min-height: 40px;
+        padding: 0 10px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .BarraPesquisa {
+        margin-top: 70px;
+        padding: 12px 10px;
+        margin-bottom: 15px;
+    }
+
+    .BarraPesquisa input {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px 15px;
+        font-size: 16px;
+    }
+
+    .TituloCategoria {
+        margin-left: 10px;
+        margin-top: 15px;
+        font-size: 1.1rem;
+    }
+
+    .ContainerCategoria {
+        margin-left: 10px;
+        margin-right: 10px;
+        width: calc(100% - 20px);
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .BlocoHamburguer {
+        width: 160px;
+        flex: 0 0 160px;
+    }
+
+    .ImagemHamburguer {
+        height: 130px;
+    }
+
+    .TituloHamburguer {
+        font-size: 0.9rem;
+        margin: 6px;
+        min-height: 1.8em;
+    }
+
+    .DescricaoHamburguer {
+        font-size: 0.65rem;
+        margin: 3px 6px;
+        min-height: 50px;
+    }
+
+    .PrecoBurguer {
+        font-size: 1.1rem;
+        margin: 0;
+        padding: 4px 0;
+    }
+
+    .BottomInfoBurguer {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .BotoesDoHamburguer {
+        gap: 5px;
+        min-height: 36px;
+        flex-wrap: nowrap;
+    }
+
+    .CartBurguer {
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0;
+        border-radius: 4px;
+    }
+
+    .CartBurguer img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .SaibaMaisHamburguer {
+        height: 36px;
+        min-height: 36px;
+        padding: 0 8px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        flex: 1 1 auto;
+        min-width: 60px;
+    }
+}
+
+@media (max-width: 360px) {
+    .BarraPesquisa input {
+        width: 100%;
+    }
+
+    .ContainerCategoria {
+        margin-left: 8px;
+        margin-right: 8px;
+        width: calc(100% - 16px);
+        gap: 10px;
+    }
+
+    .BlocoHamburguer {
+        width: 100%;
+        max-width: 150px;
+        flex: 0 0 150px;
+    }
+
+    .BotoesDoHamburguer {
+        flex-wrap: nowrap;
+    }
+
+    .DescricaoHamburguer {
+        font-size: 0.6rem;
+        min-height: 45px;
+    }
+}
+
+/* ========================================
+   ACESSIBILIDADE
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .BlocoHamburguer,
+    .LinkCategoria,
+    .BarraPesquisa input,
+    .CartBurguer,
+    .SaibaMaisHamburguer {
+        transition: none;
+    }
+}
+
+.BlocoHamburguer:focus,
+.LinkCategoria:focus,
+.CartBurguer:focus,
+.SaibaMaisHamburguer:focus {
+    outline: 3px solid #E07A5F;
+    outline-offset: 2px;
+}
