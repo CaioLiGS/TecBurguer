@@ -16,25 +16,27 @@
         width: calc(100% - 200px);
     }
 
-        .BarraPesquisa input {
-            width: 360px;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 2px solid #ffcc00;
-            background-color: #fffdf5;
-            font-size: 1rem;
-            text-align: center;
-            outline: none;
-            color: #40210f;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
+    .BarraPesquisa input {
+        width: 360px;
+        padding: 12px 20px;
+        border-radius: 25px;
+        border: 2px solid #ffcc00;
+        background-color: #fffdf5;
+        font-size: 1rem;
+        text-align: center;
+        outline: none;
+        color: white; /* ← Letras brancas */
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
 
-            .BarraPesquisa input:focus {
-                border-color: #40210f;
-                background-color: #fff;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            }
+    .BarraPesquisa input:focus {
+        border-color: #40210f;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        color: black; /* ← mantém branco */
+    }
+
     .MenuCategoria {
         position: fixed;
         top: 120px;
@@ -50,37 +52,36 @@
         z-index: 100;
         border-left: 5px solid #ffaa00;
     }
+
     .LinkCategoria {
         text-decoration: none;
-        color: #40210f;
+        color: Black; /* ← branco */
         font-weight: 700;
         display: block;
         border-left: 5px solid transparent;
         padding: 10px 15px;
-        border-radius: 0;
-        border-right: none;
-        border-top: none;
-        border-bottom: none;
         transition: all 0.3s ease;
     }
 
-        .LinkCategoria:hover, .LinkCategoria.ativo {
-            background-color: #ffcc00;
-            color: #40210f;
-            box-shadow: none;
-            border-left: 5px solid #40210f;
-            padding: 10px 15px;
-        }
+    .LinkCategoria:hover, .LinkCategoria.ativo {
+        background-color: #ffcc00;
+        color: black;
+        box-shadow: none;
+        border-left: 5px solid #40210f;
+        padding: 10px 15px;
+    }
 
-        .LinkCategoria.ativo {
-            background-color: #ffaa00;
-            border-left-color: #40210f !important;
-            padding: 10px 15px;
-        }
+    .LinkCategoria.ativo {
+        background-color: #ffaa00;
+        border-left-color: #40210f !important;
+        color: black;
+        padding: 10px 15px;
+    }
+
     .TituloCategoria {
         font-size: 1.8rem;
         font-weight: 900;
-        color: #40210f;
+        color: white;
         text-transform: uppercase;
         border-bottom: 3px solid #ffcc00;
         display: inline-block;
@@ -96,7 +97,8 @@
         justify-content: flex-start;
         margin-bottom: 60px;
         margin-left: 220px;
-        width: calc(100% - 240px); 
+        width: calc(100% - 240px);
+        color: black;
     }
 
     .Conteudo {
@@ -107,13 +109,16 @@
         gap: 10px;
         padding: 10px;
         margin: 0;
+        color: white; /* ← branco */
     }
 
     .BlocoHamburguer {
         opacity: 1;
         display: block;
+        color: white; /* ← texto dentro branco */
     }
 </style>
+
 
 <div class="BarraPesquisa">
     <input type="text" id="pesquisa" placeholder="Pesquisar hambúrguer...">
