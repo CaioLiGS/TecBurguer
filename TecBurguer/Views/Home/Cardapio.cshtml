@@ -4,27 +4,138 @@
 @inject UserManager<LoginCliente> UserManager
 @inject SignInManager<LoginCliente> SignInManager
 
-<link rel="stylesheet" href="~/css/CardapioOriginal.css" asp-append-version="true">
+<style>
+    .BarraPesquisa {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 140px;
+        margin-bottom: 30px;
+        gap: 15px;
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+
+    .BarraPesquisa input {
+        width: 360px;
+        padding: 12px 20px;
+        border-radius: 25px;
+        border: 2px solid #ffcc00;
+        background-color: #fffdf5;
+        font-size: 1rem;
+        text-align: center;
+        outline: none;
+        color: white;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    .BarraPesquisa input:focus {
+        border-color: #40210f;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        color: black;
+    }
+
+    .MenuCategoria {
+        position: fixed;
+        top: 120px;
+        left: 0;
+        height: calc(100vh - 120px);
+        width: 200px;
+        display: block;
+        padding: 20px 0;
+        margin: 0;
+        background-color: #f7f7f7;
+        border-bottom: none;
+        box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        border-left: 5px solid #ffaa00;
+    }
+
+    .LinkCategoria {
+        text-decoration: none;
+        color: Black;
+        font-weight: 700;
+        display: block;
+        border-left: 5px solid transparent;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .LinkCategoria:hover, .LinkCategoria.ativo {
+        background-color: #ffcc00;
+        color: black;
+        box-shadow: none;
+        border-left: 5px solid #40210f;
+        padding: 10px 15px;
+    }
+
+    .LinkCategoria.ativo {
+        background-color: #ffaa00;
+        border-left-color: #40210f !important;
+        color: black;
+        padding: 10px 15px;
+    }
+
+    .TituloCategoria {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: white;
+        text-transform: uppercase;
+        border-bottom: 3px solid #ffcc00;
+        display: inline-block;
+        margin-left: 220px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+    .ContainerCategoria {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: flex-start;
+        margin-bottom: 60px;
+        margin-left: 220px;
+        width: calc(100% - 240px);
+        color: black;
+    }
+
+    .Conteudo {
+        display: flex;
+        flex-wrap: wrap;
+        width: auto;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 10px;
+        margin: 0;
+        color: white;
+    }
+
+    .BlocoHamburguer {
+        opacity: 1;
+        display: block;
+        color: white;
+    }
+</style>
+
 
 <div class="BarraPesquisa">
     <input type="text" id="pesquisa" placeholder="Pesquisar hambúrguer...">
 </div>
 
 @{
-    var categorias = Model.Select(h => h.Categoria)
+    var categorias = Model.Select(h => h.Categoria)
                           .Distinct()
                           .Where(c => c != "Todos")
                           .ToList();
-    categorias.Insert(0, "Todos");
+    categorias.Insert(0, "Todos");
 }
 
 <div class="MenuCategoria">
     @foreach (var categoria in categorias)
     {
-        <a href="#" 
-           class="LinkCategoria" 
-           data-categoria="@categoria.Replace(" ", "-")"
-           title="Filtrar por @categoria">
+        <a href="#" class="LinkCategoria" data-categoria="@categoria.Replace(" ", "-")">
             @categoria
         </a>
     }
@@ -37,49 +148,43 @@
     <div class="ContainerCategoria" data-categoria-container="@grupo.Key.Replace(" ", "-")">
         @foreach (var item in grupo)
         {
-            <div class="BlocoHamburguer" data-categoria-item="@item.Categoria.Replace(" ", "-")">
+            <div class="BlocoHamburguer" data-categoria-item="@item.Categoria.Replace(" ", "-")" style="flex: 0 0 auto; width: 250px;">
                 <img src="@Html.DisplayFor(modelItem => item.Imagem)"
-                     class="ImagemHamburguer"
-                     alt="@item.Nome"
-                     onerror="this.src='/css/Imagens/BurguerLogo.png'">
+                                class="ImagemHamburguer"
+                                onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+                <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </h3>
+
+                <p class="DescricaoHamburguer">
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </p>
 
                 <div class="BottomInfoBurguer">
-                    <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </h3>
-
-                    <p class="DescricaoHamburguer">
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </p>
-
                     <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">
-                        R$ @string.Format("{0:0.00}", item.Preco)
+                        R$ @item.Preco
                     </h4>
 
                     <div class="BotoesDoHamburguer">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <button class="CartBurguer"
-                                    onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, @item.IdHamburguer, '@User.Identity.Name')"
-                                    title="Adicionar ao carrinho"
-                                    type="button">
-                                <img src="~/css/Imagens/IconCart.png" alt="Carrinho">
-                            </button>
+                            <a class="CartBurguer"
+                                               onclick="adicionarAoCarrinho(@item.IdHamburguer, '@UserManager.GetUserName(User)')">
+                                <img src="~/css/Imagens/IconCart.png">
+                            </a>
                         }
                         else
                         {
-                            <button class="CartBurguer" 
-                                    onclick="mostrarBotaoLogin()" 
-                                    title="Faça login para adicionar" 
-                                    type="button">
-                                <img src="~/css/Imagens/IconCart.png" alt="Carrinho">
-                            </button>
+                            <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                <img src="~/css/Imagens/IconCart.png">
+                            </a>
                         }
 
                         <a class="SaibaMaisHamburguer"
-                           asp-controller="Hamburgueres"
-                           asp-action="Details"
-                           asp-route-id="@item.IdHamburguer">
+                                         asp-controller="Hamburgueres"
+                                         asp-action="Details"
+                                         asp-route-id="@item.IdHamburguer">
                             Saiba Mais
                         </a>
                     </div>
@@ -101,11 +206,10 @@
             const container = document.querySelector(`[data-categoria-container='${titulo.id.replace('Categoria_', '')}']`);
             if (container) {
                 const blocosVisiveis = container.querySelectorAll('.BlocoHamburguer:not([style*="display: none"])');
-                titulo.style.display = blocosVisiveis.length > 0 ? 'block' : 'none';
+                titulo.style.display = blocosVisiveis.length > 0 ? 'inline-block' : 'none';
             }
         });
     });
-
     document.addEventListener('DOMContentLoaded', function () {
         const linksCategoria = document.querySelectorAll('.LinkCategoria');
         const todosOsBlocos = document.querySelectorAll('.BlocoHamburguer');
@@ -123,21 +227,20 @@
             });
 
             if (categoriaAlvo === 'Todos') {
-                todosOsTitulos.forEach(titulo => titulo.style.display = 'block');
+                todosOsTitulos.forEach(titulo => titulo.style.display = 'inline-block');
                 todosOsBlocos.forEach(bloco => bloco.style.display = 'block');
             } else {
                 document.getElementById('pesquisa').value = '';
                 const tituloAlvo = document.getElementById(`Categoria_${categoriaAlvo}`);
                 if (tituloAlvo) {
-                    tituloAlvo.style.display = 'block';
+                    tituloAlvo.style.display = 'inline-block';
                 }
 
                 document.querySelectorAll(`[data-categoria-item='${categoriaAlvo}']`).forEach(bloco => {
                     bloco.style.display = 'block';
                 });
             }
-            
-            const primeiroTituloVisivel = document.querySelector('.TituloCategoria[style*="block"]');
+            const primeiroTituloVisivel = document.querySelector('.TituloCategoria[style*="inline-block"]');
             if (primeiroTituloVisivel) {
                 primeiroTituloVisivel.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
@@ -150,7 +253,6 @@
                 filtrarPorCategoria(categoria);
             });
         });
-
         filtrarPorCategoria('Todos');
     });
 </script>
