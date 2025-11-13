@@ -8,6 +8,8 @@
 
 @{
     ViewData["Title"] = "Home Page";
+
+    var ofertasAtivas = ViewData["OfertasAtivas"] as IEnumerable<TecBurguer.Models.Ofertas>;
 }
 
 <style>
@@ -55,7 +57,7 @@
         var imagens = [
             @foreach (var item in Model)
             {
-                    @: "@Html.DisplayFor(modelItem => item.Imagem)",
+                @: "@Html.DisplayFor(modelItem => item.Imagem)",
             }
         ];
 
@@ -105,6 +107,65 @@
 
 <div class="Content1" id="OfertasDiarias">
     <h2 class="OfertasDiariasTitle">OFERTAS DO DIA</h2>
+
+    @if (ofertasAtivas != null && ofertasAtivas.Any())
+    {
+        @foreach (var oferta in ofertasAtivas)
+        {
+            // Pula este item se, por algum motivo, o hambúrguer relacionado for nulo
+            if (oferta.idHamburguerNavigation == null) { continue; }
+
+            // 'item' aqui é o Hamburguer que está dentro da Oferta
+            var item = oferta.idHamburguerNavigation;
+
+            <div class="BlocoHamburguer" style="flex: 0 0 auto; width: 250px;">
+                <img src=@Html.DisplayFor(modelItem => item.Imagem)
+                     class="ImagemHamburguer"
+                     onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+                <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </h3>
+                <p class="DescricaoHamburguer">
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </p>
+
+                <div class="BottomInfoBurguer">
+                    <h4 class="PrecoBurguer" style="text-decoration: line-through; color: #aaa; font-size: 0.9rem; font-weight: 500;">
+                        R$ @item.Preco
+                    </h4>
+                    <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
+
+                    <div class="BotoesDoHamburguer">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a class="CartBurguer"
+                               onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
+                                <img src="~/css/Imagens/IconCart.png">
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                <img src="~/css/Imagens/IconCart.png">
+                            </a>
+                        }
+
+                        <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                           asp-action="Details" asp-route-id="@item.IdHamburguer">
+                            Saiba Mais
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p style="text-align: center; color: white; width: 100%; font-size: 1.1rem;">
+            Que pena! Nenhuma oferta ativa no momento. 😥
+        </p>
+    }
 
 </div>
 

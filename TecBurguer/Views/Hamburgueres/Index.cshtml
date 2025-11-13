@@ -18,6 +18,12 @@
                 {
                     <div class="BlocoHamburguer">
 
+                        <button class="adicionarButton">
+                            <a asp-controller="Ofertas"
+                               asp-action="Create"
+                               asp-route-hamburguerId="@item.IdHamburguer">Adicionar Oferta</a>
+                        </button>
+
                         <img src=@Html.DisplayFor(modelItem => item.Imagem)
                              class="ImagemHamburguer"
                              onerror="this.src='/css/Imagens/BurguerLogo.png'">

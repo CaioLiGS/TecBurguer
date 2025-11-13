@@ -1,0 +1,112 @@
+﻿@model TecBurguer.Models.Ofertas
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Ofertas</h4>
+<hr />
+
+<link href="~/css/Ofertas.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="idHamburguer" class="control-label">Hamburguer</label>
+                <select asp-for="idHamburguer" class ="form-control" asp-items="ViewBag.idHamburguer" onreadystatechange="readOnly"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="dataTermino" class="control-label">Data fim</label>
+                <input asp-for="dataTermino" class="form-control"/>
+                <span asp-validation-for="dataTermino" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="precoFinal" class="control-label">Preço final</label>
+                <input id="PrecoFinal" asp-for="precoFinal"
+                       class="form-control"
+                       placeholder="Preço atual: R$ --.--" /> <span asp-validation-for="precoFinal" class="text-danger"></span>
+                <span asp-validation-for="precoFinal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="porcentagem" class="control-label">Porcentagem</label>
+                <input id="PorcentagemOferta" asp-for="porcentagem" class="form-control" />
+                <span asp-validation-for="porcentagem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        var preco = 0;
+
+        $(document).ready(function() {
+
+            // 1. Pega o JSON de preços que enviamos do Controller
+            var precos = @Html.Raw(ViewData["PrecosHamburgueres"]);
+
+            // 2. Pega os elementos do formulário
+            var $dropdown = $('#idHamburguer');
+            var $inputPreco = $('#PrecoFinal');
+
+            // 3. Uma função para atualizar o placeholder
+            function atualizarPlaceholder() {
+                var idSelecionado = $dropdown.val();
+
+                if (idSelecionado && precos[idSelecionado]) {
+                    preco = precos[idSelecionado]; 
+
+                    $inputPreco.attr('placeholder', 'Preço atual: ' + preco);
+                } else {
+                    // Se for o "-- Selecione --"
+                    $inputPreco.attr('placeholder', 'Preço atual: R$ --.--');
+                }
+            }
+
+            // 4. Executa a função quando o dropdown mudar
+            $dropdown.on('change', function() {
+                atualizarPlaceholder();
+            });
+
+            // 5. Executa a função agora (caso um item já venha pré-selecionado)
+            atualizarPlaceholder();
+
+        });
+
+        $(document.getElementById("PrecoFinal")).blur(function(){
+
+            if(document.getElementById("PrecoFinal").value == ""){
+                document.getElementById("PorcentagemOferta").value = "";
+                document.getElementById("PorcentagemOferta").readOnly = false;
+            }
+            else{
+                document.getElementById("PorcentagemOferta").value = (100 - document.getElementById("PrecoFinal").value / preco * 100).toFixed(2) + "%";
+                document.getElementById("PorcentagemOferta").readOnly = true;
+            }
+            
+        });
+
+        $(document.getElementById("PorcentagemOferta")).blur(function(){
+
+            if(document.getElementById("PorcentagemOferta").value == ""){
+                document.getElementById("PrecoFinal").value = "";
+                document.getElementById("PrecoFinal").readOnly = false;
+            }
+            else{
+                document.getElementById("PrecoFinal").value = (preco - preco * document.getElementById("PorcentagemOferta").value / 100).toFixed(2);
+                document.getElementById("PrecoFinal").readOnly = true;
+            }
+
+        });
+
+
+    </script>
+}

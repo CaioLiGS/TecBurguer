@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using TecBurguer.Models;
 
 namespace TecBurguer.Models
 {
@@ -22,6 +23,7 @@ namespace TecBurguer.Models
         public virtual DbSet<HamburguerIgrediente> HamburguerIgredientes { get; set; } = null!;
         public virtual DbSet<Ingrediente> Ingredientes { get; set; } = null!;
         public virtual DbSet<Pedido> Pedidos { get; set; } = null!;
+        public virtual DbSet<Ofertas> Ofertas { get; set; } = null!;
         public virtual DbSet<PedidoHamburguer> PedidoHamburgueres { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
@@ -169,6 +171,21 @@ namespace TecBurguer.Models
                     .HasConstraintName("FK__PedidoHam__IdPed__5441852A");
 
                 entity.Property(e => e.Quantidade).HasColumnType("int");
+            });
+
+            modelBuilder.Entity<Ofertas>(entity =>
+            {
+                entity.ToTable("Ofertas");
+
+                entity.Property(e => e.dataTermino).HasColumnType("dateTime");
+
+                entity.Property(e => e.precoFinal).HasColumnType("numeric(18, 2)");
+                entity.Property(e => e.porcentagem).HasColumnType("numeric(4, 2)");
+
+                entity.HasOne(d => d.idHamburguerNavigation)
+                    .WithMany(p => p.Ofertas)
+                    .HasForeignKey(d => d.idHamburguer)
+                    .HasConstraintName("FK__OfertHam__IdHam__5070F446");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
