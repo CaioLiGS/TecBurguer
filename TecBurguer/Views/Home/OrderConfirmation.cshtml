@@ -1,0 +1,123 @@
+@using Microsoft.AspNetCore.Identity
+@using TecBurguer.Areas.Identity.Data
+
+@model TecBurguer.Models.Pedido
+
+@inject UserManager<LoginCliente> UserManager
+@inject SignInManager<LoginCliente> SignInManager
+
+@{
+    ViewData["Title"] = "Confirmação do Pedido";
+}
+
+<link rel="stylesheet" href="~/css/OrderConfirmation.css">
+
+<div class="order-confirmation-container">
+    <div class="confirmation-card">
+        <!-- Ícone de sucesso animado -->
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+
+        <!-- Mensagem principal -->
+        <div class="confirmation-message">
+            <h1>Pedido Confirmado!</h1>
+            <p class="status-message">Seu pedido está sendo preparado, por favor aguarde.</p>
+            <p class="order-number">Pedido #@Model.IdPedido</p>
+        </div>
+
+        <!-- Informações do pedido -->
+        <div class="order-details">
+            <div class="order-info-item">
+                <span class="label">Total do Pedido:</span>
+                <span class="value">R$ @Model.PrecoTotal</span>
+            </div>
+            <div class="order-info-item">
+                <span class="label">Status:</span>
+                <span class="value status-badge">@Model.Estado</span>
+            </div>
+        </div>
+
+        <!-- Dropdown de produtos -->
+        <div class="products-section">
+            <div class="dropdown-header" onclick="toggleProductsDropdown()">
+                <h3>
+                    <i class="fas fa-chevron-down chevron-icon" id="chevron-icon"></i>
+                    Itens do Pedido
+                    <span class="item-count">(@Model.PedidoHamburgueres.Count)</span>
+                </h3>
+            </div>
+
+            <div class="products-dropdown" id="products-dropdown">
+                @if (Model.PedidoHamburgueres.Any())
+                {
+                    <div class="products-list">
+                        @foreach (var item in Model.PedidoHamburgueres)
+                        {
+                            var preco = item.IdHamburguerNavigation?.Preco ?? 0;
+                            var subtotal = item.Quantidade * preco;
+
+                            <div class="product-item">
+                                <div class="product-header">
+                                    <div class="product-info">
+                                        <h5>@item.IdHamburguerNavigation?.Nome</h5>
+                                        <p class="product-quantity">Quantidade: <strong>@item.Quantidade</strong></p>
+                                    </div>
+                                    <div class="product-price">
+                                        <span class="unit-price">R$ @preco</span>
+                                    </div>
+                                </div>
+                                <div class="product-subtotal">
+                                    <span>Subtotal:</span>
+                                    <strong>R$ @subtotal</strong>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-products">
+                        <p>Nenhum produto neste pedido.</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Animação de carregamento -->
+        <div class="loading-animation">
+            <div class="spinner">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p>Preparando seu pedido...</p>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="action-buttons">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Voltar para o Cardápio</a>
+            <a href="@Url.Action("Cart", "Home")" class="btn btn-secondary">Meu Carrinho</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleProductsDropdown() {
+        const dropdown = document.getElementById('products-dropdown');
+        const chevron = document.getElementById('chevron-icon');
+        
+        dropdown.classList.toggle('open');
+        chevron.classList.toggle('rotated');
+    }
+
+    // Auto-open dropdown ao carregar a página
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdown = document.getElementById('products-dropdown');
+        const chevron = document.getElementById('chevron-icon');
+        
+        dropdown.classList.add('open');
+        chevron.classList.add('rotated');
+    });
+</script>

@@ -1,0 +1,482 @@
+/* ==========================================
+   ESTILOS GERAIS
+   ========================================== */
+
+.entregadores-container {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+    min-height: 100vh;
+}
+
+.entregadores-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: slideDown 0.6s ease-out;
+}
+
+.entregadores-header h1 {
+    font-size: 2.5rem;
+    color: #e74c3c;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.entregadores-header .subtitle {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    font-weight: 300;
+}
+
+/* ==========================================
+   GRID DE CARDS
+   ========================================== */
+
+.entregadores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+/* ==========================================
+   CARD DE ENTREGADOR
+   ========================================== */
+
+.entregador-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    animation: slideUp 0.6s ease-out;
+}
+
+.entregador-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+/* ==========================================
+   CARD HEADER (VERMELHO)
+   ========================================== */
+
+.card-header {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    padding: 30px 20px;
+    position: relative;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(50%, -30%);
+    z-index: 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s ease;
+    z-index: 10;
+}
+
+.close-btn:hover {
+    transform: scale(1.2);
+}
+
+.card-header .objective {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 5px 0;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+}
+
+.card-header h2 {
+    font-size: 1.15rem;
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.3;
+    position: relative;
+    z-index: 1;
+}
+
+/* ==========================================
+   CONTEÚDO DO CARD
+   ========================================== */
+
+.card-content {
+    padding: 30px 20px;
+    position: relative;
+}
+
+/* Avatar Section */
+.avatar-section {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: -50px;
+    position: relative;
+    z-index: 5;
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+/* Info Section */
+.info-section {
+    text-align: center;
+}
+
+.entregador-nome {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin: 15px 0 10px 0;
+    font-weight: 700;
+}
+
+/* Meta badges */
+.entregador-meta {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.badge-cargo {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.badge-status.status-disponivel {
+    background: #d5f4e6;
+    color: #27ae60;
+}
+
+.badge-status.status-ocupado {
+    background: #fadbd8;
+    color: #c0392b;
+}
+
+/* ==========================================
+   STATS SECTION
+   ========================================== */
+
+.stats-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+    padding: 20px 0;
+    border-top: 1px solid #ecf0f1;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e74c3c;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 40px;
+    background: #ecf0f1;
+}
+
+/* ==========================================
+   INTERESTS SECTION
+   ========================================== */
+
+.interests-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.interests-title {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.interests-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.interest-tag {
+    background: #f8f9fa;
+    color: #2c3e50;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    border: 1px solid #ecf0f1;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.interest-tag:hover {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+}
+
+/* ==========================================
+   DESCRIPTION SECTION
+   ========================================== */
+
+.description-section {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.description-title {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.description-text {
+    font-size: 0.95rem;
+    color: #2c3e50;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   ACTION BUTTONS
+   ========================================== */
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn-secondary {
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+}
+
+.btn-secondary:hover {
+    background: #bdc3c7;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   ANIMAÇÕES
+   ========================================== */
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .entregadores-header h1 {
+        font-size: 2rem;
+    }
+
+    .entregadores-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .card-header {
+        padding: 25px 15px;
+        min-height: 120px;
+    }
+
+    .card-header h2 {
+        font-size: 1rem;
+    }
+
+    .entregador-nome {
+        font-size: 1.3rem;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .stats-section {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .entregadores-container {
+        padding: 20px 10px;
+    }
+
+    .entregadores-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .card-content {
+        padding: 20px 15px;
+    }
+
+    .entregador-meta {
+        gap: 5px;
+    }
+
+    .badge-cargo,
+    .badge-status {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+
+    .stat-number {
+        font-size: 1.2rem;
+    }
+
+    .interests-list {
+        gap: 6px;
+    }
+
+    .interest-tag {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+}

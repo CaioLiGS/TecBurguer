@@ -1,0 +1,649 @@
+/* ========================================
+   CARDÁPIO - DESIGN MODERNO E RESPONSIVO
+   ======================================== */
+
+:root {
+    --primary: #E07A5F;
+    --primary-dark: #d45d47;
+    --primary-light: #f5a899;
+    --secondary: #81B29A;
+    --secondary-dark: #6d9b85;
+    --accent: #F2CC8F;
+    --accent-dark: #E8B85D;
+    --dark: #3D405B;
+    --dark-light: #5a5d75;
+    --light: #faf3e0;
+    --light-2: #fff6ea;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --success: #51cf66;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 12px 32px rgba(224, 122, 95, 0.15);
+    --shadow-xl: 0 20px 48px rgba(224, 122, 95, 0.2);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ========================================
+   CONTAINER PRINCIPAL
+   ======================================== */
+
+main {
+    background: linear-gradient(135deg, var(--light) 0%, var(--light-2) 100%);
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+/* ========================================
+   BARRA DE PESQUISA
+   ======================================== */
+
+.BarraPesquisa {
+    position: sticky;
+    top: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 20px;
+    background: white;
+    box-shadow: var(--shadow-md);
+    z-index: 99;
+    margin: 0;
+    gap: 15px;
+}
+
+.BarraPesquisa input {
+    width: 100%;
+    max-width: 500px;
+    padding: 14px 24px;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, var(--primary), var(--accent)) border-box;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    color: var(--dark);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.BarraPesquisa input::placeholder {
+    color: var(--dark-light);
+    opacity: 0.6;
+}
+
+.BarraPesquisa input:focus {
+    border-color: transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, var(--primary-dark), var(--accent-dark)) border-box;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .BarraPesquisa {
+        top: 100px;
+        padding: 16px 12px;
+    }
+
+    .BarraPesquisa input {
+        max-width: 100%;
+        font-size: 16px;
+    }
+}
+
+/* ========================================
+   MENU LATERAL - CATEGORIAS
+   ======================================== */
+
+.MenuCategoria {
+    position: fixed;
+    top: 120px;
+    left: 0;
+    height: calc(100vh - 120px);
+    width: 220px;
+    background: white;
+    border-right: 2px solid var(--gray-200);
+    padding: 20px 0;
+    z-index: 100;
+    overflow-y: auto;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+
+.MenuCategoria::-webkit-scrollbar {
+    width: 6px;
+}
+
+.MenuCategoria::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.MenuCategoria::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.MenuCategoria::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+.LinkCategoria {
+    display: block;
+    padding: 14px 20px;
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 600;
+    font-size: 15px;
+    border-left: 4px solid transparent;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.LinkCategoria::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    transition: width 0.3s ease;
+}
+
+.LinkCategoria:hover {
+    background: rgba(242, 204, 143, 0.15);
+    border-left-color: var(--primary);
+    color: var(--primary);
+    padding-left: 24px;
+    z-index: 1;
+}
+
+.LinkCategoria.ativo {
+    background: linear-gradient(90deg, rgba(224, 122, 95, 0.1), transparent);
+    border-left: 4px solid var(--primary);
+    color: var(--primary);
+    font-weight: 700;
+    padding-left: 20px;
+    box-shadow: inset 0 2px 8px rgba(224, 122, 95, 0.1);
+}
+
+@media (max-width: 1024px) {
+    .MenuCategoria {
+        width: 180px;
+    }
+
+    .LinkCategoria {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .MenuCategoria {
+        position: static;
+        height: auto;
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid var(--gray-200);
+        padding: 12px;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+    }
+
+    .LinkCategoria {
+        flex-shrink: 0;
+        padding: 10px 14px;
+        border-radius: var(--radius-sm);
+        border-left: none;
+        white-space: nowrap;
+        font-size: 13px;
+    }
+
+    .LinkCategoria::before {
+        display: none;
+    }
+
+    .LinkCategoria:hover {
+        background: rgba(224, 122, 95, 0.2);
+        border: none;
+    }
+
+    .LinkCategoria.ativo {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        box-shadow: var(--shadow-sm);
+    }
+}
+
+/* ========================================
+   TÍTULO DE CATEGORIA
+   ======================================== */
+
+.TituloCategoria {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 50px 20px 30px 220px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--primary);
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.TituloCategoria::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--accent);
+    animation: expandLine 0.6s ease forwards;
+}
+
+@keyframes expandLine {
+    to {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .TituloCategoria {
+        margin: 40px 20px 25px 20px;
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .TituloCategoria {
+        margin: 30px 15px 20px 15px;
+        font-size: 1.3rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* ========================================
+   CONTAINER DE PRODUTOS
+   ======================================== */
+
+.ContainerCategoria {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+    margin: 0 20px 60px 220px;
+    padding: 0;
+    width: calc(100% - 240px);
+}
+
+@media (max-width: 1400px) {
+    .ContainerCategoria {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 24px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .ContainerCategoria {
+        margin: 0 20px 60px 20px;
+        width: calc(100% - 40px);
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .ContainerCategoria {
+        margin: 0 15px 40px 15px;
+        width: calc(100% - 30px);
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .ContainerCategoria {
+        margin: 0 12px 30px 12px;
+        width: calc(100% - 24px);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+/* ========================================
+   CARD DO HAMBURGER
+   ======================================== */
+
+.BlocoHamburguer {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    border: 1px solid var(--gray-200);
+}
+
+.BlocoHamburguer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+}
+
+.BlocoHamburguer:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary);
+}
+
+.BlocoHamburguer:hover::before {
+    transform: scaleX(1);
+}
+
+.BlocoHamburguer[style*="display: none"] {
+    display: none !important;
+}
+
+/* ========================================
+   IMAGEM DO HAMBURGER
+   ======================================== */
+
+.ImagemHamburguer {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    background: linear-gradient(135deg, var(--gray-200), var(--gray-300));
+    transition: var(--transition);
+}
+
+.BlocoHamburguer:hover .ImagemHamburguer {
+    transform: scale(1.08);
+}
+
+@media (max-width: 768px) {
+    .ImagemHamburguer {
+        height: 160px;
+    }
+}
+
+@media (max-width: 576px) {
+    .ImagemHamburguer {
+        height: 140px;
+    }
+}
+
+/* ========================================
+   CONTEÚDO DO CARD
+   ======================================== */
+
+.BottomInfoBurguer {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+/* ========================================
+   TÍTULO DO HAMBURGER
+   ======================================== */
+
+.TituloHamburguer {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 0;
+    line-height: 1.4;
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .TituloHamburguer {
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
+   DESCRIÇÃO DO HAMBURGER
+   ======================================== */
+
+.DescricaoHamburguer {
+    font-size: 0.9rem;
+    color: var(--dark-light);
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
+    opacity: 0.85;
+    display: none;
+}
+
+@media (max-width: 576px) {
+    .DescricaoHamburguer {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   PREÇO
+   ======================================== */
+
+.PrecoBurguer {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-align: center;
+    margin: 8px 0;
+    text-shadow: 0 2px 4px rgba(224, 122, 95, 0.15);
+}
+
+@media (max-width: 576px) {
+    .PrecoBurguer {
+        font-size: 1.3rem;
+    }
+}
+
+/* ========================================
+   BOTÕES
+   ======================================== */
+
+.BotoesDoHamburguer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: auto;
+}
+
+.CartBurguer {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+}
+
+.CartBurguer:hover {
+    transform: scale(1.12) translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.CartBurguer:active {
+    transform: scale(0.95);
+}
+
+.CartBurguer img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.SaibaMaisHamburguer {
+    flex: 1;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(224, 122, 95, 0.1), rgba(242, 204, 143, 0.1));
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    position: relative;
+    overflow: hidden;
+}
+
+.SaibaMaisHamburguer::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+    z-index: -1;
+}
+
+.SaibaMaisHamburguer:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.SaibaMaisHamburguer:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+@media (max-width: 576px) {
+    .BotoesDoHamburguer {
+        gap: 8px;
+    }
+
+    .CartBurguer {
+        width: 40px;
+        height: 40px;
+    }
+
+    .CartBurguer img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .SaibaMaisHamburguer {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        min-height: 40px;
+    }
+}
+
+/* ========================================
+   ANIMAÇÕES
+   ======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.BlocoHamburguer {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.BlocoHamburguer:nth-child(1) { animation-delay: 0.05s; }
+.BlocoHamburguer:nth-child(2) { animation-delay: 0.1s; }
+.BlocoHamburguer:nth-child(3) { animation-delay: 0.15s; }
+.BlocoHamburguer:nth-child(4) { animation-delay: 0.2s; }
+.BlocoHamburguer:nth-child(5) { animation-delay: 0.25s; }
+.BlocoHamburguer:nth-child(6) { animation-delay: 0.3s; }
+
+/* ========================================
+   ACESSIBILIDADE
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .BlocoHamburguer,
+    .LinkCategoria,
+    .BarraPesquisa input {
+        animation: none;
+        transition: none;
+    }
+}
+
+.BlocoHamburguer:focus,
+.LinkCategoria:focus,
+.SaibaMaisHamburguer:focus {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   CONTEÚDO GERAL
+   ======================================== */
+
+.Conteudo {
+    display: contents;
+}
+
+/* ========================================
+   RESPONSIVIDADE GERAL
+   ======================================== */
+
+@media (max-width: 768px) {
+    main {
+        padding-bottom: 40px;
+    }
+}

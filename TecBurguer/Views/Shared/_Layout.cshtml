@@ -73,9 +73,13 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Cardapio">Cardapio</a>
                             </li>
 
-                            <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Entregadores">Entregador</a>
-                            </li>
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Entregadores">Entregador</a>
+                                </li>
+                            }
+                            
                             @if (User.IsInRole("Administrador"))
                             {
                                 <li class="nav-item dropdown">
