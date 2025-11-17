@@ -1,0 +1,184 @@
+﻿/* =========================================
+   VARIÁVEIS GLOBAIS (Baseadas no seu estilo)
+   ========================================= */
+:root {
+    --primary: #E07A5F; /* laranja queimado */
+    --primary-dark: #d45d47;
+    --secondary: #81B29A; /* verde oliva */
+    --secondary-dark: #6d9b85;
+    --accent: #F2CC8F; /* bege areia */
+    --dark: #3D405B; /* marrom café */
+    --light: #faf3e0; /* branco quente */
+    --light-dark: #f6f3eb;
+}
+
+/* =========================================
+   CONTAINER PRINCIPAL (Estilo .CaixaExterna)
+   ========================================= */
+.index-container {
+    width: 90vw; /* Um pouco mais largo para tabela */
+    max-width: 1200px;
+    margin: 5vh auto; /* Margem vertical */
+    background-color: var(--light-dark);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 5px 5px 20px #00000022;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* Título da Página */
+    .index-container h1 {
+        color: var(--dark);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        border-bottom: 4px solid var(--primary);
+        display: inline-block;
+        width: fit-content;
+        padding-bottom: 10px;
+    }
+
+/* =========================================
+   BOTÃO "CREATE NEW"
+   ========================================= */
+.btn-create-new {
+    display: inline-block;
+    background-color: var(--secondary);
+    color: var(--light);
+    padding: 12px 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+    border: 2px solid transparent;
+}
+
+    .btn-create-new:hover {
+        background-color: var(--secondary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        color: white;
+    }
+
+/* =========================================
+   TABELA DE INGREDIENTES
+   ========================================= */
+.styled-table {
+    width: 100%;
+    border-collapse: separate; /* Necessário para border-radius */
+    border-spacing: 0 10px; /* Espaço entre as linhas */
+    margin-top: 10px;
+}
+
+    /* Cabeçalho da Tabela */
+    .styled-table thead tr {
+        background-color: var(--dark);
+        color: var(--light);
+        text-align: left;
+    }
+
+    .styled-table th {
+        padding: 15px 20px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+        .styled-table th:first-child {
+            border-radius: 15px 0 0 15px;
+        }
+
+        .styled-table th:last-child {
+            border-radius: 0 15px 15px 0;
+        }
+
+    /* Linhas do Corpo */
+    .styled-table tbody tr {
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .styled-table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 2;
+            position: relative;
+        }
+
+    .styled-table td {
+        padding: 15px 20px;
+        color: var(--dark);
+        border-top: solid 1px transparent; /* Mantém alinhamento */
+    }
+
+        /* Arredondar cantos das linhas de dados */
+        .styled-table td:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .styled-table td:last-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* Coluna de Quantidade (Destaque) */
+        .styled-table td:nth-child(2) {
+            color: var(--primary-dark);
+            font-weight: bold;
+        }
+
+/* =========================================
+   LINKS DE AÇÃO (Edit | Details | Delete)
+   ========================================= */
+.action-links {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+    .action-links a {
+        text-decoration: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+/* Estilo Botão Edit */
+.btn-action-edit {
+    background-color: var(--light-dark);
+    color: var(--dark);
+    border: 1px solid var(--dark);
+}
+
+    .btn-action-edit:hover {
+        background-color: var(--dark);
+        color: var(--light);
+    }
+
+/* Estilo Botão Details */
+.btn-action-details {
+    background-color: var(--accent);
+    color: var(--dark);
+}
+
+    .btn-action-details:hover {
+        background-color: #e0b060; /* Tom mais escuro do accent */
+    }
+
+/* Estilo Botão Delete */
+.btn-action-delete {
+    background-color: #ffecec;
+    color: var(--primary-dark);
+}
+
+    .btn-action-delete:hover {
+        background-color: var(--primary);
+        color: white;
+    }

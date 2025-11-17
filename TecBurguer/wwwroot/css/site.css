@@ -1,13 +1,12 @@
-
 :root {
-    --primary: #8B2E2E;
-    --primary-dark: #6B1F1F;
-    --secondary: #D4A574;
-    --secondary-dark: #B8935F;
-    --accent: #E8C48A;
-    --dark: #1A1614;
-    --light: #3A3330;
-    --bg: #2C2520;
+    --primary: #FF2E00; /* Laranja Fogo Vibrante */
+    --primary-dark: #8B0000;
+    --accent: #FFC107; /* Amarelo Mostarda */
+    --dark: #121212;
+    --dark-card: #1E1E1E;
+    --text-light: #F5F5F5;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glow: 0 0 20px rgba(255, 46, 0, 0.4);
 }
 
 
@@ -22,16 +21,66 @@ html {
     }
 }
 
-
 body {
-    background: var(--light);
-    color: var(--dark);
+    background-color: var(--dark);
+    color: var(--text-light);
     font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
 }
 
-main{
-    margin-top:100px;
+main {
+    margin-top: 0 !important; /* Remove margem padrão */
+    padding-top: 0;
 }
+
+/* --- ANIMAÇÕES GERAIS --- */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(2deg);
+    }
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 46, 0, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(255, 46, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 46, 0, 0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Classe para JavaScript Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
 /*
     SHARED
@@ -208,52 +257,49 @@ header {
 .BannerContent {
     height: 100vh;
     position: relative;
-    text-align: center;
-    background-color: var(--dark);
-}
-
-.conteudoBannerContent {
-    position: relative;
+    background: radial-gradient(circle at center, #2a0a0a 0%, #000000 100%);
     overflow: hidden;
     display: flex;
     align-items: center;
-    height: 100%;
-    padding: 50px;
+    justify-content: center;
+}
+
+.conteudoBannerContent {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    width: 90%;
+    max-width: 1400px;
+    z-index: 2;
+    position: relative;
 }
 
 .bannerWrapper {
-    display: flex;
-    align-items: center;
+    width: 45%;
+    height: 500px;
     position: relative;
-    width: 50%;
-    height: 100%;
-    margin-right: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .BurgerImageBanner {
+    max-width: 100%;
+    max-height: 100%;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+    animation: float 6s ease-in-out infinite;
+    transition: opacity 0.5s ease, transform 0.5s ease;
     position: absolute;
-    left: 0;
-    width: 100%;
-    height: 70%;
-    border-radius: 20px;
-    object-fit: contain;
-    opacity: 0;
-    transform: translateX(25%); 
-    animation: floatUpDown 6s ease-in-out infinite;
-    transition: transform 1s ease, opacity 1s ease;
 }
 
     .BurgerImageBanner.active {
         opacity: 1;
-        transform: translateX(0); /* posição normal */
-        z-index: 2;
+        transform: scale(1);
     }
 
     .BurgerImageBanner.exit {
         opacity: 0;
-        transform: translateX(-25%); /* sai para a esquerda */
-        z-index: 1;
+        transform: scale(0.8) rotate(-10deg);
     }
 
 .textos{
@@ -262,34 +308,48 @@ header {
     z-index: 1;
 }
 
-.textos h1 {
-    color: white;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: clamp(7.5rem, 9vw, 12rem);
-    letter-spacing: 15px;
-    background-size: cover;
-    background-position: center;
-}
+    .textos h1 {
+        font-family: 'Ranchers', cursive;
+        font-size: clamp(4rem, 8vw, 10rem);
+        line-height: 0.9;
+        color: transparent;
+        -webkit-text-stroke: 2px white;
+        text-shadow: 5px 5px 0px var(--primary);
+        position: relative;
+        transition: all 0.3s;
+        cursor: default;
+    }
+
+        .textos h1:hover {
+            color: white;
+            -webkit-text-stroke: 0px;
+            text-shadow: 0 0 30px var(--primary);
+            transform: scale(1.05) skew(-5deg);
+        }
 
 .BannerBall1, .BannerBall2 {
-    background-color: var(--secondary-dark);
-    filter: blur(60px);
-    border-radius: 500px;
     position: absolute;
-    width: 60vw;
-    height: 60vw;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.6;
 }
-
 .BannerBall1 {
-    left: -30vw;
-    top: -30vw;
-    animation: pulsar 10s linear infinite;
+    width: 40vw;
+    height: 40vw;
+    background: var(--primary);
+    top: -10%;
+    left: -10%;
+    animation: float 8s ease-in-out infinite alternate;
 }
 
 .BannerBall2 {
-    right: -30vw;
-    bottom: -30vw;
-    animation: pulsar 20s linear infinite;
+    width: 30vw;
+    height: 30vw;
+    background: var(--accent);
+    bottom: -10%;
+    right: -10%;
+    animation: float 10s ease-in-out infinite alternate-reverse;
 }
 
 @keyframes pulsar{
@@ -313,23 +373,22 @@ header {
 
 .BannerOverlay {
     position: absolute;
-    display: block;
-    bottom: 40px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    text-align: center;
-    color: var(--light);
-    font-weight: 600;
-    font-size: 1.2rem;
+    z-index: 10;
 }
 
 .ScrollDown {
-    display: block;
-    margin-top: 10px;
-    text-decoration: none;
     color: white;
-    font-weight:bolder;
-    transition: all 0.3s ease-in-out
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: bounce 2s infinite;
 }
 
 .ScrollDown:hover{
@@ -364,11 +423,12 @@ header {
     }
 
 .Content2 {
-    height: 85vh;
-    background-color: var(--secondary);
-    margin: 20px;
-    border-radius: 15px;
-    padding: 20px;
+    background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+    padding: 50px 0;
+    margin: 50px 0;
+    position: relative;
+    border-top: 5px solid var(--primary);
+    border-bottom: 5px solid var(--primary);
 }
 
     .Content2 h1 {
@@ -391,123 +451,140 @@ header {
 
 
 .BlocoHamburguer {
-    display: flex;
-    background: var(--light);
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    overflow: hidden;
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    width: 300px;
+    height: 560px;
+    min-width: 300px;
     padding: 20px;
-    width: 280px;
-    height: 480px;
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    margin: 10px;
-    background-color: var(--primary);
-    opacity: 1;
-    transform: translateY(0);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
 }
 
-.BlocoHamburguer:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    .BlocoHamburguer:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(255, 46, 0, 0.3);
+        border-color: var(--primary);
+    }
+
+/* Faixa de Oferta */
+.FaixaHamburguer {
+    position: absolute;
+    top: 20px;
+    right: -35px;
+    background: var(--primary);
+    color: white;
+    padding: 5px 40px;
+    transform: rotate(45deg);
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    z-index: 2;
 }
 
 .ImagemHamburguer {
     width: 100%;
-    height: 180px;
-    border-radius: 12px;
-    margin-bottom: 15px;
+    height: 200px;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+}
+
+.BlocoHamburguer:hover .ImagemHamburguer {
+    transform: scale(1.15) rotate(5deg);
 }
 
 .TituloHamburguer {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: white;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin: 10px 0;
-    text-align: center;
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin: 15px 0 5px 0;
+    text-transform: uppercase;
 }
 
 .DescricaoHamburguer {
-    font-size: 0.95rem;
-    color: white;
-    opacity: 0.8;
-    text-align: justify;
-    margin-bottom: 20px;
-    line-height: 1.4;
+    color: #aaa;
+    font-size: 0.9rem;
+    flex-grow: 1;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.BottomInfoBurguer{
-    display: block;
-    width: 100%;
-    height: 10%;
-    margin-bottom: 20px;
+.BottomInfoBurguer {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 15px;
 }
 
 .PrecoBurguer {
+    font-size: 1.8rem;
     color: white;
-    width: 100%;
-    display: block;
+    font-weight: bold;
+}
+
+.PorcentagemOferta {
+    color: #4ade80; /* Verde Neon */
+    font-weight: bold;
 }
 
 .BotoesDoHamburguer {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 70%;
-    gap: 12px;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .CartBurguer {
-    height: 100%;
-    width:  20%;
-    border-radius: 15px;
-    background: var(--light);
+    background: var(--primary);
+    border-radius: 12px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    transition: 0.3s;
 }
-
-    .CartBurguer img {
-        width: 80%;
-        height: 80%;
-    }
 
     .CartBurguer:hover {
-        transform: scale(1.1);
+        background: white;
     }
 
-.EditarHamburguer,
-.SaibaMaisHamburguer,
-.DeletarHamburguer {
-    display: flex;
-    text-align: center;
-    padding: 12px;
-    border-radius: 15px;
-    color: antiquewhite;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease-in-out;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 80%;
-    cursor: pointer;
-}
+        .CartBurguer:hover i {
+            color: var(--primary);
+        }
 
-    .EditarHamburguer:hover, 
-    .DeletarHamburguer:hover,
-    .SaibaMaisHamburguer:hover {
-        transform: scale(1.05);
+    .CartBurguer img, .CartBurguer i {
+        width: 24px;
         color: white;
+        font-size: 20px;
     }
 
 .SaibaMaisHamburguer {
-    background: var(--dark);
+    flex: 1;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
 }
+
+    .SaibaMaisHamburguer:hover {
+        background: white;
+        color: var(--dark);
+    }
 
 .EditarHamburguer {
     background-color: white;
@@ -585,36 +662,45 @@ header {
     right: 30px;
 }
 
-#FacaLogin img{
-    height: 100%;
-    width: 35%;
-    opacity: 0.5;
-    animation: Girar 5s linear infinite;
-}
-
-#FacaLogin div{
-    display: block;
-}
-
-#FacaLogin div h3{
+#FacaLogin {
+    position: fixed;
+    bottom: 30px;
+    right: -450px;
+    width: 400px;
+    background: rgba(255, 255, 255, 0.95);
     color: var(--dark);
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-#FacaLogin div p {
-    color: black;
-    text-align: justify;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-#FacaLogin div div{
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 10px solid var(--primary);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 9999;
+    transition: right 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     display: flex;
-    justify-content: space-between;
-    padding: 10px;
+    align-items: center;
+    gap: 15px;
 }
+
+    #FacaLogin.mostrar {
+        right: 30px;
+    }
+
+    #FacaLogin h3 {
+        margin: 0 0 5px 0;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    #FacaLogin img {
+        width: 60px;
+        animation: spin 10s linear infinite;
+    }
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 .BotaoCriarConta {
     border-radius: 16px;
@@ -682,12 +768,16 @@ header {
 }
 
 @keyframes bounce {
-    0%, 100% {
-        transform: rotate(-45deg) translateY(0) translateX(0px);
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
     }
 
-    50% {
-        transform: rotate(-45deg) translateY(-8px) translateX(8px);
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
     }
 }
 
@@ -1019,12 +1109,11 @@ header {
 }
 
 .carrossel-wrapper {
-    display: flex;
-    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 500px;
+    perspective: 1000px;
 }
 
 .item-recomendacao {
@@ -1135,21 +1224,29 @@ header {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0,0,0,0);
+    background: rgba(0,0,0,0.5);
     color: white;
-    border: none;
-    font-size: 2rem;
-    padding: 0 15px;
+    border: 2px solid var(--primary);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     cursor: pointer;
+    font-size: 1.5rem;
+    transition: 0.3s;
     z-index: 10;
 }
 
+    .prev-slide:hover, .next-slide:hover {
+        background: var(--primary);
+        box-shadow: 0 0 20px var(--primary);
+    }
+
 .prev-slide {
-    left: 10px;
+    left: 20px;
 }
 
 .next-slide {
-    right: 10px;
+    right: 20px;
 }
 
 /* --- RESPONSIVIDADE GERAL --- */
@@ -1189,8 +1286,19 @@ html, body {
 /* Para celulares (largura até 768px) */
 @media (max-width: 768px) {
 
-    .item-recomendacao{
-        display: block;
+    .item-recomendacao {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: all 0.8s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+        pointer-events: none; /* Desativa cliques quando invisível */
     }
 
     .ConteudoRecomendacoesDoChefe img{
@@ -1204,10 +1312,12 @@ html, body {
         width: 100%;
         height: 60%;
     }
-    
-    .TituloRDC{
-        margin-bottom: 0;
-        font-size: 1.5rem;
+
+    .TituloRDC {
+        font-family: 'Ranchers', cursive;
+        font-size: 3.5rem;
+        color: var(--primary);
+        margin-bottom: 20px;
     }
 
     .item-recomendacao .info div p{
@@ -1243,7 +1353,7 @@ html, body {
         text-align: center;
     }
 
-    .textos h1{
+    .textos h1 {
         color: var(--primary);
         font-size: clamp(4rem, 6vw, 5rem);
         letter-spacing: 0;
@@ -1292,5 +1402,38 @@ html, body {
         flex-grow: 1;
         align-items: center;
     }
+}
+
+.FaixaHamburguer {
+    position: absolute;
+    z-index: 10;
+    background-color: rgba(220, 53, 69, 0.85);
+    backdrop-filter: blur(2px);
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 50px;
+    top: 10%;
+    left: -25%;
+    transform:  rotate(-45deg);
+}
+
+.PorcentagemOferta {
+    position: absolute;
+    color: white;
+    right: 10%;
+    background-color: red;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    bottom: 6%;
 }
 
