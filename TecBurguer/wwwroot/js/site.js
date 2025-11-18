@@ -16,7 +16,6 @@ function formatarMoeda(valor) {
 
 /**
  * Busca os detalhes de um pedido específico via API e injeta o HTML no container.
- * @param {number} pedidoId O ID do pedido a ser carregado.
  */
 async function carregarDetalhesPedido(pedidoId) {
     const detalhesContainer = document.getElementById(`detalhesPedido_${pedidoId}`);
@@ -407,12 +406,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 /*
     RECOMENDAÇÕES DO CHEFE
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-    const wrapper = document.querySelector(".carrossel-wrapper ");
+    const wrapper = document.querySelector(".carrossel-wrapper");
     const slides = document.querySelectorAll(".item-recomendacao");
     let index = 0;
 
@@ -443,7 +443,6 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
-
 function FinalizarCompra(username, idPedido) {
 
     axios.get('/api/usuarios/listar').then(response => {
@@ -500,6 +499,10 @@ function FinalizarCompra(username, idPedido) {
 
 function FecharPopUp() {
     document.getElementById("PopUpNaoTemCEP").classList.remove("Aparecer");
+}
+
+function fecharPopup() {
+    document.getElementById("FacaLogin").classList.remove("mostrar");
 }
 
 /*
@@ -605,6 +608,7 @@ $("#LinkDaImagem").blur(function () {
 
     img.src = input.value
 });
+
 /*
     LOGIN E REGISTRO
 */
@@ -619,6 +623,12 @@ document.getElementById('registerForm').addEventListener('submit', function (e) 
 
     btn.disabled = true;
 });
+
+/*
+    PEDIDO VENDEDOR
+*/
+
+
 
 
 // ==========================================================

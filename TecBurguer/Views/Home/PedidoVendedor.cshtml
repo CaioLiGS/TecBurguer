@@ -1,21 +1,126 @@
 ﻿@model IEnumerable<TecBurguer.Models.Pedido>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-<style>
-    html{
-        margin-top: 120px;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<link href="~/css/PedidoVendedor.css" rel="stylesheet" />
+
+<h2 class="page-title reveal">FILA DE PEDIDOS 🔥</h2>
+
+<div class="orders-container">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var pedido in Model)
+        {
+            @if (pedido.Estado == "Cozinhando")
+            {
+                <div class="order-card reveal">
+                    <div class="card-header-custom">
+                        <div>
+                            <div class="order-id">
+                                <i class="fas fa-receipt"></i> Pedido #@pedido.IdPedido
+                            </div>
+                            <span class="client-name">
+                                <i class="fas fa-user"></i> @(pedido.IdUsuarioNavigation?.Nome ?? "Cliente Anônimo")
+                            </span>
+                        </div>
+                        <div class="order-status">
+                            @pedido.Estado
+                        </div>
+                    </div>
+
+                    <div class="card-body-custom">
+                        <h5 style="color: var(--primary); font-weight: bold; margin-bottom: 15px;">ITENS DO PEDIDO:</h5>
+
+                        <ul class="items-list">
+                            @foreach (var itemPedido in pedido.PedidoHamburgueres)
+                            {
+                                <li class="item-row">
+                                    <div class="item-name">
+                                        <span class="item-qty">@itemPedido.Quantidade</span>
+                                        @(itemPedido.IdHamburguerNavigation?.Nome ?? "Hamburguer Removido")
+                                    </div>
+
+                                    @if (itemPedido.IdHamburguerNavigation?.HamburguerIgredientes != null && itemPedido.IdHamburguerNavigation.HamburguerIgredientes.Any())
+                                    {
+                                        <div class="ingredients-box">
+                                            <span class="ingredients-title"><i class="fas fa-utensils"></i> Ingredientes:</span>
+                                            <ul class="ingredients-list">
+                                                @foreach (var itemIngrediente in itemPedido.IdHamburguerNavigation.HamburguerIgredientes)
+                                                {
+                                                    @if (itemIngrediente.IdIngredienteNavigation != null)
+                                                    {
+                                                        <li class="ingredient-tag">
+                                                            @itemIngrediente.IdIngredienteNavigation.Nome
+                                                            <span style="opacity: 0.6; font-size: 0.7rem;">(x@(itemIngrediente.QuantidadeNecessario))</span>
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="card-footer-custom" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1rem; color: white; margin-right: 10px;">TOTAL:</span>
+                            <span class="total-price">R$ @pedido.PrecoTotal</span>
+                        </div>
+
+                        <button onclick="concluirPedido(@pedido.IdPedido)" class="btn-concluir">
+                            Concluir Pedido <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        }
     }
+    else
+    {
+        <div class="empty-state reveal active">
+            <i class="fas fa-fire-extinguisher"></i>
+            <h3>A chapa está fria!</h3>
+            <p>Nenhum pedido na fila no momento.</p>
+        </div>
+    }
+</div>
 
-</style>
+<script>
+    window.addEventListener('scroll', reveal);
+    function reveal() {
+        var reveals = document.querySelectorAll('.reveal');
+        for (var i = 0; i < reveals.length; i++) {
+            var windowheight = window.innerHeight;
+            var revealtop = reveals[i].getBoundingClientRect().top;
+            var revealpoint = 50;
+            if (revealtop < windowheight - revealpoint) {
+                reveals[i].classList.add('active');
+            }
+        }
+    }
+    reveal();
 
+    function concluirPedido(idPedido) {
+        // Confirmação simples para evitar cliques acidentais
+        if(!confirm("Confirmar que o pedido #" + idPedido + " está pronto?")) return;
 
-<h1>Pedidos</h1>
-<p>Alguns pedidos de clientes precisam ser atendidos, segue a baixo a lista de pedidos para serem feitos</p>
+        const novosDados = {
+             estado: "Para ser entregue",
+        };
 
-
- @foreach (var item in Model)
-{
-
-    <h4>Cliente: @item.IdUsuarioNavigation.Nome</h4>
-}
-
+        axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
+            .then(res => {
+                window.location.reload();
+            })
+            .catch(err => {
+                console.error('Erro ao atualizar valor:', err);
+                alert("Ocorreu um erro ao finalizar o pedido. Tente novamente.");
+            });
+    }
+</script>

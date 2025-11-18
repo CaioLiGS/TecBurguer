@@ -6,6 +6,7 @@
 @inject UserManager<LoginCliente> UserManager
 @inject SignInManager<LoginCliente> SignInManager
 
+
 @{
     ViewData["Title"] = "Home Page";
 
@@ -39,11 +40,7 @@
     </div>
 
     <div class="BannerOverlay">
-        <a asp-controller="Home"
-           asp-action="Index"
-           asp-fragment="OfertasDiarias"
-           class="ScrollDown"
-           style="cursor: pointer; text-decoration: none; pointer-events: auto; z-index: 1000;">
+        <a href="#OfertasDiarias" class="ScrollDown" style="cursor: pointer">
             Ver Promoções
             <i class="fas fa-chevron-down" style="display:block; margin-top: 5px;"></i>
         </a>
@@ -51,7 +48,6 @@
 </div>
 
 <script>
-    // 1. LÓGICA DO SLIDER DE IMAGENS (Não alterada)
     var imagens = [
         @foreach (var item in Model)
         {
@@ -102,7 +98,7 @@
     setTimeout(trocarImagemBanner, 4500);
 
 
-    // 2. LÓGICA DAS PARTÍCULAS (EFEITO DE BRASAS) (Não alterada)
+    // 2. LÓGICA DAS PARTÍCULAS (EFEITO DE BRASAS)
     function createEmbers() {
         const container = document.getElementById('BannerContent');
         const particleCount = 30; // Quantidade de brasas
@@ -142,9 +138,22 @@
     // Inicia as brasas
     createEmbers();
 </script>
-
 <div class="Content1" id="OfertasDiarias">
-    <h2 class="section-title reveal">OFERTAS EM CHAMAS 🔥</h2>
+
+    <div class="MarqueeContainer reveal">
+        <div class="MarqueeTrack">
+            <span class="MarqueeItem">OFERTAS EM CHAMAS <i class="fas fa-fire"></i></span>
+            <span class="MarqueeItem">APROVEITE AGORA <i class="fas fa-stopwatch"></i></span>
+            <span class="MarqueeItem">SABOR EXPLOSIVO <i class="fas fa-bomb"></i></span>
+
+            <span class="MarqueeItem">OFERTAS EM CHAMAS <i class="fas fa-fire"></i></span>
+            <span class="MarqueeItem">APROVEITE AGORA <i class="fas fa-stopwatch"></i></span>
+            <span class="MarqueeItem">SABOR EXPLOSIVO <i class="fas fa-bomb"></i></span>
+            <span class="MarqueeItem">OFERTAS EM CHAMAS <i class="fas fa-fire"></i></span>
+            <span class="MarqueeItem">APROVEITE AGORA <i class="fas fa-stopwatch"></i></span>
+            <span class="MarqueeItem">SABOR EXPLOSIVO <i class="fas fa-bomb"></i></span>
+        </div>
+    </div>
 
     <div class="cards-container reveal">
         @if (ofertasAtivas != null && ofertasAtivas.Any())
@@ -193,18 +202,17 @@
         else
         {
             <div style="width: 100%; text-align: center; padding: 50px; color: #777;">
+                <i class="fas fa-temperature-low" style="font-size: 3rem; margin-bottom: 10px;"></i>
                 <h3>Nenhuma oferta pegando fogo hoje.</h3>
             </div>
         }
     </div>
 </div>
-
 <div class="Content2 reveal" id="RecomendacoesDoChefe">
     <h1 class="section-title" style="color: white; text-shadow: 0 0 20px var(--primary);">RECOMENDAÇÕES DO CHEFE</h1>
 
     <div class="ConteudoRecomendacoesDoChefe">
-        <div class="carrossel-wrapper" id="RecomendacoesCarrossel">
-            @* Adicionei um ID para facilitar no JS *@
+        <div class="carrossel-wrapper">
             @foreach (var item in Model)
             {
                 @if (item.Categoria == "Recomendação do chefe")
@@ -233,27 +241,27 @@
                                 @if (SignInManager.IsSignedIn(User))
                                 {
                                     <a class="CartBurguer"
-                                                           onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')"
-                                                           title="Adicionar ao carrinho"
-                                                           style="width: 50%;">
-                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                       onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')"
+                                       title="Adicionar ao carrinho"
+                                       style="width: 50%;">
+                                        <i class="fas fa-shopping-cart cart-icon"></i>
                                         <span class="cart-text">Adicionar ao carrinho</span>
                                     </a>
                                 }
                                 else
                                 {
                                     <a class="CartBurguer"
-                                                           onclick="mostrarBotaoLogin()"
-                                                           title="Adicionar ao carrinho"
-                                                           style="width: 50%;">
-                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                       onclick="mostrarBotaoLogin()"
+                                       title="Adicionar ao carrinho"
+                                       style="width: 50%;">
+                                        <i class="fas fa-shopping-cart cart-icon"></i>
                                         <span class="cart-text">Adicionar ao carrinho</span>
                                     </a>
                                 }
 
                                 <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                                                     asp-action="Details" asp-route-id="@item.IdHamburguer"
-                                                     style="width: 50%; background-color: var(--dark); border-radius: 20px;">
+                                   asp-action="Details" asp-route-id="@item.IdHamburguer"
+                                   style="width: 50%; background-color: var(--dark); border-radius: 20px;">
                                     Saiba Mais
                                 </a>
                             </div>
@@ -268,16 +276,15 @@
     </div>
 </div>
 
+
 <div class="Content1" id="Cardapio" style="height: auto; padding-bottom: 50px;">
     <h2 class="section-title reveal">CARDÁPIO COMPLETO</h2>
 
-    @* NOVO CONTAINER PRINCIPAL DO CARROSSEL DO CARDÁPIO COMPLETO *@
     <div class="CardapioCarrosselContainer reveal">
 
         <button class="prev-slide" onclick="prevSlideCardapio()"><i class="fas fa-chevron-left"></i></button>
 
-        <div class="carrossel-wrapper" id="CardapioCarrossel">
-            @* NOVO ID para JS *@
+        <div class="carrossel-cardapio" id="CardapioCarrossel">
             @foreach (var item in Model)
             {
                 var promocao = false;
@@ -322,11 +329,11 @@
                     </div>
                 }
             }
-        </div> @* Fim do carrossel-wrapper com ID CardapioCarrossel *@
+        </div>
 
         <button class="next-slide" onclick="nextSlideCardapio()"><i class="fas fa-chevron-right"></i></button>
 
-    </div> @* Fim do CardapioCarrosselContainer *@
+    </div>
 
     <div style="text-align: center; padding-bottom: 30px;">
         <a asp-controller="Home"
@@ -338,47 +345,37 @@
 </div>
 
 <div id="FacaLogin">
-    @* Código do popup de login (Não alterado) *@
+    <img src="~/css/Imagens/BurguerLogo.png" alt="Logo">
+    <div style="flex-grow: 1;">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <h3>Adicionado!</h3>
+            <p>Item no carrinho.</p>
+            <div style="margin-top: 10px;">
+                <a class="BotaoLogin" asp-area="" asp-controller="Home" asp-action="Cart">Ir para Carrinho</a>
+            </div>
+        }
+        else
+        {
+            <h3>Psiu! 🍔</h3>
+            <p>Faça login para continuar.</p>
+            <div style="margin-top: 10px; display: flex;">
+                <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">Criar conta</a>
+                <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </div>
+        }
+    </div>
+    <button onclick="fecharPopup()" style="background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: #333;">&times;</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="~/js/site.js"></script>
 
 <script>
-    // Se a barra de rolagem horizontal estiver na página inteira, adicione o CSS abaixo em sua folha de estilos:
-    // body { overflow-x: hidden; }
-
-    // Se estiver na seção de conteúdo, adicione em seu CSS:
-    // .Content2, .Content1 { overflow-x: hidden; }
-
-    // E certifique-se que o carrossel tenha rolagem interna:
-    // .carrossel-wrapper { overflow-x: auto; white-space: nowrap; }
-
-    // --------------------------------------------------------------------------------
-    // NOVAS FUNÇÕES JAVASCRIPT PARA CONTROLE DO CARROSSEL
-    // --------------------------------------------------------------------------------
-
-    // Elementos do carrossel:
-    const recomendacoesCarrossel = document.getElementById('RecomendacoesCarrossel');
     const cardapioCarrossel = document.getElementById('CardapioCarrossel');
 
-    // Valor de rolagem: Ajuste este valor (em pixels) para rolar por 1 item
-    const scrollAmount = 350;
+    const scrollAmount = 650;
 
-    // Carrossel: RECOMENDAÇÕES DO CHEFE (usa prevSlide/nextSlide)
-    function prevSlide() {
-        if (recomendacoesCarrossel) {
-            recomendacoesCarrossel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-        }
-    }
-
-    function nextSlide() {
-        if (recomendacoesCarrossel) {
-            recomendacoesCarrossel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        }
-    }
-
-    // Carrossel: CARDÁPIO COMPLETO (usa prevSlideCardapio/nextSlideCardapio)
     function prevSlideCardapio() {
         if (cardapioCarrossel) {
             cardapioCarrossel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -390,10 +387,6 @@
             cardapioCarrossel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     }
-
-    // --------------------------------------------------------------------------------
-    // OUTRAS FUNÇÕES (Não alteradas)
-    // --------------------------------------------------------------------------------
 
     window.addEventListener('scroll', reveal);
     function reveal() {

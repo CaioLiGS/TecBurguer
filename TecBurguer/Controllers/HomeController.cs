@@ -47,7 +47,7 @@ namespace TecBurguer.Controllers
         public IActionResult Cardapio()
         {
             var hamburgueres = _context.Hamburguers.ToList();
-            return View(hamburgueres);
+            return View(hamburgueres); 
         }
 
         public IActionResult Entregadores()
@@ -58,7 +58,11 @@ namespace TecBurguer.Controllers
 
         public IActionResult PedidoVendedor()
         {
-            var pedidos = _context.Pedidos.Include(p => p.IdUsuarioNavigation);
+            var pedidos = _context.Pedidos.Include(p => p.IdUsuarioNavigation)
+                .Include(d => d.PedidoHamburgueres)
+                .ThenInclude(ph => ph.IdHamburguerNavigation)
+                    .ThenInclude(h => h!.HamburguerIgredientes)
+                        .ThenInclude(hi => hi.IdIngredienteNavigation);
 
             return View(pedidos.ToList());
         }

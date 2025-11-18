@@ -99,7 +99,6 @@ header {
 #BarraDeNavegacao {
     padding: 0 20px;
     height: 100%;
-   
 }
 
 .Abas {
@@ -180,7 +179,7 @@ header {
     transition: transform 0.3s ease;
 }
 
-.ContentRight{
+.ContentRight {
     display: flex;
     align-items: center
 }
@@ -190,15 +189,15 @@ header {
     position: relative;
 }
 
-.Cart a img{
-    width: 40px;
-    height: 35px;
-    transition: all 0.3s ease-in-out;
-}
+    .Cart a img {
+        width: 40px;
+        height: 35px;
+        transition: all 0.3s ease-in-out;
+    }
 
-.Cart a img:hover{
-    transform: scale(1.2);
-}
+        .Cart a img:hover {
+            transform: scale(1.2);
+        }
 
 .QuantCart {
     position: absolute;
@@ -577,7 +576,7 @@ header {
     CONTEUDO DO HAMBURGUER
 */
 
-.ConteudoContent1{
+.ConteudoContent1 {
     display: flex;
     height: 100vh;
 }
@@ -637,6 +636,7 @@ header {
     font-weight: 800;
     font-size: 1.5rem;
     margin: 15px 0 5px 0;
+    text-align: center;
     text-transform: uppercase;
 }
 
@@ -756,19 +756,19 @@ header {
     font-family: "Fascinate", system-ui;
     font-weight: 400;
     font-style: normal;
-    color: var(--primary);  
+    color: var(--primary);
 }
 
-.TituloCentral::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: var(--primary);
-    margin: auto;
-    margin-top: 8px;
-    border-radius: 4px;
-}
+    .TituloCentral::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: var(--primary);
+        margin: auto;
+        margin-top: 8px;
+        border-radius: 4px;
+    }
 
 /*
     Faça Login Tela
@@ -825,11 +825,11 @@ header {
     transition: all 0.25s ease-in-out;
 }
 
-.BotaoCriarConta:hover {
-    color: var(--light);
-    transform: scale(1.1);
-    background-color: var(--secondary);
-}
+    .BotaoCriarConta:hover {
+        color: var(--light);
+        transform: scale(1.1);
+        background-color: var(--secondary);
+    }
 
 .BotaoLogin {
     border-radius: 16px;
@@ -846,19 +846,21 @@ header {
     font-weight: bold;
 }
 
-.BotaoLogin:hover{
-    transform: scale(1.1);
-    color: white;
-}
+    .BotaoLogin:hover {
+        transform: scale(1.1);
+        color: white;
+    }
 
-@keyframes Girar{
-    0%{
+@keyframes Girar {
+    0% {
         transform: rotate(10deg);
     }
-    50%{
+
+    50% {
         transform: rotate(-10deg);
     }
-    100%{
+
+    100% {
         transform: rotate(10deg);
     }
 }
@@ -911,10 +913,11 @@ header {
     /* volta à posição inicial */
 }
 
-@keyframes subir{
+@keyframes subir {
     from {
         transform: translateY(0);
     }
+
     to {
         transform: translateY(-6px);
     }
@@ -959,8 +962,8 @@ header {
         position: relative;
         width: 100%;
     }
-    
-    
+
+
 #login {
     position: absolute;
     top: 0;
@@ -989,6 +992,7 @@ header {
     display: flex;
     align-items: center;
 }
+
 .navbar-light .navbar-toggler {
     color: rgba(0,0,0,.55);
     border-color: rgba(0,0,0,.1);
@@ -1011,7 +1015,6 @@ header {
 .dropdown-menu {
     right: 0 !important;
     left: auto !important;
-
 }
 
 /*
@@ -1048,14 +1051,6 @@ header {
             border-radius: 4px;
         }
 
-.cards-container {
-    display: flex;
-    gap: 25px;
-    flex-wrap: nowrap;
-    overflow:visible;
-    overflow-x: auto;
-}
-
 .card {
     background: #f5e1d3;
     border-radius: 8px;
@@ -1089,53 +1084,56 @@ header {
     .card .btn {
         display: none;
     }
-    .Pesquisa {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 20px 0 40px;
-        text-align: center;
-    }
 
-    #busca {
-        width: 100%;
-        max-width: 350px;
-        padding: 12px 18px;
-        border: 2px solid #ccc;
-        border-radius: 25px;
-        font-size: 1rem;
-        outline: none;
-        transition: 0.3s;
-        text-align: center;
-    }
+.Pesquisa {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0 40px;
+    text-align: center;
+}
+
+#busca {
+    width: 100%;
+    max-width: 350px;
+    padding: 12px 18px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+    text-align: center;
+}
+
     #busca:focus {
         border-color: #e74c3c;
         box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
     }
-    .filtros {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 25px;
+
+.filtros {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+    .filtros button {
+        display: block;
+        margin: 20px auto;
+        padding: 12px 40px;
+        background-color: #d52b0d;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
     }
 
-  .filtros button {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 40px;
-    background-color: #d52b0d;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-    .filtros button:hover {
-        background-color: #b2220a;
-    }
+        .filtros button:hover {
+            background-color: #b2220a;
+        }
 /* Menu dropdown */
 .dropdown-content {
     display: none;
@@ -1150,6 +1148,7 @@ header {
     padding: 10px;
     z-index: 1000;
 }
+
     .dropdown-content button {
         display: block;
         width: 100%;
@@ -1165,6 +1164,7 @@ header {
         text-align: left;
         transition: background 0.3s;
     }
+
         .dropdown-content button:hover {
             background: rgba(255, 255, 255, 0.2);
         }
@@ -1211,7 +1211,7 @@ header {
 
 .TituloRDC {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    border-bottom: 3px solid var(--accent);
+    text-transform: uppercase;
     font-size: 3rem;
     color: var(--accent);
     margin-bottom: 20px;
@@ -1242,17 +1242,22 @@ header {
         flex-direction: column;
         background-color: var(--secondary-dark);
         border-radius: 50px;
-        justify-content: space-between; 
+        justify-content: space-between;
         width: 40%;
         height: 100%;
         margin-right: 5%;
         padding: 20px;
     }
 
-    .item-recomendacao .info div p{
-        font-size: 1.25rem;
-        margin-bottom: 20px;
-    }
+        .item-recomendacao .info div p {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .item-recomendacao .info div ul {
+            text-align: left;
+        }
 
 .BotoesRDC {
     display: flex;
@@ -1264,72 +1269,66 @@ header {
     gap: 20px;
 }
 
-.BotoesRDC .CartBurguer {
-    position: relative; 
-    overflow: hidden; 
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 100%;
-
-    border-radius: 20px;
-
-    text-decoration: none;
-    cursor: pointer;
-}
-
-    .BotoesRDC .CartBurguer .cart-icon {
-        position: absolute;
-        top: 50%;
-        transform: translate(0%, -50%);
-        opacity: 1;
-        object-fit: contain;
+    .BotoesRDC .CartBurguer {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 100%;
-        margin-left: 0;
-        transition: transform 0.4s ease-in-out, opacity 1s ease-in-out;
+        border-radius: 20px;
+        text-decoration: none;
+        cursor: pointer;
     }
 
-    .BotoesRDC .CartBurguer .cart-text {
-        position: absolute; 
-        white-space: nowrap; 
+        .BotoesRDC .CartBurguer .cart-icon {
+            position: absolute;
+            top: 50%;
+            transform: translate(0%, -25%);
+            opacity: 1;
+            object-fit: contain;
+            height: 100%;
+            margin-left: 0;
+            transition: transform 0.4s ease-in-out, opacity 1s ease-in-out;
+        }
 
-        color: white;
-        font-weight: bold;
-        font-size: 1.1rem;
-        
-        top: 50%;
-        transform: translate(-100%, -50%);
-        opacity: 0; 
+        .BotoesRDC .CartBurguer .cart-text {
+            position: absolute;
+            white-space: nowrap;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            top: 50%;
+            transform: translate(-100%, -50%);
+            opacity: 0;
+            transition: transform 0.4s ease-in-out, opacity 0.5s ease;
+        }
 
-        transition: transform 0.4s ease-in-out, opacity 0.5s ease;
-    }
 
+        .BotoesRDC .CartBurguer:hover {
+            transform: scale(1.05);
+            background-color: var(--primary);
+        }
 
-    .BotoesRDC .CartBurguer:hover {
-        transform: scale(1.05);
-        background-color: var(--primary);
-    }
+            .BotoesRDC .CartBurguer:hover .cart-icon {
+                transform: translate(1000%, -25%);
+                color: white;
+                opacity: 0;
+            }
 
-    .BotoesRDC .CartBurguer:hover .cart-icon {
-        transform: translate(150%, -50%) ;
-        opacity: 0;
-    }
-
-    .BotoesRDC .CartBurguer:hover .cart-text {
-        transform: translate(0%, -50%);
-        opacity: 1;
-    }
+            .BotoesRDC .CartBurguer:hover .cart-text {
+                transform: translate(0%, -50%);
+                opacity: 1;
+            }
 
     .BotoesRDC .SaibaMaisHamburguer {
         height: 50px;
     }
 
-    .BotoesRDC .SaibaMaisHamburguer:hover {
-        transform: scale(1.05);
-        color: white;
-    }
+        .BotoesRDC .SaibaMaisHamburguer:hover {
+            transform: scale(1.05);
+            color: white;
+        }
 
 .ConteudoRecomendacoesDoChefe img {
     width: 40%;
@@ -1420,13 +1419,13 @@ html, body {
         pointer-events: none; /* Desativa cliques quando invisível */
     }
 
-    .ConteudoRecomendacoesDoChefe img{
+    .ConteudoRecomendacoesDoChefe img {
         width: 100%;
         height: 15%;
         margin-left: 0;
     }
 
-    .item-recomendacao .info{
+    .item-recomendacao .info {
         border-radius: 20px;
         width: 100%;
         height: 60%;
@@ -1439,49 +1438,49 @@ html, body {
         margin-bottom: 20px;
     }
 
-    .item-recomendacao .info div p{
+    .item-recomendacao .info div p {
         font-size: 0.8rem;
         margin-bottom: 0;
     }
 
-    .item-recomendacao .info div h5{
+    .item-recomendacao .info div h5 {
         margin-top: 0;
         font-size: 1rem;
     }
 
-    .item-recomendacao .info div ul{
+    .item-recomendacao .info div ul {
         margin-top: 0;
         font-size: 0.8rem;
     }
 
-    .BotoesRDC{
+    .BotoesRDC {
         height: 15%;
     }
-    
-    .ConteudoContent1{
+
+    .ConteudoContent1 {
         gap: 8vw;
         padding-left: 20vw;
     }
 
-    .Content2 h1{
+    .Content2 h1 {
         font-size: 1.2rem;
     }
-    
-    .textos{
+
+    .textos {
         width: 100%;
         text-align: center;
     }
 
-    .textos h1 {
-        color: var(--primary);
-        font-size: clamp(4rem, 6vw, 5rem);
-        letter-spacing: 0;
-    }
-    
-    .bannerWrapper{
+        .textos h1 {
+            color: var(--primary);
+            font-size: clamp(4rem, 6vw, 5rem);
+            letter-spacing: 0;
+        }
+
+    .bannerWrapper {
         display: none;
     }
-    
+
     .TituloCentral {
         font-size: 1.5rem;
     }
@@ -1497,11 +1496,11 @@ html, body {
         text-align: center;
     }
 
-    .Botao button {
-        width: 80%;
-        max-width: 300px;
-        font-size: 1rem;
-    }
+        .Botao button {
+            width: 80%;
+            max-width: 300px;
+            font-size: 1rem;
+        }
 
     /* Rodapé */
     footer {
@@ -1510,7 +1509,7 @@ html, body {
         padding: 20px 10px;
     }
 
-    .navbar-collapse{
+    .navbar-collapse {
         background-color: white;
         position: absolute;
         left: 0px;
@@ -1540,63 +1539,85 @@ html, body {
     height: 50px;
     top: 10%;
     left: -25%;
-    transform:  rotate(-45deg);
+    transform: rotate(-45deg);
 }
 
-/* Para ocultar a barra de rolagem horizontal da página inteira, se necessário */
-body {
-    overflow-x: hidden;
+.MarqueeContainer {
+    width: 100%;
+    overflow: hidden; /* Esconde o que sai da tela */
+    background: linear-gradient(90deg, var(--primary-dark), #000, var(--primary-dark));
+    border-top: 4px solid var(--primary);
+    border-bottom: 4px solid var(--primary);
+    padding: 15px 0;
+    margin-bottom: 40px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(255, 46, 0, 0.2);
+    transform: rotate(-1deg); /* Leve inclinação para estilo radical */
 }
 
-/* * 1. O contêiner pai que envolve o carrossel e os botões 
- * (ConteudoRecomendacoesDoChefe e CardapioCarrosselContainer)
- */
-.ConteudoRecomendacoesDoChefe,
-.CardapioCarrosselContainer {
-    position: relative; /* Necessário para posicionar os botões de seta */
-    overflow: hidden; /* Oculta as setas caso saiam para fora da área */
-    /* ... outros estilos de padding/margin ... */
+.MarqueeTrack {
+    display: flex;
+    width: max-content; /* Largura baseada no conteúdo */
+    gap: 40px; /* Espaço entre as frases */
+    animation: scrollText 20s linear infinite;
 }
 
-/* * 2. O contêiner de itens que será rolado 
- * (carrossel-wrapper)
- */
-.carrossel-wrapper {
-    display: flex; /* Alinha todos os itens lado a lado */
-    overflow-x: auto; /* Permite a rolagem horizontal */
-    scroll-behavior: smooth; /* Deixa a rolagem suave quando a função JS é chamada */
-    /* Ocultar a barra de rolagem visualmente, mantendo a funcionalidade: */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    padding: 20px 0; /* Espaçamento interno */
+/* Pausa a animação ao passar o mouse */
+.MarqueeContainer:hover .MarqueeTrack {
+    animation-play-state: paused;
+}
+
+.MarqueeItem {
+    font-family: 'Ranchers', cursive;
+    font-size: 3rem;
+    color: var(--accent); /* Amarelo */
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-shadow: 3px 3px 0 var(--primary-dark), 0 0 15px var(--primary);
+}
+
+    .MarqueeItem i {
+        color: var(--primary);
+        font-size: 2rem;
+        filter: drop-shadow(0 0 5px #fff);
+    }
+
+/* Animação que move o texto da direita para a esquerda */
+@keyframes scrollText {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%); /* Move exatamente metade (o conjunto duplicado substitui o original) */
+    }
+}
+
+@media (max-width: 768px) {
+    .MarqueeItem {
+        font-size: 2rem;
+    }
+
+    .MarqueeContainer {
+        transform: rotate(0deg);
+    }
+}
+
+.carrossel-cardapio {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding: 20px;
+    padding-left: 50px;
+    gap: 25px;
 }
 
     /* Ocultar barra de rolagem para navegadores WebKit (Chrome, Safari) */
-    .carrossel-wrapper::-webkit-scrollbar {
+    .carrossel-cardapio::-webkit-scrollbar {
         display: none;
     }
-
-/* * 3. Estilo dos botões de navegação
- */
-.prev-slide,
-.next-slide {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    /* ... estilos de aparência (cor, tamanho, fundo) ... */
-    cursor: pointer;
-    background: rgba(0, 0, 0, 0.5); /* Exemplo */
-    color: white; /* Exemplo */
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-}
-
-.prev-slide {
-    left: 10px;
-}
-
-.next-slide {
-    right: 10px;
-}
