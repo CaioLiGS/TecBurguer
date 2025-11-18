@@ -48,7 +48,7 @@ function filtrar(categoria) {
 }
 
 function mostrarBotaoLogin() {
-    const interfaceBox = document.querySelector(".interface");
+    const interfaceBox = document.getElementById("FacaLogin");
     interfaceBox.classList.add("mostrar");
     console.log(interfaceBox.className);
 }

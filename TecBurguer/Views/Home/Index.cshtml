@@ -18,64 +18,125 @@
 
 
 <div class="BannerContent" id="BannerContent">
-    <div class="BannerBall1"></div>
-    <div class="BannerBall2"></div>
+    <div class="Spotlight"></div>
+    <div id="particles-container"></div> <div class="conteudoBannerContent">
+        <div class="textos">
+            <h1 class="title-tec">TEC</h1>
+            <h1 class="title-burger">BURGER</h1>
+            <p class="subtitle-banner">
+                O verdadeiro sabor artesanal, feito com paixão e tecnologia. <br>
+                Experimente o futuro hoje.
+            </p>
 
-    <div class="conteudoBannerContent">
-        <div class="textos reveal">
-            <h1>TEC</h1>
-            <h1 style="color: var(--primary); -webkit-text-stroke: 0;">BURGUER</h1>
-            <p style="font-size: 1.2rem; opacity: 0.8; margin-top: 10px;">O sabor do futuro, hoje no seu prato.</p>
-
-            <a href="#Cardapio" class="ScrollDown" style="background: var(--primary); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 20px; display: inline-block; box-shadow: var(--glow); animation: none;">
-                PEDIR AGORA
+            <a href="#Cardapio" class="btn-banner">
+                FAZER PEDIDO <i class="fas fa-fire-alt" style="margin-left: 8px;"></i>
             </a>
         </div>
 
-        <div class="bannerWrapper reveal">
+        <div class="bannerWrapper">
             <img class="BurgerImageBanner active" id="bannerPrincipal" src="/css/Imagens/BurguerLogo.png" alt="Hamburguer">
         </div>
     </div>
 
     <div class="BannerOverlay">
-        <a href="#OfertasDiarias" class="ScrollDown">
-            Deslize
-            <i class="fas fa-chevron-down" style="margin-top: 5px;"></i>
+        <a href="#OfertasDiarias" class="ScrollDown" style="cursor: pointer">
+            Ver Promoções
+            <i class="fas fa-chevron-down" style="display:block; margin-top: 5px;"></i>
         </a>
     </div>
 </div>
 
 <script>
-    // Lógica apenas para o Banner Hero (independente do slider de recomendação)
+    // 1. LÓGICA DO SLIDER DE IMAGENS
     var imagens = [
         @foreach (var item in Model)
         {
-                @: "@Html.DisplayFor(modelItem => item.Imagem)",
+                 @: "@Html.DisplayFor(modelItem => item.Imagem)",
         }
     ];
+
+    // Fallback caso não tenha imagens do banco
+    if(imagens.length === 0) {
+        imagens.push("/css/Imagens/BurguerLogo.png");
+    }
 
     var index = 0;
     var bannerWrapper = document.querySelector(".bannerWrapper");
 
     function trocarImagemBanner() {
         if (!imagens.length || !bannerWrapper) return;
+
         var atual = document.querySelector(".BurgerImageBanner.active");
+
+        // Criar próxima imagem
         var proxima = document.createElement("img");
         proxima.src = imagens[index];
-        proxima.className = "BurgerImageBanner";
+        proxima.className = "BurgerImageBanner"; // Começa invisível e deslocada
         bannerWrapper.appendChild(proxima);
-        void proxima.offsetWidth; // Force reflow
-        proxima.classList.add("active");
+
+        // Force reflow (para o navegador processar a animação)
+        void proxima.offsetWidth;
+
+        proxima.classList.add("active"); // Ativa animação de entrada
 
         if (atual) {
             atual.classList.remove("active");
-            atual.classList.add("exit");
-            setTimeout(() => { if(atual.parentNode === bannerWrapper) bannerWrapper.removeChild(atual); }, 500);
+            atual.classList.add("exit"); // Ativa animação de saída
+
+            // Remove do DOM após a animação terminar
+            setTimeout(() => {
+                if(atual.parentNode === bannerWrapper) bannerWrapper.removeChild(atual);
+            }, 600); // 600ms corresponde à transition CSS
         }
+
         index = (index + 1) % imagens.length;
     }
-    setInterval(trocarImagemBanner, 5000);
-    trocarImagemBanner();
+
+    // Troca a cada 4.5 segundos para dar tempo de ler o texto
+    setInterval(trocarImagemBanner, 4500);
+    // Inicia a rotação logo após a primeira imagem estática
+    setTimeout(trocarImagemBanner, 4500);
+
+
+    // 2. LÓGICA DAS PARTÍCULAS (EFEITO DE BRASAS)
+    function createEmbers() {
+        const container = document.getElementById('BannerContent');
+        const particleCount = 30; // Quantidade de brasas
+
+        for (let i = 0; i < particleCount; i++) {
+            setTimeout(() => {
+                spawnEmber(container);
+            }, i * 300); // Cria uma brasa a cada 300ms aleatoriamente
+        }
+    }
+
+    function spawnEmber(container) {
+        const ember = document.createElement('div');
+        ember.classList.add('ember');
+
+        // Tamanho aleatório
+        const size = Math.random() * 6 + 2 + 'px';
+        ember.style.width = size;
+        ember.style.height = size;
+
+        // Posição horizontal aleatória
+        ember.style.left = Math.random() * 100 + '%';
+
+        // Duração da animação aleatória
+        const duration = Math.random() * 3 + 2 + 's';
+        ember.style.animationDuration = duration;
+
+        container.appendChild(ember);
+
+        // Remove a partícula depois que ela subir
+        setTimeout(() => {
+            ember.remove();
+            spawnEmber(container); // Cria uma nova para substituir (loop infinito)
+        }, parseFloat(duration) * 1000);
+    }
+
+    // Inicia as brasas
+    createEmbers();
 </script>
 
 <div class="Content1" id="OfertasDiarias">
@@ -166,19 +227,28 @@
                             <div class="BotoesRDC">
                                 @if (SignInManager.IsSignedIn(User))
                                 {
-                                    <a class="CartBurguer" style="width: 50%; border-radius: 30px; gap: 10px;"
-                                       onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
-                                        <i class="fas fa-shopping-cart"></i> Adicionar
+                                    <a class="CartBurguer"
+                                       onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')"
+                                       title="Adicionar ao carrinho"
+                                       style="width: 50%;">
+                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                        <span class="cart-text">Adicionar ao carrinho</span>
                                     </a>
                                 }
                                 else
                                 {
-                                    <a class="CartBurguer" style="width: 50%; border-radius: 30px; gap: 10px;"
-                                       onclick="mostrarBotaoLogin()">
-                                        <i class="fas fa-shopping-cart"></i> Adicionar
+                                    <a class="CartBurguer"
+                                       onclick="mostrarBotaoLogin()"
+                                       title="Adicionar ao carrinho"
+                                       style="width: 50%;">
+                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                        <span class="cart-text">Adicionar ao carrinho</span>
                                     </a>
                                 }
-                                <a class="SaibaMaisHamburguer" style="width: 50%; border-radius: 30px;" asp-controller="Hamburgueres" asp-action="Details" asp-route-id="@item.IdHamburguer">
+
+                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
+                                   asp-action="Details" asp-route-id="@item.IdHamburguer"
+                                   style="width: 50%; background-color: var(--dark); border-radius: 20px;">
                                     Saiba Mais
                                 </a>
                             </div>
@@ -196,7 +266,7 @@
 <div class="Content1" id="Cardapio" style="height: auto; padding-bottom: 50px;">
     <h2 class="section-title reveal">CARDÁPIO COMPLETO</h2>
 
-    <div class="cards-container reveal" style="flex-wrap: wrap; justify-content: center; overflow: visible;">
+    <div class="cards-container reveal">
         @foreach (var item in Model)
         {
             var promocao = false;
@@ -263,7 +333,7 @@
         {
             <h3>Psiu! 🍔</h3>
             <p>Faça login para continuar.</p>
-            <div style="margin-top: 10px;">
+            <div style="margin-top: 10px; display: flex;">
                 <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">Criar conta</a>
                 <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">Login</a>
             </div>
@@ -274,11 +344,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="~/js/site.js"></script>
-                <script>
-                    window.addEventListener('scroll', reveal);
-        function reveal() {
-            var reveals = document.querySelectorAll('.reveal');
-            for (var i = 0; i < reveals.length; i++) {
+
+<script>
+    window.addEventListener('scroll', reveal);
+    function reveal() {
+        var reveals = document.querySelectorAll('.reveal');
+        for (var i = 0; i < reveals.length; i++) {
             var windowheight = window.innerHeight;
             var revealtop = reveals[i].getBoundingClientRect().top;
             var revealpoint = 150;
@@ -288,4 +359,24 @@
         }
     }
     reveal();
-                </script>
+
+    document.querySelectorAll('.BlocoHamburguer').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            let rect = card.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+
+            let centerX = rect.width / 2;
+            let centerY = rect.height / 2;
+
+            let rotateX = ((y - centerY) / centerY) * -10;
+            let rotateY = ((x - centerX) / centerX) * 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+        });
+    });
+</script>
