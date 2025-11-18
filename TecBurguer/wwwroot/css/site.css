@@ -1283,7 +1283,7 @@ header {
     .BotoesRDC .CartBurguer .cart-icon {
         position: absolute;
         top: 50%;
-        transform: translate(0%, -50%);
+        transform: translate(0%, -25%);
         opacity: 1;
         object-fit: contain;
         height: 100%;
@@ -1313,7 +1313,8 @@ header {
     }
 
     .BotoesRDC .CartBurguer:hover .cart-icon {
-        transform: translate(150%, -50%) ;
+        transform: translate(1000%, -25%); 
+        color: white;
         opacity: 0;
     }
 
@@ -1541,4 +1542,69 @@ html, body {
     top: 10%;
     left: -25%;
     transform:  rotate(-45deg);
+}
+
+/* --- LETREIRO INFINITO (MARQUEE) --- */
+.MarqueeContainer {
+    width: 100%;
+    overflow: hidden; /* Esconde o que sai da tela */
+    background: linear-gradient(90deg, var(--primary-dark), #000, var(--primary-dark));
+    border-top: 4px solid var(--primary);
+    border-bottom: 4px solid var(--primary);
+    padding: 15px 0;
+    margin-bottom: 40px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(255, 46, 0, 0.2);
+    transform: rotate(-1deg); /* Leve inclinação para estilo radical */
+}
+
+.MarqueeTrack {
+    display: flex;
+    width: max-content; /* Largura baseada no conteúdo */
+    gap: 40px; /* Espaço entre as frases */
+    animation: scrollText 20s linear infinite;
+}
+
+/* Pausa a animação ao passar o mouse */
+.MarqueeContainer:hover .MarqueeTrack {
+    animation-play-state: paused;
+}
+
+.MarqueeItem {
+    font-family: 'Ranchers', cursive;
+    font-size: 3rem;
+    color: var(--accent); /* Amarelo */
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-shadow: 3px 3px 0 var(--primary-dark), 0 0 15px var(--primary);
+}
+
+    .MarqueeItem i {
+        color: var(--primary);
+        font-size: 2rem;
+        filter: drop-shadow(0 0 5px #fff);
+    }
+
+/* Animação que move o texto da direita para a esquerda */
+@keyframes scrollText {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%); /* Move exatamente metade (o conjunto duplicado substitui o original) */
+    }
+}
+
+@media (max-width: 768px) {
+    .MarqueeItem {
+        font-size: 2rem;
+    }
+
+    .MarqueeContainer {
+        transform: rotate(0deg);
+    }
 }

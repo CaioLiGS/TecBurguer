@@ -47,7 +47,6 @@
 </div>
 
 <script>
-    // 1. LÓGICA DO SLIDER DE IMAGENS
     var imagens = [
         @foreach (var item in Model)
         {
@@ -138,9 +137,22 @@
     // Inicia as brasas
     createEmbers();
 </script>
-
 <div class="Content1" id="OfertasDiarias">
-    <h2 class="section-title reveal">OFERTAS EM CHAMAS 🔥</h2>
+
+    <div class="MarqueeContainer reveal">
+        <div class="MarqueeTrack">
+            <span class="MarqueeItem">OFERTAS EM CHAMAS <i class="fas fa-fire"></i></span>
+            <span class="MarqueeItem">APROVEITE AGORA <i class="fas fa-stopwatch"></i></span>
+            <span class="MarqueeItem">SABOR EXPLOSIVO <i class="fas fa-bomb"></i></span>
+
+            <span class="MarqueeItem">OFERTAS EM CHAMAS <i class="fas fa-fire"></i></span>
+            <span class="MarqueeItem">APROVEITE AGORA <i class="fas fa-stopwatch"></i></span>
+            <span class="MarqueeItem">SABOR EXPLOSIVO <i class="fas fa-bomb"></i></span>
+            <span class="MarqueeItem">OFERTAS EM CHAMAS <i class="fas fa-fire"></i></span>
+            <span class="MarqueeItem">APROVEITE AGORA <i class="fas fa-stopwatch"></i></span>
+            <span class="MarqueeItem">SABOR EXPLOSIVO <i class="fas fa-bomb"></i></span>
+        </div>
+    </div>
 
     <div class="cards-container reveal">
         @if (ofertasAtivas != null && ofertasAtivas.Any())
@@ -189,12 +201,12 @@
         else
         {
             <div style="width: 100%; text-align: center; padding: 50px; color: #777;">
+                <i class="fas fa-temperature-low" style="font-size: 3rem; margin-bottom: 10px;"></i>
                 <h3>Nenhuma oferta pegando fogo hoje.</h3>
             </div>
         }
     </div>
 </div>
-
 <div class="Content2 reveal" id="RecomendacoesDoChefe">
     <h1 class="section-title" style="color: white; text-shadow: 0 0 20px var(--primary);">RECOMENDAÇÕES DO CHEFE</h1>
 
@@ -231,7 +243,7 @@
                                        onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')"
                                        title="Adicionar ao carrinho"
                                        style="width: 50%;">
-                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                        <i class="fas fa-shopping-cart cart-icon"></i>
                                         <span class="cart-text">Adicionar ao carrinho</span>
                                     </a>
                                 }
@@ -241,7 +253,7 @@
                                        onclick="mostrarBotaoLogin()"
                                        title="Adicionar ao carrinho"
                                        style="width: 50%;">
-                                        <img class="cart-icon" src="~/css/Imagens/IconCart.png">
+                                        <i class="fas fa-shopping-cart cart-icon"></i>
                                         <span class="cart-text">Adicionar ao carrinho</span>
                                     </a>
                                 }
