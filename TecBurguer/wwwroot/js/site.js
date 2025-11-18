@@ -412,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-    const wrapper = document.querySelector(".carrossel-wrapper  ");
+    const wrapper = document.querySelector(".carrossel-wrapper ");
     const slides = document.querySelectorAll(".item-recomendacao");
     let index = 0;
 
@@ -435,10 +435,8 @@ document.addEventListener("DOMContentLoaded", () => {
     window.nextSlide = nextSlide;
     window.prevSlide = prevSlide;
 
-    // mostra o primeiro
     showSlide(index);
 
-    // troca a cada 15 segundos
     setInterval(nextSlide, 15000);
 });
 
