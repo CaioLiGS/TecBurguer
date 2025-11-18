@@ -1542,3 +1542,61 @@ html, body {
     left: -25%;
     transform:  rotate(-45deg);
 }
+
+/* Para ocultar a barra de rolagem horizontal da página inteira, se necessário */
+body {
+    overflow-x: hidden;
+}
+
+/* * 1. O contêiner pai que envolve o carrossel e os botões 
+ * (ConteudoRecomendacoesDoChefe e CardapioCarrosselContainer)
+ */
+.ConteudoRecomendacoesDoChefe,
+.CardapioCarrosselContainer {
+    position: relative; /* Necessário para posicionar os botões de seta */
+    overflow: hidden; /* Oculta as setas caso saiam para fora da área */
+    /* ... outros estilos de padding/margin ... */
+}
+
+/* * 2. O contêiner de itens que será rolado 
+ * (carrossel-wrapper)
+ */
+.carrossel-wrapper {
+    display: flex; /* Alinha todos os itens lado a lado */
+    overflow-x: auto; /* Permite a rolagem horizontal */
+    scroll-behavior: smooth; /* Deixa a rolagem suave quando a função JS é chamada */
+    /* Ocultar a barra de rolagem visualmente, mantendo a funcionalidade: */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    padding: 20px 0; /* Espaçamento interno */
+}
+
+    /* Ocultar barra de rolagem para navegadores WebKit (Chrome, Safari) */
+    .carrossel-wrapper::-webkit-scrollbar {
+        display: none;
+    }
+
+/* * 3. Estilo dos botões de navegação
+ */
+.prev-slide,
+.next-slide {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    /* ... estilos de aparência (cor, tamanho, fundo) ... */
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5); /* Exemplo */
+    color: white; /* Exemplo */
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.prev-slide {
+    left: 10px;
+}
+
+.next-slide {
+    right: 10px;
+}
