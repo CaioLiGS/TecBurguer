@@ -1,9 +1,9 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TecBurguer.Models;
+using System.Linq; // Necessário para o método DetalhesAPI
 
 [ApiController]
 [Route("api/[controller]")]
@@ -15,6 +15,45 @@ public class PedidosController : ControllerBase
     {
         _context = context;
     }
+
+    // AÇÃO PARA RESOLVER O ERRO 404
+    // Rota: /Pedido/DetalhesAPI/{id}
+    [HttpGet("/Pedido/DetalhesAPI/{id}")]
+    public async Task<IActionResult> DetalhesAPI(int id)
+    {
+        // 1. Buscar o pedido incluindo os itens relacionados (PedidoHamburgueres)
+        // e os detalhes do Hambúrguer (IdHamburguerNavigation)
+        var pedido = await _context.Pedidos
+            .Include(p => p.PedidoHamburgueres)
+                .ThenInclude(ph => ph.IdHamburguerNavigation)
+            .FirstOrDefaultAsync(p => p.IdPedido == id);
+
+        if (pedido == null)
+        {
+            // Retorna 404 Not Found se o pedido não for encontrado
+            return NotFound();
+        }
+
+        // 2. Mapeia os dados para um objeto anônimo (DTO) que a View Razor espera
+        var resultado = new
+        {
+            pedido.IdPedido,
+            pedido.PrecoTotal,
+            pedido.Estado,
+            // Mapeia os campos para o formato esperado pelo JavaScript:
+            PedidoHamburgueres = pedido.PedidoHamburgueres.Select(ph => new
+            {
+                ph.Quantidade,
+                hamburguerNome = ph.IdHamburguerNavigation.Nome,
+                hamburguerPreco = ph.IdHamburguerNavigation.Preco
+            }).ToList()
+        };
+
+        // 3. Retorna o objeto mapeado como JSON com status 200 OK
+        return Ok(resultado);
+    }
+
+    // --- Suas Actions existentes continuam abaixo ---
 
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromBody] Pedido pedido)
@@ -90,8 +129,6 @@ public class PedidosController : ControllerBase
         return NoContent();
     }
 
-    // ... (Seu método PutPedido termina aqui)
-
     // PATCH: api/Pedidos/update/5
     [HttpPatch("update/{id}")]
     public async Task<IActionResult> PatchPedido(int id, [FromBody] Pedido dadosParciais)
@@ -104,9 +141,6 @@ public class PedidosController : ControllerBase
         }
 
         // 2. Aplicar manualmente as atualizações parciais
-        //    Isso garante que só mudamos o que veio na requisição
-        //    e não apagamos os outros campos para null.
-
         if (dadosParciais.Nome != null)
         {
             pedidoDoBanco.Nome = dadosParciais.Nome;
@@ -154,6 +188,4 @@ public class PedidosController : ControllerBase
     {
         return (_context.Pedidos?.Any(e => e.IdPedido == id)).GetValueOrDefault();
     }
-
-
 }

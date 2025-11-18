@@ -1,28 +1,125 @@
-﻿//$("#Cep").blur(function () {
-//    var cep = $(this).val().replace(/\D/g, '');
+﻿/*
+    --------------------------------------------------------
+    NOVAS FUNÇÕES PARA CARREGAR DETALHES DO PEDIDO (AJAX/AXIOS)
+    --------------------------------------------------------
+*/
 
-//    if (cep.length === 8) {
-//        $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function (data) {
-//            if (!("erro" in data)) {
-//                $("#Rua").val(data.logradouro);
-//                $("#Bairro").val(data.bairro);
-//                $("#Cidade").val(data.localidade);
-//            } else {
-//                alert("CEP não encontrado.");
+// Função para formatar números como moeda Real Brasileiro (R$ 0,00)
+function formatarMoeda(valor) {
+    const numero = parseFloat(valor);
+    if (isNaN(numero)) {
+        return 'R$ 0,00';
+    }
+    // Usa toFixed(2) e replace para simular formatação de moeda
+    return `R$ ${numero.toFixed(2).replace('.', ',')}`;
+}
 
-//            }
-//        });
-//    }
+/**
+ * Busca os detalhes de um pedido específico via API e injeta o HTML no container.
+ * @param {number} pedidoId O ID do pedido a ser carregado.
+ */
+async function carregarDetalhesPedido(pedidoId) {
+    const detalhesContainer = document.getElementById(`detalhesPedido_${pedidoId}`);
+    const collapseElement = document.getElementById(`collapseDetalhes_${pedidoId}`);
+
+    // Previne recarregar se o painel estiver visível (o Bootstrap Collapse cuida do toggle)
+    if (collapseElement.classList.contains('show')) {
+        return;
+    }
+
+    // Exibe um spinner de carregamento enquanto aguarda a API
+    detalhesContainer.innerHTML = `
+        <div class="text-center py-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div> 
+            Carregando detalhes do pedido #${pedidoId}...
+        </div>
+    `;
+
+    try {
+        // Rota API Assumida: /Pedido/DetalhesAPI/{id}
+        const response = await axios.get(`/Pedido/DetalhesAPI/${pedidoId}`);
+        const pedidoDetalhes = response.data;
+
+        let htmlContent = `
+            <h5 class="card-title mb-3">Itens do Pedido #${pedidoDetalhes.idPedido}</h5>
+            <ul class="list-group list-group-flush mb-3">
+        `;
+
+        let totalCalculado = 0;
+
+        pedidoDetalhes.pedidoHamburgueres.forEach(item => {
+            // Corrigido para verificar precoUnitario (mais comum) e hamburguerPreco
+            const precoUnitario = item.precoUnitario || item.hamburguerPreco || 0;
+            const subtotal = item.quantidade * precoUnitario;
+            totalCalculado += subtotal;
+
+            htmlContent += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${item.hamburguerNome}</strong> 
+                        <small class="text-muted"> (${formatarMoeda(precoUnitario)} cada)</small>
+                        <span class="badge bg-secondary ms-2">${item.quantidade}x</span>
+                    </div>
+                    <span class="fw-bold">${formatarMoeda(subtotal)}</span>
+                </li>
+            `;
+        });
+
+        htmlContent += `</ul>
+            <hr>
+            <div class="d-flex justify-content-between fw-bold fs-5 mb-0">
+                <span>Total:</span>
+                <span class="text-success">${formatarMoeda(totalCalculado)}</span>
+            </div>
+        `;
+
+        detalhesContainer.innerHTML = htmlContent;
+
+    } catch (error) {
+        console.error("Erro ao carregar detalhes do pedido:", error.response?.data || error.message);
+        detalhesContainer.innerHTML = '<div class="alert alert-danger mb-0">❌ Não foi possível carregar os detalhes do pedido. Verifique o console ou a API `/Pedido/DetalhesAPI/`</div>';
+    }
+}
+
+// Torna a nova função acessível globalmente
+window.carregarDetalhesPedido = carregarDetalhesPedido;
+
+
+/*
+    --------------------------------------------------------
+    SEU CÓDIGO JS EXISTENTE
+    --------------------------------------------------------
+*/
+
+
+// Funções Comentadas (Originalmente desativadas/em jQuery)
+//$("#Cep").blur(function () {
+//    var cep = $(this).val().replace(/\D/g, '');
+//
+//    if (cep.length === 8) {
+//        $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function (data) {
+//            if (!("erro" in data)) {
+//                $("#Rua").val(data.logradouro);
+//                $("#Bairro").val(data.bairro);
+//                $("#Cidade").val(data.localidade);
+//            } else {
+//                alert("CEP não encontrado.");
+//
+//            }
+//        });
+//    }
 //});
 
 //$("#Localidade").blur(function(){
-//    var localidade = $(this).val();
-
-//    if(localidade == "Condomínio"){
-//        $("#NumeroCasaLabel").text("Nome do condomínio / Complemento")
-//    } else {
-//        $("#NumeroCasaLabel").text("Numero da casa")
-//    }
+//    var localidade = $(this).val();
+//
+//    if(localidade == "Condomínio"){
+//        $("#NumeroCasaLabel").text("Nome do condomínio / Complemento")
+//    } else {
+//        $("#NumeroCasaLabel").text("Numero da casa")
+//    }
 //});
 
 function toggleDropdown() {
@@ -53,42 +150,43 @@ function mostrarBotaoLogin() {
     console.log(interfaceBox.className);
 }
 
+// Funções Comentadas (AumentarQuantidadeHamburguerPedido)
 //function AumentarQuantidadeHamburguerPedido(IdPedidoHamburguer, preco) {
-//    axios.get('/api/pedidohamburgueres/listar').then(resPH => {
-//        const itemExistente = resPH.data.find(item => item.id === IdPedidoHamburguer);
-
-//        if (itemExistente) {
-//            const dadosPH = {
-//                id: IdPedidoHamburguer,
-//                idPedido: itemExistente.idPedido,
-//                idHamburguer: itemExistente.idHamburguer,
-//                quantidade: itemExistente.quantidade + 1
-//            };
-
-//            axios.put(`/api/pedidohamburgueres/update/${itemExistente.id}`, dadosPH)
-//                .then(res => console.log('Quantidade do item aumentada:', res.data))
-//                .catch(err => console.error('Erro ao atualizar quantidade:', err));
-
-//            axios.get('/api/pedidos/listar').then(resP => {
-//                const pedidoExistente = resP.data.find(p => p.idPedido === itemExistente.idPedido);
-
-//                if (pedidoExistente) {
-
-//                    const novosDadosPedido = {
-//                        idPedido: pedidoExistente.idPedido,
-//                        nome: pedidoExistente.nome,
-//                        precoTotal: pedidoExistente.precoTotal + preco,
-//                        estado: pedidoExistente.estado,
-//                        idUsuario: pedidoExistente.idUsuario
-//                    };
-
-//                    axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDadosPedido)
-//                        .then(res => location.reload())
-//                        .catch(err => console.error('Erro ao atualizar valor total:', err));
-//                }
-//            });
-//        }
-//    });
+//    axios.get('/api/pedidohamburgueres/listar').then(resPH => {
+//        const itemExistente = resPH.data.find(item => item.id === IdPedidoHamburguer);
+//
+//        if (itemExistente) {
+//            const dadosPH = {
+//                id: IdPedidoHamburguer,
+//                idPedido: itemExistente.idPedido,
+//                idHamburguer: itemExistente.idHamburguer,
+//                quantidade: itemExistente.quantidade + 1
+//            };
+//
+//            axios.put(`/api/pedidohamburgueres/update/${itemExistente.id}`, dadosPH)
+//                .then(res => console.log('Quantidade do item aumentada:', res.data))
+//                .catch(err => console.error('Erro ao atualizar quantidade:', err));
+//
+//            axios.get('/api/pedidos/listar').then(resP => {
+//                const pedidoExistente = resP.data.find(p => p.idPedido === itemExistente.idPedido);
+//
+//                if (pedidoExistente) {
+//
+//                    const novosDadosPedido = {
+//                        idPedido: pedidoExistente.idPedido,
+//                        nome: pedidoExistente.nome,
+//                        precoTotal: pedidoExistente.precoTotal + preco,
+//                        estado: pedidoExistente.estado,
+//                        idUsuario: pedidoExistente.idUsuario
+//                    };
+//
+//                    axios.put(`/api/pedidos/update/${pedidoExistente.idPedido}`, novosDadosPedido)
+//                        .then(res => location.reload())
+//                        .catch(err => console.error('Erro ao atualizar valor total:', err));
+//                }
+//            });
+//        }
+//    });
 //}
 
 function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
@@ -145,7 +243,7 @@ function CalcularPrecoTotal(idPedido) {
             });
 
             novosDados.precoTotal = Math.round(precoTotalCalculado * 100) / 100;
-            
+
             console.log('Preço total calculado:', novosDados.precoTotal);
 
             axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
@@ -159,7 +257,7 @@ function CalcularPrecoTotal(idPedido) {
 
                     setTimeout(function () {
                         document.querySelector('.interface').classList.remove('mostrar');
-                    }, 4000); 
+                    }, 4000);
                 })
                 .catch(err => {
                     console.error('Erro ao atualizar pedido:', err.response?.data || err.message);
@@ -179,7 +277,7 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
 
     axios.get('/api/pedidohamburgueres/listar').then(response => {
         console.log('Items do carrinho recebidos:', response.data);
-        
+
         let criar = true;
 
         response.data.forEach(item => {
@@ -205,7 +303,7 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
 
         if (criar) {
             console.log('Criando novo item:', dados);
-            
+
             axios.post(url, dados)
                 .then(res => {
                     console.log('Item criado com sucesso:', res.data);
@@ -224,7 +322,7 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
 
 function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
     const url = '/api/pedidos/create';
-    
+
     const dados = {
         nome: `Pedido_${idUsuario}_${nome}`,
         PrecoTotal: parseFloat(preco),
@@ -251,7 +349,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = f
 
     axios.get('/api/usuarios/listar').then(response => {
         console.log('Usuários recebidos:', response.data);
-        
+
         const usuario = response.data.find(u => u.email === emailUsuario);
 
         if (!usuario) {
@@ -265,7 +363,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = f
 
         axios.get('/api/pedidos/listar').then(response => {
             console.log('Pedidos recebidos:', response.data);
-            
+
             const pedidoExistente = response.data.find(p => p.idUsuario === idUsuario);
 
             if (pedidoExistente) {
@@ -281,7 +379,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = f
             console.error('Erro ao buscar pedidos:', err);
             alert('Erro ao buscar pedidos. Por favor, tente novamente.');
         });
-        
+
     }).catch(err => {
         console.error('Erro ao buscar usuários:', err);
         alert('Erro ao buscar usuários. Por favor, tente novamente.');
@@ -314,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-    const wrapper = document.querySelector(".carrossel-wrapper  ");
+    const wrapper = document.querySelector(".carrossel-wrapper  ");
     const slides = document.querySelectorAll(".item-recomendacao");
     let index = 0;
 
@@ -402,7 +500,7 @@ function FinalizarCompra(username, idPedido) {
     });
 }
 
-function FecharPopUp(){
+function FecharPopUp() {
     document.getElementById("PopUpNaoTemCEP").classList.remove("Aparecer");
 }
 
@@ -522,4 +620,71 @@ document.getElementById('registerForm').addEventListener('submit', function (e) 
     spinner.style.display = 'inline-block';
 
     btn.disabled = true;
+});
+
+
+// ==========================================================
+// ESTE É O BLOCO DOMContentLoaded DO CARDÁPIO, ONDE ESTÁ A FUNÇÃO DE FILTRO
+// A função 'filtrarPorCategoria' foi corrigida com um offset de 220px.
+// ==========================================================
+document.addEventListener('DOMContentLoaded', function () {
+    const linksCategoria = document.querySelectorAll('.LinkCategoria');
+    const todosOsBlocos = document.querySelectorAll('.BlocoHamburguer');
+    const todosOsTitulos = document.querySelectorAll('.TituloCategoria');
+
+    function filtrarPorCategoria(categoriaAlvo) {
+
+        // --- 1. Lógica de Filtro (Mantida) ---
+        todosOsTitulos.forEach(titulo => titulo.style.display = 'none');
+        todosOsBlocos.forEach(bloco => bloco.style.display = 'none');
+        linksCategoria.forEach(link => {
+            if (link.dataset.categoria === categoriaAlvo) {
+                link.classList.add('ativo');
+            } else {
+                link.classList.remove('ativo');
+            }
+        });
+
+        if (categoriaAlvo === 'Todos') {
+            todosOsTitulos.forEach(titulo => titulo.style.display = 'inline-block');
+            todosOsBlocos.forEach(bloco => bloco.style.display = 'block');
+        } else {
+            document.getElementById('pesquisa').value = '';
+            const tituloAlvo = document.getElementById(`Categoria_${categoriaAlvo}`);
+            if (tituloAlvo) {
+                tituloAlvo.style.display = 'inline-block';
+            }
+
+            document.querySelectorAll(`[data-categoria-item='${categoriaAlvo}']`).forEach(bloco => {
+                bloco.style.display = 'block';
+            });
+        }
+
+        // --- 2. Lógica de Rolagem (CORRIGIDA COM NOVO OFFSET) ---
+        const primeiroTituloVisivel = document.querySelector('.TituloCategoria[style*="inline-block"]');
+
+        if (primeiroTituloVisivel) {
+            // Offset aumentado para 220px para compensar a altura dos cabeçalhos/filtros fixos.
+            const offset = 220;
+
+            // Calcula a posição de rolagem ajustada:
+            const targetPosition = primeiroTituloVisivel.getBoundingClientRect().top + window.scrollY - offset;
+
+            // Rola para a nova posição.
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    linksCategoria.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const categoria = this.dataset.categoria;
+            filtrarPorCategoria(categoria);
+        });
+    });
+    // Garante que o filtro 'Todos' seja carregado na inicialização
+    filtrarPorCategoria('Todos');
 });
