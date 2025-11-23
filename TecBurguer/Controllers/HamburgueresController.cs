@@ -67,6 +67,13 @@ namespace TecBurguer.Controllers
                 return NotFound();
             }
 
+            var agora = DateTime.Now;
+
+            var ofertaAtiva = await _context.Ofertas
+                .FirstOrDefaultAsync(o => o.idHamburguer == id && o.dataTermino.HasValue && o.dataTermino > agora); 
+
+            ViewBag.Oferta = ofertaAtiva;
+
             return View(hamburguer);
         }
 

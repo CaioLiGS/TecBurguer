@@ -51,7 +51,7 @@
     var imagens = [
         @foreach (var item in Model)
         {
-                     @: "@Html.DisplayFor(modelItem => item.Imagem)",
+                         @: "@Html.DisplayFor(modelItem => item.Imagem)",
         }
     ];
 
@@ -138,6 +138,7 @@
     // Inicia as brasas
     createEmbers();
 </script>
+
 <div class="Content1" id="OfertasDiarias">
 
     <div class="MarqueeContainer reveal">
@@ -155,59 +156,67 @@
         </div>
     </div>
 
-    <div class="cards-container reveal">
-        @if (ofertasAtivas != null && ofertasAtivas.Any())
-        {
-            @foreach (var oferta in ofertasAtivas)
+    <div class="OfertasCarrosselContainer reveal">
+
+        <button class="prev-slide" onclick="prevSlideOfertas()"><i class="fas fa-chevron-left"></i></button>
+
+        <div class="carrossel-ofertas" id="OfertasCarrossel">
+            @if (ofertasAtivas != null && ofertasAtivas.Any())
             {
-                if (oferta.idHamburguerNavigation == null) { continue; }
-                var item = oferta.idHamburguerNavigation;
+                @foreach (var oferta in ofertasAtivas)
+                {
+                    if (oferta.idHamburguerNavigation == null) { continue; }
+                    var item = oferta.idHamburguerNavigation;
 
-                <div class="BlocoHamburguer">
-                    <div class="FaixaHamburguer">@(oferta.porcentagem >= 30 ? "MEGA!!" : "OFERTA")</div>
+                    <div class="BlocoHamburguer" style="margin-bottom: 30px;">
+                        <div class="FaixaHamburguer">@(oferta.porcentagem >= 30 ? "MEGA!!" : "OFERTA")</div>
 
-                    <img src="@Html.DisplayFor(modelItem => item.Imagem)" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
+                        <img src="@Html.DisplayFor(modelItem => item.Imagem)" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
-                    <h3 class="TituloHamburguer">@item.Nome</h3>
-                    <p class="DescricaoHamburguer">@item.Descricao</p>
+                        <h3 class="TituloHamburguer">@item.Nome</h3>
+                        <p class="DescricaoHamburguer">@item.Descricao</p>
 
-                    <div class="BottomInfoBurguer">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                            <div>
-                                <span style="text-decoration: line-through; color: #666; font-size: 0.9rem;">R$ @item.Preco</span>
-                                <h4 class="PrecoBurguer">R$ @oferta.precoFinal</h4>
+                        <div class="BottomInfoBurguer">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                <div>
+                                    <span style="text-decoration: line-through; color: #666; font-size: 0.9rem;">R$ @item.Preco</span>
+                                    <h4 class="PrecoBurguer">R$ @oferta.precoFinal</h4>
+                                </div>
+                                <h3 class="PorcentagemOferta">-@oferta.porcentagem%</h3>
                             </div>
-                            <h3 class="PorcentagemOferta">-@oferta.porcentagem%</h3>
-                        </div>
 
-                        <div class="BotoesDoHamburguer">
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="CartBurguer" onclick="mostrarBotaoLogin()">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </a>
-                            }
-                            <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" asp-action="Details" asp-route-id="@item.IdHamburguer">DETALHES</a>
+                            <div class="BotoesDoHamburguer">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                }
+                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" asp-action="Details" asp-route-id="@item.IdHamburguer">DETALHES</a>
+                            </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div style="width: 100%; text-align: center; padding: 50px; color: #777;">
+                    <i class="fas fa-temperature-low" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                    <h3>Nenhuma oferta pegando fogo hoje.</h3>
                 </div>
             }
-        }
-        else
-        {
-            <div style="width: 100%; text-align: center; padding: 50px; color: #777;">
-                <i class="fas fa-temperature-low" style="font-size: 3rem; margin-bottom: 10px;"></i>
-                <h3>Nenhuma oferta pegando fogo hoje.</h3>
-            </div>
-        }
+        </div>
+
+        <button class="next-slide" onclick="nextSlideOfertas()"><i class="fas fa-chevron-right"></i></button>
     </div>
 </div>
+
 <div class="Content2 reveal" id="RecomendacoesDoChefe">
     <h1 class="section-title" style="color: white; text-shadow: 0 0 20px var(--primary);">RECOMENDAÇÕES DO CHEFE</h1>
 
@@ -337,8 +346,8 @@
 
     <div style="text-align: center; padding-bottom: 30px;">
         <a asp-controller="Home"
-               asp-action="Cardapio"
-               style="color: var(--primary); text-decoration: underline; cursor: pointer;">
+           asp-action="Cardapio"
+           style="color: var(--primary); text-decoration: underline; cursor: pointer;">
             Acesse nosso cardapio completo
         </a>
     </div>
@@ -372,8 +381,8 @@
 <script src="~/js/site.js"></script>
 
 <script>
+    // --- SCRIPT DO CARDÁPIO (Original) ---
     const cardapioCarrossel = document.getElementById('CardapioCarrossel');
-
     const scrollAmount = 650;
 
     function prevSlideCardapio() {
@@ -387,6 +396,22 @@
             cardapioCarrossel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     }
+
+    // --- NOVO SCRIPT PARA AS OFERTAS (Adicionado) ---
+    const ofertasCarrossel = document.getElementById('OfertasCarrossel');
+
+    function prevSlideOfertas() {
+        if (ofertasCarrossel) {
+            ofertasCarrossel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+    }
+
+    function nextSlideOfertas() {
+        if (ofertasCarrossel) {
+            ofertasCarrossel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+    }
+    // ------------------------------------------------
 
     window.addEventListener('scroll', reveal);
     function reveal() {

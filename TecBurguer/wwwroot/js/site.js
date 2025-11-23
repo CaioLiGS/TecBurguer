@@ -188,10 +188,9 @@ function mostrarBotaoLogin() {
 //    });
 //}
 
-function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
-    const url = `/api/pedidohamburgueres/update/${IdPedidoHamburguer}`;
-    axios.get('/api/pedidohamburgueres/listar').then(response => {
 
+function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
+    axios.get('/api/pedidohamburgueres/listar').then(response => {
         response.data.forEach(item => {
             if (item.id == IdPedidoHamburguer) {
                 const dados = {
@@ -203,18 +202,12 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
 
                 if (dados.quantidade <= 0) {
                     axios.delete(`/api/pedidohamburgueres/delete/${item.id}`)
-                        .then(res => {
-                            CalcularPrecoTotal(item.idPedido)
-                        })
-                        .catch(err => console.error('Erro ao atualizar pedido:', err));
-                }
-                else {
-
+                        .then(res => { CalcularPrecoTotal(item.idPedido); })
+                        .catch(err => console.error(err));
+                } else {
                     axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
-                        .then(res => {
-                            CalcularPrecoTotal(item.idPedido)
-                        })
-                        .catch(err => console.error('Erro ao atualizar pedido:', err));
+                        .then(res => { CalcularPrecoTotal(item.idPedido); })
+                        .catch(err => console.error(err));
                 }
             }
         });
@@ -236,31 +229,53 @@ function CalcularPrecoTotal(idPedido) {
             let precoTotalCalculado = 0;
 
             response.data.forEach(item => {
-                const subtotal = (item.quantidade * item.precoUnitario);
-                precoTotalCalculado += subtotal;
-                console.log(`Item: ${item.nomeHamburguer}, Qtd: ${item.quantidade}, Preço Unitário: ${item.precoUnitario}, Subtotal: ${subtotal}`);
+
+                axios.get(`/api/OfertasApi/Listar`)
+                    .then(oferta => {
+                        var precoReal = item.precoUnitario;
+                        oferta.data.forEach(itemoferta => {
+
+                            if (itemoferta.idHamburguer == item.idHamburguer) {
+
+                                const agora = new Date();
+
+                                const dataLocal = new Date(agora.getTime() - (agora.getTimezoneOffset() * 60000));
+                                const dataFormatada = dataLocal.toISOString().slice(0, 19);
+
+                                console.log("Id hamburguer da oferta: " + itemoferta.idHamburguer);
+                                console.log("Data hoje: " + dataFormatada);
+                                console.log("Data oferta: " + itemoferta.dataTermino);
+
+                                if (dataFormatada < itemoferta.dataTermino) {
+                                    precoReal = itemoferta.precoFinal;
+                                }
+                            }
+                        });
+
+                        const subtotal = (item.quantidade * precoReal);
+                        precoTotalCalculado += subtotal;
+
+                        novosDados.precoTotal = Math.round(precoTotalCalculado * 100) / 100;
+
+                        console.log(`Item: ${item.nomeHamburguer}, Qtd: ${item.quantidade}, Preço Unitário: ${item.precoUnitario}, Subtotal: ${subtotal}`);
+
+                        console.log('Preço total calculado:', novosDados.precoTotal);
+
+                        axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
+                            .then(res => {
+                                console.log('Pedido atualizado com sucesso');
+                                location.reload();
+                            })
+                            .catch(err => {
+                                console.error('Erro ao atualizar pedido:', err.response?.data || err.message);
+                            });
+                    })
+                    .catch(err => {
+                        console.log("Deu erro na parte de pegar as ofertas!\n" + err);
+                    });
             });
 
-            novosDados.precoTotal = Math.round(precoTotalCalculado * 100) / 100;
-
-            console.log('Preço total calculado:', novosDados.precoTotal);
-
-            axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
-                .then(res => {
-                    console.log('Pedido atualizado com sucesso');
-                    location.reload();
-
-                    setTimeout(function () {
-                        document.querySelector('.interface').classList.add('mostrar');
-                    }, 1000);
-
-                    setTimeout(function () {
-                        document.querySelector('.interface').classList.remove('mostrar');
-                    }, 4000);
-                })
-                .catch(err => {
-                    console.error('Erro ao atualizar pedido:', err.response?.data || err.message);
-                });
+            
         })
         .catch(err => {
             console.error('Erro ao buscar items do pedido:', err);

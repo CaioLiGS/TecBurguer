@@ -1,42 +1,81 @@
 ﻿@model TecBurguer.Models.HamburguerIgrediente
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Vincular Ingrediente";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-<h4>HamburguerIgrediente</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<link href="~/css/HamburguerIngredientes.css" rel="stylesheet" />
+
+<div class="create-container">
+    <div class="glass-form">
+        <h1 class="form-title">MONTAR RECEITA</h1>
+        <p class="form-subtitle">Vincule um ingrediente ao lanche</p>
+
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdHamburguer" class="control-label"></label>
-                <select asp-for="IdHamburguer" class ="form-control" asp-items="ViewBag.IdHamburguer"></select>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3 text-center"></div>
+
+            <div class="form-floating position-relative">
+                <select asp-for="IdHamburguer" class="form-select" asp-items="ViewBag.IdHamburguer"></select>
+                <label asp-for="IdHamburguer"><i class="fas fa-hamburger me-1"></i> Escolha o Lanche</label>
+                <i class="fas fa-chevron-down input-icon"></i>
             </div>
-            <div class="form-group">
-                <label asp-for="IdIngrediente" class="control-label"></label>
-                <select asp-for="IdIngrediente" class ="form-control" asp-items="ViewBag.IdIngrediente"></select>
+
+            <div class="form-floating position-relative">
+                <select asp-for="IdIngrediente" class="form-select" asp-items="ViewBag.IdIngrediente"></select>
+                <label asp-for="IdIngrediente"><i class="fas fa-carrot me-1"></i> Escolha o Ingrediente</label>
+                <i class="fas fa-chevron-down input-icon"></i>
             </div>
-            <div class="form-group">
-                <label asp-for="QuantidadeNecessario" class="control-label"></label>
-                <input asp-for="QuantidadeNecessario" class="form-control" />
-                <span asp-validation-for="QuantidadeNecessario" class="text-danger"></span>
+
+            <div class="form-floating position-relative">
+                <input asp-for="QuantidadeNecessario" class="form-control" placeholder="Qtd" />
+                <label asp-for="QuantidadeNecessario"><i class="fas fa-balance-scale me-1"></i> Quantidade Necessária</label>
+                <span asp-validation-for="QuantidadeNecessario" class="text-danger small"></span>
+
+                <div class="spinner-controls">
+                    <div class="spinner-btn up" onclick="adjustQty(1)"><i class="fas fa-caret-up"></i></div>
+                    <div class="spinner-btn down" onclick="adjustQty(-1)"><i class="fas fa-caret-down"></i></div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="form-group mt-4">
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-plus-circle me-2"></i> VINCULAR
+                </button>
             </div>
         </form>
+
+        <div>
+            <a asp-action="Index" class="btn-back">
+                <i class="fas fa-arrow-left me-1"></i> Voltar para a lista
+            </a>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function adjustQty(amount) {
+            var input = document.getElementById('qtyInput');
+            var currentVal = parseInt(input.value);
+
+            if (isNaN(currentVal)) currentVal = 0;
+
+            // Calcula novo valor
+            var newVal = currentVal + amount;
+
+            // (Opcional) Impede números negativos
+            if (newVal < 0) newVal = 0;
+
+            input.value = newVal;
+        }
+    </script>
 }

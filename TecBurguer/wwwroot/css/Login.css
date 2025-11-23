@@ -1,15 +1,23 @@
 ﻿/* ==========================
-   🎨 Variáveis
+   🎨 Variáveis (Atualizadas para Dark & Fire)
    ========================== */
+@import url('https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap');
+
 :root {
-    --primary: #E07A5F; /* laranja queimado */
-    --primary-dark: #d45d47;
-    --secondary: #81B29A; /* verde oliva */
-    --secondary-dark: #6d9b85;
-    --accent: #F2CC8F; /* bege areia */
-    --dark: #3D405B; /* marrom café */
-    --light: #faf3e0; /* branco quente */
-    --light-dark: #f6f3eb;
+    --primary: #FF2E00; /* Laranja Neon */
+    --primary-dark: #8B0000; /* Vermelho Sangue */
+    --secondary: #FFC107; /* Amarelo Ouro */
+    --secondary-dark: #B8860B; /* Ouro Escuro */
+    --accent: #FF9000; /* Laranja Claro */
+    --dark: #121212; /* Preto Fundo */
+    --light: #F5F5F5; /* Texto Claro */
+    --light-dark: #1E1E1E; /* Cinza Fundo de Card */
+}
+
+/* Aplicando fonte padrão */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--dark);
 }
 
 /* ==========================
@@ -35,17 +43,19 @@
     height: 100%;
     padding: 15px;
     text-align: center;
-    color: var(--dark);
+    color: var(--light); /* Alterado para texto claro */
     background-color: var(--light-dark);
     border-radius: 15px;
     transition: all 0.7s ease-in-out;
     z-index: 1;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borda sutil para dark mode */
 }
 
     .Box div img {
         height: 12vw;
-        opacity: 0.25;
+        opacity: 0.8; /* Aumentei um pouco a opacidade para ver melhor no escuro */
         object-fit: contain;
+        filter: drop-shadow(0 0 5px var(--primary)); /* Brilho na logo */
     }
 
     .Box form {
@@ -76,7 +86,8 @@
     position: absolute;
     right: 50%;
     border-radius: 15px 0 0 15px;
-    background-color: var(--dark);
+    background-color: var(--dark); /* Era --dark original, agora é preto */
+    border: 1px solid var(--primary); /* Adicionei borda fina para destacar */
     color: var(--light);
     z-index: 2;
     transition: all 0.7s ease-in-out;
@@ -84,14 +95,16 @@
 
     #RightBox div h1 {
         color: var(--primary);
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-family: 'Ranchers', cursive; /* Fonte alterada */
         font-size: clamp(1.2rem, 5vw, 2.5rem);
         width: 100%;
         border-bottom: 5px solid var(--primary);
+        letter-spacing: 2px;
     }
 
     #RightBox h5 {
         text-align: justify;
+        font-weight: 300;
     }
 
 /* ==========================
@@ -111,7 +124,7 @@
         border-radius: 30px;
         color: var(--light);
         font-size: 15px;
-        font-family: 'Arial Narrow Bold', sans-serif;
+        font-family: 'Poppins', sans-serif; /* Fonte alterada */
         font-weight: bolder;
         text-decoration: 0;
         cursor: pointer;
@@ -129,10 +142,12 @@
 
 #loginSubmit {
     background: linear-gradient(100deg, var(--secondary), var(--secondary-dark), var(--secondary));
+    color: var(--dark); /* Contraste para o botão amarelo */
 }
 
 .BottomRightBox a:hover {
-    background-color: var(--primary);
+    background-color: var(--primary-dark);
+    box-shadow: 0 0 15px var(--primary);
 }
 
 .BottomRightBox a:hover,
@@ -143,49 +158,51 @@
 
 .registerSubmit:hover,
 #loginSubmit:hover {
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(255, 46, 0, 0.4); /* Sombra laranja */
     background-position: 300px;
 }
 
 .BottomRightBox h4 {
     color: var(--secondary);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Ranchers', cursive; /* Fonte alterada */
+    letter-spacing: 1px;
 }
 
 
-.links{
+.links {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
 }
 
-.links p a{
-    text-decoration: none;
-    color: var(--secondary-dark);
-    transition: all ease-in-out 0.25s;
-    font-weight: bold;
-    font-size: 15px;
-}
+    .links p a {
+        text-decoration: none;
+        color: #bbb; /* Texto um pouco mais claro para fundo escuro */
+        transition: all ease-in-out 0.25s;
+        font-weight: bold;
+        font-size: 15px;
+    }
 
-.links p a:hover{
-    color: var(--primary);
-}
+        .links p a:hover {
+            color: var(--primary);
+        }
 
 /* ==========================
    📝 Textos com gradiente
    ========================== */
 .TextoComImagem {
-    background: linear-gradient(90deg, var(--secondary), var(--secondary-dark));
+    background: linear-gradient(90deg, var(--secondary), #fff); /* Amarelo para Branco */
 }
 
 .TextoComImagem2 {
-    background: linear-gradient(90deg, var(--primary), var(--accent));
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark)); /* Laranja para Vermelho */
 }
 
 .TextoComImagem,
 .TextoComImagem2 {
     width: 100%;
+    font-family: 'Ranchers', cursive; /* Adicionei a fonte aqui também se for título */
     font-weight: bold;
     font-size: clamp(1.2rem, 5vw, 2.5rem);
     background-size: cover;
@@ -201,19 +218,24 @@
 .form-floating input,
 .form-floating select {
     border-radius: 30px;
-    border: 1px solid #ddd;
+    border: 1px solid #444; /* Borda mais escura */
+    background-color: rgba(0,0,0,0.2); /* Fundo translúcido escuro */
+    color: white; /* Texto branco */
     padding: 10px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
     .form-floating input:focus,
     .form-floating select:focus {
-        border-color: var(--secondary);
-        box-shadow: 0 0 5px rgba(129,178,154,0.5);
+        border-color: var(--primary);
+        box-shadow: 0 0 5px rgba(255, 46, 0, 0.5); /* Glow Laranja */
+        background-color: rgba(0,0,0,0.4);
+        color: white;
     }
 
+/* Ícone do Select atualizado para Laranja (%23FF2E00) */
 .form-floating select {
-    background-image: url("data:image/svg+xml;utf8,<svg fill='%23E07A5F' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23FF2E00' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 18px;
@@ -253,33 +275,35 @@
     }
 
 
-    .form-floating label {
-        position:absolute;
-        font-size: 0.85rem;
-        padding: 0 2px;
-        left: 40px !important;
-        top: 30%;
-        transform: none;
-        color: inherit;
-        transition: all 0.25s ease-in-out;
-    }
+.form-floating label {
+    position: absolute;
+    font-size: 0.85rem;
+    padding: 0 2px;
+    left: 40px !important;
+    top: 30%;
+    transform: none;
+    color: #888; /* Cinza para placeholder */
+    transition: all 0.25s ease-in-out;
+}
 
-    .form-floating input:focus ~ label,
-    .form-floating input:not(:placeholder-shown) ~ label {
-        top: 10%;
-    }
+.form-floating input:focus ~ label,
+.form-floating input:not(:placeholder-shown) ~ label {
+    top: 10%;
+    color: var(--primary); /* Label ativa laranja */
+    font-weight: bold;
+}
 
-   /* ==========================
+/* ==========================
    🔴 Bolhas decorativas
    ========================== */
-        .Ball1, .Ball3 {
-            position: fixed;
-            border-radius: 100%;
-            background-color: var(--secondary);
-            filter: blur(60px);
-            z-index: -1;
-            transition: all 0.7s ease-in-out;
-        }
+.Ball1, .Ball3 {
+    position: fixed;
+    border-radius: 100%;
+    background-color: var(--primary); /* Laranja */
+    filter: blur(60px);
+    z-index: -1;
+    transition: all 0.7s ease-in-out;
+}
 
 .Ball1 {
     width: 30vw;
@@ -298,7 +322,7 @@
 }
 
 /* ==========================
-   📱 Responsividade
+   📱 Responsividade (INALTERADO)
    ========================== */
 @media (max-width: 900px) {
     .OutBox {
@@ -357,7 +381,6 @@
 }
 
 @media (max-width: 900px) {
-    /* Faz o RightBox deixar de ser absoluto e virar bloco normal */
     #RightBox {
         position: static;
         width: 90%;
@@ -368,12 +391,10 @@
         margin-top: 10px;
     }
 
-    /* Faz o MidBox desaparecer */
     #LeftBox {
         display: none !important;
     }
 
-    /* Garante que as caixas fiquem empilhadas */
     .OutBox {
         flex-direction: column;
         align-items: center;
@@ -384,7 +405,6 @@
 }
 
 @media (max-width: 600px) {
-    /* Ajuste adicional para o RightBox em telas bem pequenas */
     #RightBox {
         width: 100%;
         padding: 15px;
@@ -401,11 +421,12 @@
 }
 
     .OutBox.swap #RightBox .BottomRightBox a {
-        background-color: var(--secondary);
+        background-color: var(--secondary); /* Amarelo na troca */
+        color: var(--dark);
     }
 
-.Ball1.swap, .Ball3.swap{
-    background-color: var(--primary);
+.Ball1.swap, .Ball3.swap {
+    background-color: var(--secondary);
 }
 
 .Ball1.swap {
@@ -418,22 +439,26 @@
 
 
 @keyframes pulsar {
-    0%{
+    0% {
         left: -20vw;
         bottom: -30vh;
     }
-    25%{
+
+    25% {
         left: -20vw;
         bottom: 70vh;
     }
+
     50% {
         left: 80vw;
         bottom: 70vh;
     }
+
     75% {
         left: 80vw;
         bottom: -30vh;
     }
+
     100% {
         left: -20vw;
         bottom: -30vh;

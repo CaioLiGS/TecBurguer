@@ -4,114 +4,123 @@
 
 @{
     ViewData["Title"] = Model.Nome;
+
+    var oferta = ViewBag.Oferta as TecBurguer.Models.Ofertas;
+    bool temOferta = oferta != null;
+    decimal precoFinal = Model.Preco ?? 0;
+
+    if (temOferta)
+    {
+        // Calcula o desconto baseada na porcentagem da oferta
+        decimal desconto = (Model.Preco * oferta?.porcentagem) / 100 ?? 0;
+        precoFinal = Model.Preco - desconto ?? 0;
+    }
 }
 
 @inject UserManager<LoginCliente> UserManager
 @inject SignInManager<LoginCliente> SignInManager
 
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
 <link href="~/css/Details.css" rel="stylesheet" />
+<div class="details-container">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
 
-<div class="product-page-container">
+    <div class="glass-panel">
 
-    <div class="product-image-column">
-        <img src="@Model.Imagem" alt="Imagem do @Model.Nome" class="product-image" />
-
-        <div id="FacaLogin" class="interface">
-            <img src="~/css/Imagens/BurguerLogo.png">
-            <div>
-                <h3>Quer fazer um pedido?</h3>
-                <p>Crie uma conta ou faça login para prosseguir com o pedido.</p>
-                <div>
-                    <a class="BotaoCriarConta" asp-area="Identity" asp-page="/Account/Register">
-                        Criar conta
-                    </a>
-                    <a class="BotaoLogin" asp-area="Identity" asp-page="/Account/Login">
-                        Login
-                    </a>
-
-                </div>
-            </div>
+        <div class="image-column">
+            <img src="@Model.Imagem" alt="Imagem do @Model.Nome" class="product-image" onerror="this.src='/css/Imagens/BurguerLogo.png'" />
         </div>
 
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <a class="order-button" onclick="adicionarAoCarrinho('@Model.Nome', @Model.Preco, '@Model.IdHamburguer', '@UserManager.GetUserName(User)')">
+        <div class="details-column">
+            <h1 class="product-title">@Model.Nome</h1>
+            <div class="price-container">
+                @if (temOferta)
+                {
+                    <span class="old-price">R$ @Model.Preco.GetValueOrDefault().ToString("N2")</span>
+                    <span class="current-price">R$ @precoFinal.ToString("N2")</span>
+                    <span class="discount-badge">-@oferta?.porcentagem% OFF</span>
+                }
+                else
+                {
+                    <span class="current-price">R$ @Model.Preco.GetValueOrDefault().ToString("N2")</span>
+                }
+            </div>
 
-                <img src="~/css/Imagens/IconCart.png" alt="Ícone" class="button-icon" />
+            <p class="product-description">
+                @Model.Descricao
+            </p>
 
-                <span class="button-text">Começar pedido</span>
-
-            </a>
-        }
-        else
-        {
-            <a class="order-button" onclick="mostrarBotaoLogin()">
-
-                <img src="~/css/Imagens/IconCart.png" alt="Ícone" class="button-icon" />
-
-                <span class="button-text">Começar pedido</span>
-
-            </a>
-        }
-    </div>
-
-    <div class="product-details-column">
-
-        <h1 class="product-title">@Model.Nome</h1>
-
-        <p class="product-description">
-            @Model.Descricao
-        </p>
-
-        <div class="accordion-container">
-            <div class="accordion-item">
-
+            <div class="accordion-container">
                 <button type="button" class="accordion-trigger">
-                    <span class="accordion-title">Ingredientes</span>
-                    <span class="accordion-arrow">&#9660;</span>
+                    <span><i class="fas fa-utensils me-2"></i> Ingredientes</span>
+                    <span class="accordion-arrow"><i class="fas fa-chevron-down"></i></span>
                 </button>
 
                 <div class="accordion-content">
-
-                    <ul style="text-align: left; margin-left: 20px; font-size: 1.25rem; padding-inline-start: 25px;">
-                        
-                        @foreach (var ingrediente in @Model.HamburguerIgredientes)
+                    <ul class="ingredients-list">
+                        @foreach (var ingrediente in Model.HamburguerIgredientes)
                         {
                             @if (ingrediente.IdIngredienteNavigation != null)
                             {
-                                <li>@ingrediente.IdIngredienteNavigation.Nome</li>
+                                <li class="ingredient-tag">
+                                    <i class="fas fa-check"></i> @ingrediente.IdIngredienteNavigation.Nome
+                                </li>
                             }
                         }
                     </ul>
-
                 </div>
             </div>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <button class="order-button" onclick="adicionarAoCarrinho('@Model.Nome', @Model.Preco, '@Model.IdHamburguer', '@UserManager.GetUserName(User)')">
+                    <img src="~/css/Imagens/IconCart.png" class="button-icon" />
+                    ADICIONAR AO PEDIDO
+                </button>
+            }
+            else
+            {
+                <button class="order-button" onclick="mostrarBotaoLogin()">
+                    <img src="~/css/Imagens/IconCart.png" class="button-icon" />
+                    ADICIONAR AO PEDIDO
+                </button>
+            }
         </div>
     </div>
 </div>
+
+<div id="FacaLogin">
+    <img src="~/css/Imagens/BurguerLogo.png">
+    <div>
+        <h3 style="font-weight: bold; color: var(--primary); margin: 0;">Psiu! 🍔</h3>
+        <p style="margin: 5px 0; font-size: 0.9rem;">Faça login para pedir essa delícia.</p>
+        <div class="login-btn-group">
+            <a class="btn-toast btn-toast-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="btn-toast btn-toast-outline" asp-area="Identity" asp-page="/Account/Register">Criar Conta</a>
+        </div>
+    </div>
+    <button onclick="fecharPopup()" style="border:none; background:transparent; font-size: 1.2rem; position: absolute; top: 10px; right: 10px; cursor: pointer;">&times;</button>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const accordionTriggers = document.querySelectorAll(".accordion-trigger");
-
-            accordionTriggers.forEach(trigger => {
-                trigger.addEventListener("click", function() {
-
-                    // Gira a seta
-                    this.classList.toggle("active");
-
-                    // Pega o conteúdo (o div da lista <ul>)
-                    const content = this.nextElementSibling;
-
-                    // Abre ou fecha
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null; // Fecha
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + "px"; // Abre
-                    }
-                });
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Lógica do Acordeão
+        const triggers = document.querySelectorAll(".accordion-trigger");
+        triggers.forEach(trigger => {
+            trigger.addEventListener("click", function() {
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
             });
         });
-    </script>
+    });
+
+</script>

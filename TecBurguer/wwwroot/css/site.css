@@ -1,6 +1,7 @@
 :root {
     --primary: #FF2E00; /* Laranja Fogo Vibrante */
     --primary-dark: #8B0000;
+    --primary-light: #FF9000;
     --accent: #FFC107; /* Amarelo Mostarda */
     --dark: #121212;
     --dark-card: #1E1E1E;
@@ -170,7 +171,6 @@ header {
 }
 
     .nav-link.dropdown-toggle:hover {
-        background-color: var(--accent);
         color: var(--primary);
     }
 
@@ -234,14 +234,14 @@ header {
 .dropdown-item {
     display: block;
     padding: 8px 20px;
-    color: var(--dark);
+    color: white;
     text-decoration: none;
     transition: background-color 0.2s ease;
 }
 
     .dropdown-item:hover {
-        background-color: var(--primary);
-        color: var(--light);
+        background-color: var(--primary-light);
+        color: white;
     }
 
 .nav-item.dropdown:hover .caret {
@@ -344,8 +344,16 @@ header {
     animation: fadeInUp 1s ease-out forwards 1.2s;
 }
 
-.ScrollDown {
+.BannerOverlay {
     position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    animation: all 0.25s ease-in-out;
+}
+
+.ScrollDown {
     color: white;
     text-decoration: none;
     display: flex;
@@ -354,14 +362,12 @@ header {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2px;
-    bottom: 10%;
-    left: 45%;
+    
     animation: bounce 2s infinite;
 }
 
     .ScrollDown:hover {
         color: white;
-        transform: scale(1.1);
     }
 
     .ScrollDown .arrow {
@@ -380,7 +386,7 @@ header {
     margin-top: 30px;
     padding: 15px 40px;
     border: none;
-    background: linear-gradient(45deg, #FF2E00, #FF9000);
+    background: linear-gradient(45deg, var(--primary), var(--primary-light));
     color: white;
     font-weight: bold;
     font-size: 1.1rem;
@@ -397,6 +403,7 @@ header {
 }
 
     .btn-banner:hover {
+        color: white;
         transform: translateY(-5px) scale(1.05);
         box-shadow: 0 10px 30px rgba(255, 69, 0, 0.7);
     }
@@ -540,7 +547,7 @@ header {
 .Content1 {
     display: block;
     width: 100%;
-    height: 90vh;
+    height: 100vh;
 }
 
     .Content1 h2 {
@@ -1015,6 +1022,7 @@ header {
 .dropdown-menu {
     right: 0 !important;
     left: auto !important;
+    background-color: var(--primary);
 }
 
 /*
@@ -1606,7 +1614,8 @@ html, body {
     }
 }
 
-.carrossel-cardapio {
+.carrossel-cardapio,
+.carrossel-ofertas{
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -1618,6 +1627,7 @@ html, body {
 }
 
     /* Ocultar barra de rolagem para navegadores WebKit (Chrome, Safari) */
-    .carrossel-cardapio::-webkit-scrollbar {
+    .carrossel-cardapio::-webkit-scrollbar,
+    .carrossel-ofertas::-webkit-scrollbar{
         display: none;
     }

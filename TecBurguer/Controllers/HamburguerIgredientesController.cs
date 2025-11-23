@@ -48,10 +48,19 @@ namespace TecBurguer.Controllers
         }
 
         // GET: HamburguerIgredientes/Create
-        public IActionResult Create()
+        public IActionResult Create(int? idHamburguer)
         {
-            ViewData["IdHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "Nome");
-            ViewData["IdIngrediente"] = new SelectList(_context.Ingredientes, "IdIngrediente", "Nome");
+            var hamburgueresOrdenados = _context.Hamburguers.OrderBy(h => h.Nome).ToList();
+
+            var ingredientesOrdenados = _context.Ingredientes.OrderBy(i => i.Nome).ToList();
+
+            ViewData["IdHamburguer"] = new SelectList(hamburgueresOrdenados, "IdHamburguer", "Nome", idHamburguer);
+            ViewData["IdIngrediente"] = new SelectList(ingredientesOrdenados, "IdIngrediente", "Nome");
+
+            ViewBag.HamburguerImagens = hamburgueresOrdenados
+                .Select(h => new { Id = h.IdHamburguer, Imagem = h.Imagem })
+                .ToList();
+
             return View();
         }
 

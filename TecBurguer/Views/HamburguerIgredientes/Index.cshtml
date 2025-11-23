@@ -1,48 +1,79 @@
 ﻿@model IEnumerable<TecBurguer.Models.HamburguerIgrediente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Ingredientes dos Lanches";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Agrupa a lista plana de relacionamentos por Hambúrguer para criar os cards
+    var hamburgueresAgrupados = Model
+        .Where(x => x.IdHamburguerNavigation != null)
+        .GroupBy(x => x.IdHamburguerNavigation)
+        .ToList();
 }
 
-<h1>Index</h1>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<link href="~/css/HamburguerIngredientes.css" rel="stylesheet" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.QuantidadeNecessario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdHamburguerNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdIngredienteNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantidadeNecessario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdHamburguerNavigation.IdHamburguer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdIngredienteNavigation.IdIngrediente)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h2 class="page-title">RECEITAS DA CASA 🔥</h2>
+
+<div class="container mb-4 text-center">
+    <a asp-action="Create" class="add-ingredient-btn" style="width: auto; display: inline-flex; padding: 15px 40px;">
+        <i class="fas fa-plus-circle"></i> Novo Vínculo (Geral)
+    </a>
+</div>
+
+<div class="cards-container">
+    @if (hamburgueresAgrupados.Any())
+    {
+        @foreach (var grupo in hamburgueresAgrupados)
+        {
+            var hamburguer = grupo.Key;
+
+            <div class="burger-card">
+                <div class="burger-img-container">
+                    <img src="@hamburguer!.Imagem" class="burger-img" onerror="this.src='/css/Imagens/BurguerLogo.png'" alt="@hamburguer.Nome" />
+                </div>
+
+                <div class="card-content">
+                    <h3 class="burger-name">@hamburguer.Nome</h3>
+
+                    <ul class="ingredients-list">
+                        @foreach (var item in grupo)
+                        {
+                            <li class="ingredient-item">
+                                <div class="ingredient-info">
+                                    <span style="font-weight: bold; color: var(--text-light);">
+                                        @item.IdIngredienteNavigation?.Nome
+                                    </span>
+                                    <span class="qtd-badge">Qtd: @item.QuantidadeNecessario</span>
+                                </div>
+
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="delete-btn-direct" title="Remover Ingrediente"
+                                            onclick="return confirm('Tem certeza que deseja remover @item.IdIngredienteNavigation?.Nome deste lanche?');">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                                
+                            </li>
+                        }
+                    </ul>
+
+                    <a asp-action="Create" asp-route-idHamburguer="@hamburguer.IdHamburguer" class="add-ingredient-btn">
+                        <i class="fas fa-plus"></i> Add Ingrediente
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-msg">
+            <h3>Nenhum ingrediente vinculado ainda!</h3>
+            <p>Comece vinculando ingredientes aos seus hamburgueres.</p>
+        </div>
+    }
+</div>

@@ -1,0 +1,407 @@
+﻿:root {
+    --primary: #FF2E00;
+    --primary-dark: #8B0000;
+    --accent: #FFC107;
+    --dark: #121212;
+    --card-bg: #1E1E1E;
+    --text-light: #F5F5F5;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+    margin-top: 10vh;
+}
+
+.page-title {
+    text-align: center;
+    font-family: 'Ranchers', cursive;
+    font-size: 3.5rem;
+    color: var(--accent);
+    text-shadow: 3px 3px 0 var(--primary-dark);
+    margin: 40px 0;
+    letter-spacing: 2px;
+}
+
+/* Grid de Cards */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.burger-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 46, 0, 0.2);
+    border-radius: 20px;
+    width: 320px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 500px;
+}
+
+    .burger-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--primary);
+        box-shadow: 0 15px 40px rgba(255, 46, 0, 0.2);
+    }
+
+/* Imagem do Burguer */
+.burger-img-container {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+
+.burger-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.burger-card:hover .burger-img {
+    transform: scale(1.1);
+}
+
+/* Conteúdo do Card */
+.card-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.burger-name {
+    font-family: 'Ranchers', cursive;
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Lista de Ingredientes */
+.ingredients-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    border-left: 3px solid var(--accent);
+    transition: background 0.2s;
+    width: 45%
+}
+
+    .ingredient-item:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+.ingredient-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.qtd-badge {
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+/* Botão Deletar (Aparece apenas no Hover) */
+.delete-btn {
+    color: #ff4d4d;
+    opacity: 0; /* Invisível por padrão */
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.ingredient-item:hover .delete-btn {
+    opacity: 1; /* Visível ao passar o mouse na linha */
+    transform: translateX(0);
+}
+
+.delete-btn:hover {
+    color: red;
+    transform: scale(1.2);
+}
+
+.delete-btn-direct {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #ff4d4d; /* Vermelho */
+    opacity: 0; /* Começa invisível */
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+/* Mostra o botão quando passa o mouse na linha do ingrediente */
+.ingredient-item:hover .delete-btn-direct {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Efeito Hover no ícone */
+.delete-btn-direct:hover {
+    color: #ff0000;
+    transform: scale(1.2) !important;
+    filter: drop-shadow(0 0 5px red);
+}
+
+/* Botão Adicionar */
+.add-ingredient-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(255, 46, 0, 0.3);
+}
+
+    .add-ingredient-btn:hover {
+        background: white;
+        color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 46, 0, 0.5);
+    }
+
+/* Mensagem Vazia */
+.empty-msg {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    padding: 20px;
+}
+
+
+/* Container Centralizado */
+.create-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Painel de Vidro */
+.glass-form {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+    /* Barra superior decorativa */
+    .glass-form::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        box-shadow: 0 0 15px var(--primary);
+    }
+
+/* Títulos */
+.form-title {
+    text-align: center;
+    font-family: 'Ranchers', cursive;
+    color: var(--primary);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.form-subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+}
+
+/* Estilização dos Inputs e Selects */
+.form-floating {
+    margin-bottom: 20px;
+}
+
+.form-control, .form-select {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid #444;
+    color: white;
+    border-radius: 12px;
+    height: 60px;
+}
+
+    .form-control:focus, .form-select:focus {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-color: var(--primary);
+        color: white;
+        box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    /* Corrigir cor das options no select */
+    .form-select option {
+        background-color: #1E1E1E;
+        color: white;
+    }
+
+.form-floating label {
+    color: #888;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Botões */
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, var(--primary), #d62500);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(255, 46, 0, 0.3);
+}
+
+    .btn-submit:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(255, 46, 0, 0.6);
+        color: white;
+    }
+
+.btn-back {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #aaa;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+    .btn-back:hover {
+        color: white;
+    }
+
+/* --- REMOVER SETAS PADRÃO DO NAVEGADOR --- */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* --- NOVAS SETAS CUSTOMIZADAS --- */
+.spinner-controls {
+    position: absolute;
+    right: 10px; /* Posiciona à direita */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 5;
+}
+
+.spinner-btn {
+    color: #666; /* Cor padrão desligada */
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0 5px;
+    line-height: 10px; /* Aproxima as setas */
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .spinner-btn:hover {
+        color: var(--primary); /* Laranja Neon ao passar o mouse */
+        text-shadow: 0 0 8px var(--primary); /* Brilho */
+        transform: scale(1.2);
+    }
+
+    .spinner-btn:active {
+        transform: scale(0.9);
+    }
+
+/* Animação */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ícones dentro do form */
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 20px;
+    color: var(--primary);
+    opacity: 0.5;
+    pointer-events: none;
+}
