@@ -1,33 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TecBurguer.Models;
 
 namespace TecBurguer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HamIngApiController : ControllerBase
+    public class HamIngApi : ControllerBase
     {
         private readonly DBTecBurguerContext _context;
 
-        public HamIngApiController(DBTecBurguerContext context)
+        public HamIngApi(DBTecBurguerContext context)
         {
             _context = context;
         }
 
         [HttpGet("Listar")]
-        public async Task<ActionResult<IEnumerable<Ofertas>>> GetOfertas()
+        public async Task<ActionResult<IEnumerable<HamburguerIgrediente>>> GetHamburguerIngredientes()
         {
-            if (_context.Ofertas == null)
+            if (_context.HamburguerIgredientes == null)
             {
                 return NotFound();
             }
-            return await _context.Ofertas.ToListAsync();
+            return await _context.HamburguerIgredientes.ToListAsync();
         }
     }
 }

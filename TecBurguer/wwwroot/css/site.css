@@ -977,7 +977,8 @@ header {
     right: 0;
     background: var(--primary);
     border-radius: 0px 6px 6px 0px;
-    color: var(--dark);
+    color: white;
+    letter-spacing: 3px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     width: 50%;

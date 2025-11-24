@@ -107,7 +107,6 @@
     reveal();
 
     function concluirPedido(idPedido) {
-        // Confirmação simples para evitar cliques acidentais
         if(!confirm("Confirmar que o pedido #" + idPedido + " está pronto?")) return;
 
         const novosDados = {
@@ -116,6 +115,19 @@
 
         axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
             .then(res => {
+                axios.get(`/api/PedidoHamburgueres/Listar`).then(ped => {
+                    pedido.data.forEach(pedido => {
+                        if (pedido.idPedido == idPedido){
+
+                            axios.get(`/api/IngredientesApi/Listar`).then(ing => {
+                                ing.data.forEach(ingrediente => {
+                                    if (ingrediente.IdIngrediente == pedido.idHamburguerNavigation)
+                                })
+                            })
+                        }
+                    });
+                });
+
                 window.location.reload();
             })
             .catch(err => {
