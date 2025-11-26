@@ -1,129 +1,109 @@
-@model IEnumerable<TecBurguer.Models.Entregador>
+@model IEnumerable<TecBurguer.Models.Pedido>
 
 @{
-    ViewData["Title"] = "Entregadores";
+    ViewData["Title"] = "Painel de Entregas";
 }
 
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="~/css/Entregadores.css">
 
-<div class="entregadores-container">
-    <div class="entregadores-header">
-        <h1>Nossos Entregadores</h1>
-        <p class="subtitle">Conheça nossos profissionais de entrega</p>
+<div class="container mt-5">
+
+    <div class="header-container">
+        <h1 class="modern-title">
+            Painel de Entregas
+        </h1>
+        <p class="subtitle">Selecione um pedido disponível para realizar a entrega</p>
     </div>
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Ops!</strong> @TempData["Erro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Sucesso!</strong> @TempData["Sucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
     @if (!Model.Any())
     {
-        <div class="no-data-message">
-            <p>Nenhum entregador encontrado no momento.</p>
+        <div class="empty-state-wrapper">
+            <div class="radar-spinner">
+                <div class="radar-wave"></div>
+                <div class="radar-wave delay-1"></div>
+                <i class="fas fa-check-circle"></i>
+            </div>
+
+            <div class="empty-content">
+                <h3>Tudo tranquilo por aqui!</h3>
+                <p>Não há pedidos aguardando entrega no momento.</p>
+
+                <button onclick="window.location.reload();" class="btn-refresh">
+                    <i class="fas fa-sync-alt"></i> Atualizar
+                </button>
+            </div>
         </div>
     }
     else
     {
-        <div class="entregadores-grid">
-            @foreach (var entregador in Model)
-            {
-                <div class="entregador-card">
-                    <!-- Header com fundo vermelho -->
-                    <div class="card-header">
-                        <button class="close-btn">×</button>
-                        <p class="objective">Meu objetivo principal é</p>
-                        <h2>realizar entregas rápidas e seguras</h2>
-                    </div>
-
-                    <!-- Conteúdo principal -->
-                    <div class="card-content">
-                        <!-- Avatar e informações básicas -->
-                        <div class="avatar-section">
-                            <div class="avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                        </div>
-
-                        <div class="info-section">
-                            <h3 class="entregador-nome">@entregador.Nome</h3>
-                            <div class="entregador-meta">
-                                <span class="badge-cargo">
-                                    <i class="fas fa-motorcycle"></i> @(string.IsNullOrEmpty(entregador.Veiculo) ? "Motociclista" : entregador.Veiculo)
-                                </span>
-                                @if (entregador.IdPedidoNavigation != null)
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th scope="col"># ID</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Endereço / Bairro</th>
+                        <th scope="col">Total</th>
+                        <th scope="col" class="text-center">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pedido in Model)
+                    {
+                        <tr>
+                            <td><strong>#@pedido.IdPedido</strong></td>
+                            <td>
+                                @if (pedido.IdUsuarioNavigation != null)
                                 {
-                                    <span class="badge-status status-ocupado">
-                                        <i class="fas fa-clock"></i> Em entrega
-                                    </span>
+                                    @pedido.IdUsuarioNavigation.Nome
                                 }
                                 else
                                 {
-                                    <span class="badge-status status-disponivel">
-                                        <i class="fas fa-check-circle"></i> Disponível
-                                    </span>
+                                    <span class="text-muted">Cliente não ident.</span>
                                 }
-                            </div>
-
-                            <!-- Avaliação e números -->
-                            <div class="stats-section">
-                                <div class="stat-box">
-                                    <span class="stat-number">@entregador.Avaliacao</span>
-                                    <span class="stat-label">
-                                        <i class="fas fa-star"></i> Avaliação
-                                    </span>
-                                </div>
-                                <div class="stat-divider"></div>
-                                <div class="stat-box">
-                                    <span class="stat-number">@(entregador.IdPedidoNavigation?.IdPedido ?? 0)</span>
-                                    <span class="stat-label">
-                                        <i class="fas fa-box"></i> Entregas
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Interesses/Skills -->
-                            <div class="interests-section">
-                                <p class="interests-title">Suas habilidades</p>
-                                <div class="interests-list">
-                                    <span class="interest-tag">
-                                        <i class="fas fa-clock"></i> Entrega Rápida
-                                    </span>
-                                    <span class="interest-tag">
-                                        <i class="fas fa-map"></i> Navegação
-                                    </span>
-                                    <span class="interest-tag">
-                                        <i class="fas fa-shield-alt"></i> Segurança
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Descrição -->
-                            <div class="description-section">
-                                <p class="description-title">Status do Pedido Atual</p>
-                                @if (entregador.IdPedidoNavigation != null)
+                            </td>
+                            <td>
+                                @if (pedido.IdUsuarioNavigation != null)
                                 {
-                                    <p class="description-text">
-                                        Pedido #@entregador.IdPedidoNavigation.IdPedido - 
-                                        @entregador.IdPedidoNavigation.Estado
-                                    </p>
+                                    <i class="fas fa-map-marker-alt text-danger"></i> 
+                                    @pedido.IdUsuarioNavigation.Bairro
                                 }
                                 else
                                 {
-                                    <p class="description-text">
-                                        Pronto para realizar a próxima entrega!
-                                    </p>
+                                    <span>-</span>
                                 }
-                            </div>
-
-                            <!-- Botões de ação -->
-                            <div class="action-buttons">
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-phone"></i> Contatar
-                                </button>
-                                <button class="btn btn-secondary">
-                                    <i class="fas fa-eye"></i> Perfil
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+                            </td>
+                            <td class="fw-bold text-success">
+                                R$ @(pedido.PrecoTotal?.ToString("F2") ?? "0.00")
+                            </td>
+                            <td class="text-center">
+                                <form asp-action="AceitarEntrega" method="post">
+                                    <input type="hidden" name="idPedido" value="@pedido.IdPedido" />
+                                    <button type="submit" class="btn btn-primary btn-sm px-4">
+                                        Aceitar Entrega
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     }
 </div>

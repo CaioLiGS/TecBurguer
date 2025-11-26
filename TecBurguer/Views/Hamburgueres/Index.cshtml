@@ -4,107 +4,65 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="TituloCentral">Hambúrgueres</h1>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="~/css/Hamburgueres.css" rel="stylesheet" />
+<div class="page-header">
+    <h1 class="page-title">GERENCIAR HAMBÚRGUERES</h1>
+    <p class="page-subtitle">Adicione, edite ou remova itens do cardápio</p>
+</div>
 
-<table class="table">
-    <tbody>
-        <div class="CaixaExterna">
-            @foreach (var item in Model) {
+<div class="burger-grid">
 
-                @if (item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario))
-                {
-                    <div class="BlocoHamburguer">
+    <a asp-action="Create" class="burger-card create-card">
+        <div class="create-icon">+</div>
+        <div class="create-text">NOVO ITEM</div>
+    </a>
 
-                        <button class="adicionarButton">
-                            <a asp-controller="Ofertas"
-                               asp-action="Create"
-                               asp-route-hamburguerId="@item.IdHamburguer">Adicionar Oferta</a>
-                        </button>
+    @foreach (var item in Model)
+    {
+        bool temEstoque = item.HamburguerIgredientes.Any() &&
+        item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario);
 
-                        <img src=@Html.DisplayFor(modelItem => item.Imagem)
-                             class="ImagemHamburguer"
-                             onerror="this.src='/css/Imagens/BurguerLogo.png'">
+        <div class="burger-card">
 
-                        <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                            @Html.DisplayFor(modelItem => item.Nome)
-                        </h3>
-                        <p class="DescricaoHamburguer">
-                            @Html.DisplayFor(modelItem => item.Descricao)
-                        </p>
-
-                        <div class="BottomInfoBurguer">
-                            <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
-
-                            <div class="BotoesDoHamburguer">
-
-                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                                   asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
-                                    Detalhes
-                                </a>
-
-                                <a class="EditarHamburguer" asp-action="Edit" asp-route-id="@item.IdHamburguer" title="Editar">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-
-                                <a class="DeletarHamburguer" asp-action="Delete" asp-route-id="@item.IdHamburguer" title="Excluir">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-
-                            </div>
-
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="BlocoHamburguer">
-
-                        <h1 class="ForaDeEstoque">FORA DE ESTOQUE</h1>
-
-                        <img src=@Html.DisplayFor(modelItem => item.Imagem)
-                             class="ImagemHamburguer"
-                             onerror="this.src='/css/Imagens/BurguerLogo.png'">
-                                    
-                        <h3 class="TituloHamburguer" id="NomeBurguer_@item.IdHamburguer">
-                            @Html.DisplayFor(modelItem => item.Nome)
-                        </h3>
-                        <p class="DescricaoHamburguer">
-                            @Html.DisplayFor(modelItem => item.Descricao)
-                        </p>
-
-                        <div class="BottomInfoBurguer">
-                            <h4 class="PrecoBurguer" id="PrecoBurguer_@item.IdHamburguer">R$ @item.Preco</h4>
-
-                            <div class="BotoesDoHamburguer">
-
-                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres"
-                                   asp-action="Details" asp-route-id="@item.IdHamburguer" style="width: 60%;">
-                                    Detalhes
-                                </a>
-
-                                <a class="EditarHamburguer" asp-action="Edit" asp-route-id="@item.IdHamburguer" title="Editar">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-
-                                <a class="DeletarHamburguer" asp-action="Delete" asp-route-id="@item.IdHamburguer" title="Excluir">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-
-                            </div>
-
-                        </div>
-                    </div>
-                }
-                
+            @if (temEstoque)
+            {
+                <a asp-controller="Ofertas" asp-action="Create" asp-route-hamburguerId="@item.IdHamburguer" class="btn-offer-float">
+                    <i class="fas fa-tag"></i> Oferta
+                </a>
+            }
+            else
+            {
+                <div class="out-of-stock-badge">ESGOTADO</div>
             }
 
-            <a asp-action="Create" class="CriarNovoItem">
-                <img src="~/css/Imagens/BurguerLogo.png">
-                <p>+</p>
-             </a>
+            <img src="@Html.DisplayFor(modelItem => item.Imagem)"
+                 class="card-img-top @(temEstoque ? "" : "grayscale")"
+                 alt="@item.Nome"
+                 onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+            <div class="card-body">
+                <h3 class="card-title">@item.Nome</h3>
+
+                <p class="card-text">@item.Descricao</p>
+
+                <div class="card-price">R$ @item.Preco</div>
+
+                <div class="action-buttons">
+                    <a asp-action="Details" asp-route-id="@item.IdHamburguer" class="btn-action btn-details">
+                        Detalhes
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@item.IdHamburguer" class="btn-action btn-edit" title="Editar">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.IdHamburguer" class="btn-action btn-delete" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-    </tbody>
-</table>
+    }
+</div>

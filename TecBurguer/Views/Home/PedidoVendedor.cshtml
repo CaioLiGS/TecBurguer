@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 <link href="~/css/PedidoVendedor.css" rel="stylesheet" />
 
-<h2 class="page-title reveal">FILA DE PEDIDOS 🔥</h2>
+<h2 class="page-title reveal">FILA DE PEDIDO</h2>
 
 <div class="orders-container">
     @if (Model != null && Model.Any())
@@ -114,25 +114,15 @@
         };
 
         axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
-            .then(res => {
-                axios.get(`/api/PedidoHamburgueres/Listar`).then(ped => {
-                    pedido.data.forEach(pedido => {
-                        if (pedido.idPedido == idPedido){
-
-                            axios.get(`/api/IngredientesApi/Listar`).then(ing => {
-                                ing.data.forEach(ingrediente => {
-                                    if (ingrediente.IdIngrediente == pedido.idHamburguerNavigation)
-                                })
-                            })
-                        }
-                    });
-                });
-
-                window.location.reload();
-            })
-            .catch(err => {
-                console.error('Erro ao atualizar valor:', err);
-                alert("Ocorreu um erro ao finalizar o pedido. Tente novamente.");
-            });
+        .then(res => {
+            document.body.style.cursor = 'default';
+            console.log("Pedido atualizado e estoque baixado com sucesso!");
+            location.reload();
+        })
+        .catch(err => {
+            document.body.style.cursor = 'default';
+            console.error('Erro:', err);
+            alert("Erro ao finalizar pedido. Verifique o console.");
+        });
     }
 </script>

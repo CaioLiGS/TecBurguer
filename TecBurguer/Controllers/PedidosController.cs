@@ -134,10 +134,45 @@ public class PedidosController : ControllerBase
     public async Task<IActionResult> PatchPedido(int id, [FromBody] Pedido dadosParciais)
     {
         // 1. Encontrar o pedido existente no banco
-        var pedidoDoBanco = await _context.Pedidos.FindAsync(id);
+        var pedidoDoBanco = await _context.Pedidos
+        .Include(p => p.PedidoHamburgueres)
+            .ThenInclude(ph => ph.IdHamburguerNavigation)
+                .ThenInclude(h => h!.HamburguerIgredientes)
+                    .ThenInclude(hi => hi.IdIngredienteNavigation)
+        .FirstOrDefaultAsync(p => p.IdPedido == id);
+
         if (pedidoDoBanco == null)
         {
             return NotFound();
+        }
+
+        if (dadosParciais.Estado == "Para ser entregue" && pedidoDoBanco.Estado != "Para ser entregue")
+        {
+            foreach (var itemPedido in pedidoDoBanco.PedidoHamburgueres)
+            {
+                // Se o lanche ou receita não existirem, pula
+                if (itemPedido.IdHamburguerNavigation?.HamburguerIgredientes == null) continue;
+
+                int qtdLanches = itemPedido.Quantidade ?? 0;
+
+                foreach (var receita in itemPedido.IdHamburguerNavigation.HamburguerIgredientes)
+                {
+                    var ingrediente = receita.IdIngredienteNavigation;
+                    int qtdPorLanche = receita.QuantidadeNecessario ?? 0;
+
+                    if (ingrediente != null)
+                    {
+                        // O cálculo acontece aqui, na memória do servidor
+                        int totalDeduzir = qtdLanches * qtdPorLanche;
+                        ingrediente.Quantidade -= totalDeduzir;
+
+                        if (ingrediente.Quantidade < 0) return BadRequest($"Falta estoque de {ingrediente.Nome}");
+
+                        // Marca o ingrediente para atualização
+                        _context.Entry(ingrediente).State = EntityState.Modified;
+                    }
+                }
+            }
         }
 
         // 2. Aplicar manualmente as atualizações parciais
@@ -180,6 +215,22 @@ public class PedidosController : ControllerBase
                 throw;
             }
         }
+
+        return NoContent();
+    }
+
+    [HttpDelete("delete/{id}")]
+    public async Task<IActionResult> DeletePedido(int id)
+    {
+        var pedido = await _context.Pedidos.FindAsync(id);
+
+        if (pedido == null)
+        {
+            return NotFound();
+        }
+
+        _context.Pedidos.Remove(pedido);
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }

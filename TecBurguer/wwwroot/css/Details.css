@@ -14,16 +14,14 @@ body {
     background-color: var(--dark-bg);
     color: var(--text-main);
     font-family: 'Poppins', sans-serif;
-    overflow-x: hidden;
-    margin-top: 5vh;
+    overflow: hidden;
+    margin-top: 10vh;
 }
 
 /* --- LAYOUT PRINCIPAL --- */
 .details-container {
-    /* Ocupa toda a altura da janela */
-    height: 100vh;
+    height: 87vh;
     width: 100vw;
-    /* Centraliza o conteúdo perfeitamente */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -111,7 +109,7 @@ body {
     font-family: 'Ranchers', cursive;
     font-size: 4rem;
     color: transparent;
-    background: linear-gradient(90deg, var(--primary), #ff5e00);
+    background: linear-gradient(90deg, var(--primary), var(--accent));
     -webkit-background-clip: text;
     background-clip: text;
     margin-bottom: 10px;

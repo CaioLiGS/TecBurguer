@@ -93,7 +93,7 @@ header {
     top: 0;
     width: 100vw;
     height: 10vh;
-    z-index: 3;
+    z-index: 1000;
     background-color: var(--dark);
 }
 
@@ -586,6 +586,25 @@ header {
 .ConteudoContent1 {
     display: flex;
     height: 100vh;
+}
+
+.ForaDeEstoque {
+    position: absolute;
+    z-index: 10;
+    background-color: rgba(220, 53, 69, 0.85);
+    backdrop-filter: blur(2px);
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 160%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 
@@ -1632,3 +1651,149 @@ html, body {
     .carrossel-ofertas::-webkit-scrollbar{
         display: none;
     }
+
+/*
+
+    TELA DE CARREGAMENTO
+
+*/
+
+/* --- OVERLAY DE LOADING --- */
+#LoadingOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.9); /* Fundo bem escuro */
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.3s;
+}
+
+    #LoadingOverlay.active {
+        display: flex;
+    }
+
+.loading-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- O REATOR (LOADER) --- */
+.reactor-loader {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Anéis de Neon */
+.ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    width: 100%;
+    height: 100%;
+}
+
+/* Anél Externo (Laranja) */
+.ring-1 {
+    border-top: 4px solid var(--primary);
+    border-right: 4px solid var(--primary);
+    animation: spinReactor 2s linear infinite;
+    box-shadow: 0 0 15px var(--primary); /* Brilho */
+}
+
+/* Anél Interno (Amarelo - Gira ao contrário) */
+.ring-2 {
+    width: 70%;
+    height: 70%;
+    border-bottom: 4px solid var(--accent);
+    border-left: 4px solid var(--accent);
+    animation: spinReactor 1.5s linear infinite reverse;
+    box-shadow: 0 0 10px var(--accent);
+}
+
+/* Ícones no Centro */
+.icon-center {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .icon-center i {
+        position: absolute;
+        font-size: 2.5rem;
+        transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Efeito elástico */
+    }
+
+/* Estado 1: Hambúrguer Visível */
+.icon-burger {
+    color: var(--accent);
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 5px var(--accent));
+}
+
+.icon-cart {
+    color: var(--primary);
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+    filter: drop-shadow(0 0 5px var(--primary));
+}
+
+/* Estado 2: Carrinho Visível (Classe .show-cart adicionada pelo JS) */
+.reactor-loader.show-cart .icon-burger {
+    opacity: 0;
+    transform: scale(0) rotate(180deg);
+}
+
+.reactor-loader.show-cart .icon-cart {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Texto */
+.loading-text {
+    font-family: 'Ranchers', cursive;
+    color: white;
+    font-size: 1.5rem;
+    margin-top: 30px;
+    letter-spacing: 3px;
+    animation: pulseText 1s infinite alternate;
+}
+
+/* Animações Keyframes */
+@keyframes spinReactor {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulseText {
+    from {
+        opacity: 0.6;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

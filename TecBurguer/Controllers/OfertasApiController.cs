@@ -11,11 +11,11 @@ namespace TecBurguer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HamIngApiController : ControllerBase
+    public class OfertasApiController : ControllerBase
     {
         private readonly DBTecBurguerContext _context;
 
-        public HamIngApiController(DBTecBurguerContext context)
+        public OfertasApiController(DBTecBurguerContext context)
         {
             _context = context;
         }

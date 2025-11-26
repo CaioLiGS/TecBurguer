@@ -50,11 +50,58 @@ namespace TecBurguer.Controllers
             return View(hamburgueres); 
         }
 
+        // ==========================================
+        // ÁREA DOS ENTREGADORES
+        // ==========================================
+
+        // GET: Exibe a lista de pedidos disponíveis ("Para ser entregue")
         public IActionResult Entregadores()
         {
-            var hamburgueres = _context.Hamburguers.ToList();
-            return View(hamburgueres);
+            var pedidosDisponiveis = _context.Pedidos
+                .Include(p => p.IdUsuarioNavigation) // Inclui dados do cliente para ver endereço/nome
+                .Where(p => p.Estado == "Para ser entregue")
+                .ToList();
+
+            return View(pedidosDisponiveis);
         }
+
+        // POST: Processa a escolha do pedido pelo entregador
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AceitarEntrega(int idPedido)
+        {
+            var pedido = await _context.Pedidos.FindAsync(idPedido);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            if (pedido.Estado != "Para ser entregue")
+            {
+                TempData["Erro"] = "Este pedido já foi pego por outro entregador!";
+                return RedirectToAction(nameof(Entregadores));
+            }
+
+            pedido.Estado = "Saiu para entrega";
+            _context.Update(pedido);
+
+            var novaEntrega = new Entregador
+            {
+                IdPedido = pedido.IdPedido,
+                Nome = "Entregador da Sessão",
+                Veiculo = "Moto",
+                Avaliacao = 5.0m               
+            };
+
+            _context.Add(novaEntrega);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Sucesso"] = $"Você aceitou o pedido #{pedido.IdPedido}. Boa entrega!";
+            return RedirectToAction(nameof(Entregadores));
+        }
+
 
         public IActionResult PedidoVendedor()
         {

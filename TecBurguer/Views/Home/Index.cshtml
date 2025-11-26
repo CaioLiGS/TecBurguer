@@ -8,7 +8,7 @@
 
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Tec Burguer";
 
     var ofertasAtivas = ViewData["OfertasAtivas"] as IEnumerable<TecBurguer.Models.Ofertas>;
 }
@@ -128,10 +128,9 @@
 
         container.appendChild(ember);
 
-        // Remove a partícula depois que ela subir
         setTimeout(() => {
             ember.remove();
-            spawnEmber(container); // Cria uma nova para substituir (loop infinito)
+            spawnEmber(container); 
         }, parseFloat(duration) * 1000);
     }
 
@@ -169,6 +168,10 @@
                     var item = oferta.idHamburguerNavigation;
 
                     <div class="BlocoHamburguer" style="margin-bottom: 30px;">
+                        @if (!(item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario)))
+                        {
+                            <h1 class="ForaDeEstoque">FORA DE ESTOQUE</h1>
+                        }
                         <div class="FaixaHamburguer">@(oferta.porcentagem >= 30 ? "MEGA!!" : "OFERTA")</div>
 
                         <img src="@Html.DisplayFor(modelItem => item.Imagem)" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
@@ -188,9 +191,18 @@
                             <div class="BotoesDoHamburguer">
                                 @if (SignInManager.IsSignedIn(User))
                                 {
-                                    <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
+                                    @if (item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario))
+                                    {
+                                        <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="CartBurguer">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                    }
                                 }
                                 else
                                 {
@@ -312,6 +324,12 @@
                 @if (!promocao)
                 {
                     <div class="BlocoHamburguer" style="margin-bottom: 30px;">
+
+                        @if (!(item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario)))
+                        {
+                            <h1 class="ForaDeEstoque">FORA DE ESTOQUE</h1>
+                        }
+
                         <img src="@Html.DisplayFor(modelItem => item.Imagem)" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
                         <h3 class="TituloHamburguer">@item.Nome</h3>
@@ -322,9 +340,19 @@
                             <div class="BotoesDoHamburguer">
                                 @if (SignInManager.IsSignedIn(User))
                                 {
-                                    <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
+                                    @if (item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario))
+                                    {
+                                        <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="CartBurguer">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                    }
+
                                 }
                                 else
                                 {
@@ -358,8 +386,8 @@
     <div style="flex-grow: 1;">
         @if (SignInManager.IsSignedIn(User))
         {
-            <h3>Adicionado!</h3>
-            <p>Item no carrinho.</p>
+            <h3>Calma lá! 🍔</h3>
+            <p>O seu pedido já está em preparo ou à caminho, aguarde alguns minutos.</p>
             <div style="margin-top: 10px;">
                 <a class="BotaoLogin" asp-area="" asp-controller="Home" asp-action="Cart">Ir para Carrinho</a>
             </div>
@@ -375,6 +403,23 @@
         }
     </div>
     <button onclick="fecharPopup()" style="background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: #333;">&times;</button>
+</div>
+
+<div id="LoadingOverlay">
+    <div class="loading-content">
+
+        <div class="reactor-loader">
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+
+            <div class="icon-center">
+                <i class="fas fa-hamburger icon-burger"></i>
+                <i class="fas fa-shopping-cart icon-cart"></i>
+            </div>
+        </div>
+
+        <h3 class="loading-text">PREPARANDO PEDIDO...</h3>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -446,4 +491,13 @@
             card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
         });
     });
+
+    // function hideLoading() {
+    //     const overlay = document.getElementById('LoadingOverlay');
+    //     const wrapper = document.querySelector('.icon-wrapper');
+
+    //     clearInterval(loadingInterval);
+    //     overlay.classList.remove('active');
+    //     wrapper.classList.remove('show-cart');
+    // }
 </script>

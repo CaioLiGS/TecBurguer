@@ -188,8 +188,19 @@ function mostrarBotaoLogin() {
 //    });
 //}
 
+function showLoading() {
+    const overlay = document.getElementById('LoadingOverlay');
+    const reactor = document.querySelector('.reactor-loader');
+
+    overlay.classList.add('active');
+
+    loadingInterval = setInterval(() => {
+        reactor.classList.toggle('show-cart');
+    }, 1200);
+}
 
 function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
+    showLoading();
     axios.get('/api/pedidohamburgueres/listar').then(response => {
         response.data.forEach(item => {
             if (item.id == IdPedidoHamburguer) {
@@ -202,8 +213,12 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
 
                 if (dados.quantidade <= 0) {
                     axios.delete(`/api/pedidohamburgueres/delete/${item.id}`)
-                        .then(res => { CalcularPrecoTotal(item.idPedido); })
+                        .then(res => {
+                            CalcularPrecoTotal(item.idPedido);
+                        })
                         .catch(err => console.error(err));
+
+                    
                 } else {
                     axios.put(`/api/pedidohamburgueres/update/${item.id}`, dados)
                         .then(res => { CalcularPrecoTotal(item.idPedido); })
@@ -225,6 +240,15 @@ function CalcularPrecoTotal(idPedido) {
     axios.get(`/api/pedidohamburgueres/ListarPorPedido/${idPedido}`)
         .then(response => {
             console.log('Items do pedido recebidos:', response.data);
+
+            const quantidade = response.data.length;
+
+            if (quantidade == 0) {
+                axios.delete(`/api/pedidos/delete/${idPedido}`).then(res => {
+                    console.log("O pedido foi removido!");
+                    location.reload();
+                }).catch(err => console.error(err));
+            }
 
             let precoTotalCalculado = 0;
 
@@ -382,10 +406,18 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = f
 
             if (pedidoExistente) {
                 console.log('Pedido existente encontrado:', pedidoExistente);
-                adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer, update);
+
+                if (pedidoExistente.estado != "Decidindo") {
+                    document.getElementById("FacaLogin").classList.add("mostrar");
+                } else {
+                    showLoading();
+                    adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer, update);
+                }
+                
 
             } else {
                 console.log('Nenhum pedido existente, criando novo');
+                showLoading();
                 adicionarPedidos(nome, preco, idUsuario, idHamburguer);
             }
 
@@ -467,7 +499,7 @@ function FinalizarCompra(username, idPedido) {
 
         if (usuarioExistente) {
 
-            if (document.getElementById("cepInput").value != '' && (usuarioExistente.cep != null || usuarioExistente.cep == "")) {
+            if (document.getElementById("cepInput").value != '' && (usuarioExistente.cep == null || usuarioExistente.cep == "")) {
 
                 const dados = {
 
@@ -483,8 +515,8 @@ function FinalizarCompra(username, idPedido) {
 
                 axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
                     .then(res => {
-                        // Redirecionar para página de confirmação
-                        window.location.href = `/Home/OrderConfirmation/${idPedido}`;
+                        location.reload();
+
                     })
                     .catch(err => console.error('Erro ao atualizar valor:', err));
 
@@ -503,8 +535,7 @@ function FinalizarCompra(username, idPedido) {
 
                 axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
                     .then(res => {
-                        // Redirecionar para página de confirmação
-                        window.location.href = `/Home/OrderConfirmation/${idPedido}`;
+                        location.reload();
                     })
                     .catch(err => console.error('Erro ao atualizar valor:', err));
             }
@@ -523,106 +554,6 @@ function fecharPopup() {
 /*
     HAMBURGUERES DO CARDAPIO
 */
-
-document.addEventListener("DOMContentLoaded", () => {
-    const SUPABASE_URL = "https://qspldknkkndxhlvsrbbl.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcGxka25ra25keGhsdnNyYmJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NzEyMTAsImV4cCI6MjA3MTQ0NzIxMH0.MSQyhPRtNzetoM08Zgbq5-UQiQKUiAp3Uo_1qR5i6l4";
-    const STORAGE_BUCKET = "hamburgueres";
-
-    const fileInput = document.getElementById('fileInput');
-    const linkInput = document.getElementById('LinkDaImagem');
-    const imgPreview = document.getElementById('ImagemDoLink');
-    const form = document.querySelector('form');
-    const uploadLabel = document.querySelector('.UploadLabel');
-
-    let selectedFile = null;
-    let imageURL = "";
-
-    linkInput.addEventListener('input', () => {
-        const url = linkInput.value.trim();
-
-        if (url.startsWith('http')) {
-            imgPreview.src = url;
-            imageURL = url;
-            selectedFile = null;
-        }
-    });
-
-    fileInput.addEventListener('change', e => {
-        const file = e.target.files[0];
-
-        if (file) {
-            selectedFile = file;
-            imageURL = "";
-            imgPreview.src = URL.createObjectURL(file);
-
-            linkInput.disabled = true;
-            linkInput.value = file.name;
-
-            uploadLabel.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-            uploadLabel.title = "Remover arquivo selecionado";
-        } else {
-            selectedFile = null;
-            linkInput.disabled = false;
-            linkInput.value = "";
-        }
-
-    });
-
-    uploadLabel.addEventListener('click', e => {
-        if (selectedFile) {
-            e.preventDefault();
-
-            selectedFile = null;
-            fileInput.value = "";
-            linkInput.disabled = false;
-            linkInput.value = "";
-            imgPreview.src = "/css/Imagens/BurguerLogo.png";
-
-            uploadLabel.innerHTML = '<i class="fa-solid fa-folder-open"></i>';
-            uploadLabel.title = "Selecionar imagem do computador";
-        }
-    });
-
-    document.getElementById("BotaoSubmit").addEventListener('click', async e => {
-        e.preventDefault();
-
-        const preco = document.querySelector('input[name="Preco"]').value.trim();
-
-        if (isNaN(preco)) {
-            return;
-        }
-
-        if (selectedFile) {
-            const fileName = `${Date.now()}_${selectedFile.name}`;
-
-            const { data, error } = await supabase.storage
-                .from('hamburgueres')
-                .upload(fileName, selectedFile);
-
-            if (error) {
-                alert("Erro ao enviar imagem: " + error.message);
-                return;
-            }
-
-            const { data: publicURL } = supabase
-                .storage
-                .from('hamburgueres')
-                .getPublicUrl(fileName);
-
-            imageURL = publicURL.publicUrl;
-        }
-        linkInput.disabled = false;
-        linkInput.value = imageURL;
-    });
-});
-
-$("#LinkDaImagem").blur(function () {
-    const input = document.getElementById("LinkDaImagem");
-    const img = document.getElementById("ImagemDoLink");
-
-    img.src = input.value
-});
 
 /*
     LOGIN E REGISTRO

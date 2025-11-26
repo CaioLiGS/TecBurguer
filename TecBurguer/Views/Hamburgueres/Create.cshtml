@@ -1,65 +1,77 @@
 ﻿@model TecBurguer.Models.Hamburguer
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Hambúrguer";
 }
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="~/css/Hamburgueres.css" rel="stylesheet" />
 
-<h1 class="TituloCentral">Criar novo hamburguer</h1>
+<div class="create-page-container">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
 
+    <div class="glass-panel">
 
-<div class="row">
-    <div class="col-md-4">
-        <form class="form" asp-action="Create">  
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="PreencherImagem">
-                <img src="~/css/Imagens/LOGOB.png" id="ImagemDoLink"
-                     onerror="this.src='/css/Imagens/LOGOB.png'">
-
-                <div class="LinkEArquivo">
-                    <input asp-for="Imagem" class="form-control" placeholder="Link da imagem" id="LinkDaImagem" />
-                    <label for="fileInput" class="UploadLabel" title="Selecionar imagem do computador">
-                        <i class="fa-solid fa-folder-open"></i>
-                    </label>
-                    <input type="file" id="fileInput" accept="image/*" style="display:none;">
-                </div>
+        <div class="image-section">
+            <div class="image-preview-box">
+                <img src="/css/Imagens/BurguerLogo.png" id="ImagemDoLink"
+                     onerror="this.src='/css/Imagens/BurguerLogo.png'" alt="Preview">
             </div>
 
+            <div class="image-controls">
+                <input type="text" id="LinkDaImagem" class="link-input" placeholder="Cole o link da imagem..." />
 
-            <div class="Inputs">
-                <div class="form-group">
-                    <label asp-for="Nome" class="control-label"></label>
-                    <input asp-for="Nome" class="form-control" placeholder=" " />
-                    <span asp-validation-for="Nome" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Descricao" class="control-label"></label>
-                    <textarea asp-for="Descricao" class="form-control Descricao" placeholder=" "></textarea>
-                    <span asp-validation-for="Descricao" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Preco" class="control-label"></label>
-                    <input asp-for="Preco" class="form-control" placeholder=" " />
-                    <span asp-validation-for="Preco" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Categoria" class="control-label"></label>
-                    <input asp-for="Categoria" class="form-control" placeholder=" " />
-                    <span asp-validation-for="Categoria" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Criar" class="btn btn-primary" id="BotaoSubmit" />
-                    <a asp-action="Index">Voltar à lista</a>
-                </div>
+                <label for="fileInput" class="upload-btn UploadLabel" title="Carregar do Computador">
+                    <i class="fa-solid fa-folder-open"></i>
+                </label>
+                <input type="file" id="fileInput" accept="image/*" style="display:none;">
             </div>
-            
-            
-        </form>
+            <small style="color: #777; margin-top: 10px;">Cole um link ou envie um arquivo.</small>
+        </div>
+
+        <div class="form-section">
+            <h1 class="form-title">CRIAR NOVO ITEM</h1>
+
+            <form asp-action="Create" id="createForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <input asp-for="Imagem" type="hidden" id="HiddenImagemUrl" />
+
+                <div class="form-group">
+                    <label asp-for="Nome" class="form-label">Nome do Lanche</label>
+                    <input asp-for="Nome" class="form-control" placeholder="Ex: X-Tudo Monstro" />
+                    <span asp-validation-for="Nome" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label asp-for="Preco" class="form-label">Preço (R$)</label>
+                        <input asp-for="Preco" class="form-control" placeholder="0.00" type="number" step="0.01" />
+                        <span asp-validation-for="Preco" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label asp-for="Categoria" class="form-label">Categoria</label>
+                        <input asp-for="Categoria" class="form-control" placeholder="Ex: Tradicional" />
+                        <span asp-validation-for="Categoria" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Descricao" class="form-label">Descrição</label>
+                    <textarea asp-for="Descricao" class="form-control" placeholder="Descreva os ingredientes e o sabor..."></textarea>
+                    <span asp-validation-for="Descricao" class="text-danger small"></span>
+                </div>
+
+                <div class="action-buttons">
+                    <a asp-action="Index" class="btn-cancel">CANCELAR</a>
+                    <input type="submit" value="CRIAR ITEM" class="btn-submit" id="BotaoSubmit" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -68,4 +80,115 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script src="https://unpkg.com/@@supabase/supabase-js@2"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const SUPABASE_URL = "https://qspldknkkndxhlvsrbbl.supabase.co";
+            const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcGxka25ra25keGhsdnNyYmJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NzEyMTAsImV4cCI6MjA3MTQ0NzIxMH0.MSQyhPRtNzetoM08Zgbq5-UQiQKUiAp3Uo_1qR5i6l4";
+            const STORAGE_BUCKET = "hamburgueres";
+
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const fileInput = document.getElementById('fileInput');
+            const linkInput = document.getElementById('LinkDaImagem');
+            const imgPreview = document.getElementById('ImagemDoLink'); 
+            const hiddenInput = document.getElementById('HiddenImagemUrl');
+            const uploadLabel = document.querySelector('.UploadLabel');
+            const submitBtn = document.getElementById("BotaoSubmit");
+            const form = document.getElementById("createForm");
+
+            let selectedFile = null;
+            let imageURL = "";
+
+            linkInput.addEventListener('input', () => {
+                const url = linkInput.value.trim();
+                if (url.length > 5) {
+                    imgPreview.src = url;
+                    hiddenInput.value = url;
+                    selectedFile = null;
+
+                    uploadLabel.innerHTML = '<i class="fa-solid fa-folder-open"></i>';
+                    uploadLabel.title = "Selecionar imagem do computador";
+                }
+            });
+
+            fileInput.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (file) {
+                    selectedFile = file;
+                    imgPreview.src = URL.createObjectURL(file);
+
+                    linkInput.value = "Arquivo selecionado: " + file.name;
+                    linkInput.disabled = true;
+
+                    uploadLabel.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                    uploadLabel.title = "Remover arquivo";
+                    uploadLabel.style.background = "#dc3545";
+                }
+            });
+
+            uploadLabel.addEventListener('click', e => {
+                if (selectedFile) {
+                    e.preventDefault();
+
+                    selectedFile = null;
+                    fileInput.value = "";
+
+                    linkInput.disabled = false;
+                    linkInput.value = "";
+                    imgPreview.src = "/css/Imagens/BurguerLogo.png";
+                    hiddenInput.value = "";
+
+                    uploadLabel.innerHTML = '<i class="fa-solid fa-folder-open"></i>';
+                    uploadLabel.style.background = "var(--primary)";
+                }
+            });
+
+            submitBtn.addEventListener('click', async e => {
+                e.preventDefault();
+
+                // const precoInput = document.querySelector('input[name="Preco"]');
+
+                if (selectedFile) {
+                    const originalText = submitBtn.value;
+                    submitBtn.value = "ENVIANDO IMAGEM...";
+                    submitBtn.disabled = true;
+
+                    try {
+                        const fileName = `${Date.now()}_${selectedFile.name.replace(/\s/g, '_')}`; // Remove espaços
+
+                        const { data, error } = await supabaseClient.storage
+                            .from(STORAGE_BUCKET)
+                            .upload(fileName, selectedFile);
+
+                        if (error) throw error;
+
+                        const { data: publicData } = supabaseClient.storage
+                            .from(STORAGE_BUCKET)
+                            .getPublicUrl(fileName);
+
+                        hiddenInput.value = publicData.publicUrl;
+
+                        form.submit();
+
+                    } catch (error) {
+                        alert("Erro no upload: " + error.message);
+                        submitBtn.value = originalText;
+                        submitBtn.disabled = false;
+                    }
+                } else {
+                    if (!hiddenInput.value && linkInput.value && !linkInput.disabled) {
+                        hiddenInput.value = linkInput.value;
+                    }
+                    form.submit();
+                }
+            });
+        });
+
+        $("#LinkDaImagem").blur(function () {
+            const input = document.getElementById("LinkDaImagem");
+            const img = document.getElementById("ImagemDoLink");
+
+            img.src = input.value
+        });
+    </script>
 }
