@@ -212,7 +212,7 @@ body {
 
 /* Container Centralizado */
 .create-container {
-    min-height: 80vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -337,8 +337,6 @@ body {
         color: white;
     }
 
-/* --- REMOVER SETAS PADRÃO DO NAVEGADOR --- */
-/* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;

@@ -18,7 +18,8 @@
 
         <div class="image-section">
             <div class="image-preview-box">
-                <img src="/css/Imagens/BurguerLogo.png" id="ImagemDoLink"
+                <img src="@(string.IsNullOrEmpty(Model.Imagem) ? "/css/Imagens/BurguerLogo.png" : Model.Imagem)"
+                     id="ImagemDoLink"
                      onerror="this.src='/css/Imagens/BurguerLogo.png'" alt="Preview">
             </div>
 
@@ -76,7 +77,6 @@
 </div>
 
 @section Scripts {
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -88,7 +88,7 @@
             const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcGxka25ra25keGhsdnNyYmJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NzEyMTAsImV4cCI6MjA3MTQ0NzIxMH0.MSQyhPRtNzetoM08Zgbq5-UQiQKUiAp3Uo_1qR5i6l4";
             const STORAGE_BUCKET = "hamburgueres";
 
-            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
             const fileInput = document.getElementById('fileInput');
             const linkInput = document.getElementById('LinkDaImagem');
@@ -99,7 +99,14 @@
             const form = document.getElementById("createForm");
 
             let selectedFile = null;
-            let imageURL = "";
+
+            const initialImageURL = '@Html.Raw(Model.Imagem)';
+
+            if (initialImageURL && initialImageURL.trim() !== "") {
+                imgPreview.src = initialImageURL;
+                hiddenInput.value = initialImageURL;
+                linkInput.value = initialImageURL;
+            }
 
             linkInput.addEventListener('input', () => {
                 const url = linkInput.value.trim();
@@ -110,6 +117,7 @@
 
                     uploadLabel.innerHTML = '<i class="fa-solid fa-folder-open"></i>';
                     uploadLabel.title = "Selecionar imagem do computador";
+                    uploadLabel.style.background = "var(--primary)";
                 }
             });
 
@@ -129,7 +137,8 @@
             });
 
             uploadLabel.addEventListener('click', e => {
-                if (selectedFile) {
+               
+                if (selectedFile || (hiddenInput.value && hiddenInput.value !== "")) {
                     e.preventDefault();
 
                     selectedFile = null;
@@ -138,7 +147,7 @@
                     linkInput.disabled = false;
                     linkInput.value = "";
                     imgPreview.src = "/css/Imagens/BurguerLogo.png";
-                    hiddenInput.value = "";
+                    hiddenInput.value = ""; 
 
                     uploadLabel.innerHTML = '<i class="fa-solid fa-folder-open"></i>';
                     uploadLabel.style.background = "var(--primary)";
@@ -148,15 +157,13 @@
             submitBtn.addEventListener('click', async e => {
                 e.preventDefault();
 
-                // const precoInput = document.querySelector('input[name="Preco"]');
-
-                if (selectedFile) {
+                if (selectedFile && typeof selectedFile === 'object') {
                     const originalText = submitBtn.value;
                     submitBtn.value = "ENVIANDO IMAGEM...";
                     submitBtn.disabled = true;
 
                     try {
-                        const fileName = `${Date.now()}_${selectedFile.name.replace(/\s/g, '_')}`; // Remove espaços
+                        const fileName = `${Date.now()}_${selectedFile.name.replace(/\s/g, '_')}`;
 
                         const { data, error } = await supabaseClient.storage
                             .from(STORAGE_BUCKET)
@@ -169,7 +176,6 @@
                             .getPublicUrl(fileName);
 
                         hiddenInput.value = publicData.publicUrl;
-
                         form.submit();
 
                     } catch (error) {
@@ -178,19 +184,13 @@
                         submitBtn.disabled = false;
                     }
                 } else {
+                    
                     if (!hiddenInput.value && linkInput.value && !linkInput.disabled) {
                         hiddenInput.value = linkInput.value;
                     }
                     form.submit();
                 }
             });
-        });
-
-        $("#LinkDaImagem").blur(function () {
-            const input = document.getElementById("LinkDaImagem");
-            const img = document.getElementById("ImagemDoLink");
-
-            img.src = input.value
         });
     </script>
 }

@@ -30,6 +30,12 @@ namespace TecBurguer.Controllers
             return await _context.Ingredientes.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetIngredienteApi(int id)
+        {
+            var ingrediente = await _context.Ingredientes.FindAsync(id);
+            return Ok(ingrediente);
+        }
 
         [HttpPatch("update/{id}")]
         public async Task<IActionResult> PatchIngrediente(int id, [FromBody] Ingrediente dados)

@@ -1,52 +1,112 @@
 ﻿@model IEnumerable<TecBurguer.Models.Ingrediente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gerenciar Estoque";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <link href="~/css/Ingrediente.css" rel="stylesheet" />
+<div class="stock-container">
 
-<div class="index-container">
+    <h1 class="page-title">ESTOQUE DE INGREDIENTES</h1>
 
-    <h1>Lista de Ingredientes</h1>
+    <div class="text-center">
+        <a asp-action="Create" class="btn-create-new">
+            <i class="fas fa-plus-circle"></i> Novo Ingrediente
+        </a>
+    </div>
 
-    <p>
-        <a asp-action="Create" class="btn-create-new">+ Novo Ingrediente</a>
-    </p>
-
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quantidade)
-                </th>
-                <th style="text-align: right;">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <div class="glass-table-container">
+        <table class="styled-table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantidade)
-                    </td>
-                    <td>
-                        <div class="action-links">
-                            <a asp-action="Edit" asp-route-id="@item.IdIngrediente" class="btn-action-edit">Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.IdIngrediente" class="btn-action-details">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.IdIngrediente" class="btn-action-delete">Delete</a>
-                        </div>
-                    </td>
+                    <th>INGREDIENTE</th>
+                    <th>ESTOQUE ATUAL</th>
+                    <th>REPOSIÇÃO RÁPIDA</th>
+                    <th>AÇÕES</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="ingredient-name" style="width: 80%; text-align: left;">@Html.DisplayFor(modelItem => item.Nome)</span>
+                        </td>
+                        <td>
+                            <span id="display-qty-@item.IdIngrediente" class="qty-badge @(item.Quantidade < 10 ? "qty-low" : "")" >
+                                @Html.DisplayFor(modelItem => item.Quantidade)
+                            </span>
+                        </td>
+                        <td>
+                            <div class="stock-control-group">
+                                <input type="number" id="input-stock-@item.IdIngrediente" class="stock-input" placeholder="Qtd" min="1">
+                                <button class="btn-add-stock" onclick="adicionarAoEstoque(@item.IdIngrediente)" title="Adicionar ao Estoque">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-links">
+                                <a asp-action="Edit" asp-route-id="@item.IdIngrediente" class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.IdIngrediente" class="btn-icon btn-delete" title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<script>
+    function adicionarAoEstoque(idIngrediente) {
+        const input = document.getElementById(`input-stock-${idIngrediente}`);
+        const valorAdicionar = parseInt(input.value);
+
+        if (!valorAdicionar || valorAdicionar <= 0) {
+            alert("Digite uma quantidade válida para adicionar.");
+            return;
+        }
+
+        axios.get(`/api/IngredientesApi/${idIngrediente}`)
+            .then(res => {
+                const ingrediente = res.data;
+                const novaQuantidade = ingrediente.quantidade + valorAdicionar;
+
+                const dadosAtualizados = {
+                    quantidade: novaQuantidade
+                };
+
+                axios.patch(`/api/IngredientesApi/update/${idIngrediente}`, dadosAtualizados)
+                    .then(updateRes => {
+                        const displaySpan = document.getElementById(`display-qty-${idIngrediente}`);
+                        displaySpan.innerText = novaQuantidade;
+
+                        if(novaQuantidade >= 10) displaySpan.classList.remove('qty-low');
+
+                        input.value = "";
+
+                        input.style.borderColor = "#4ade80";
+                        setTimeout(() => input.style.borderColor = "", 1000);
+                    })
+                    .catch(err => {
+                        console.error("Erro ao atualizar:", err);
+                        alert("Erro ao salvar no estoque.");
+                    });
+            })
+            .catch(err => {
+                console.error("Erro ao buscar ingrediente:", err);
+                alert("Erro de conexão.");
+            });
+    }
+</script>
