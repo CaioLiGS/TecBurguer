@@ -16,12 +16,6 @@ html {
     scroll-padding-top: 100px;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
 body {
     background-color: var(--dark);
     color: var(--text-light);
@@ -520,6 +514,8 @@ header {
 /* Responsivo */
 @media (max-width: 992px) {
     .conteudoBannerContent {
+        padding: 0;
+        width: 90vw;
         flex-direction: column-reverse;
         justify-content: center;
         text-align: center;
@@ -528,7 +524,7 @@ header {
     .textos {
         margin-top: -50px;
     }
-    /* Sobe o texto para cima da imagem em telas menores */
+  
     .bannerWrapper {
         height: 40vh;
         width: 100%;
@@ -1429,126 +1425,6 @@ html, body {
     }
 }
 
-/* Para celulares (largura até 768px) */
-@media (max-width: 768px) {
-
-    .item-recomendacao {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: all 0.8s ease-in-out;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 50px;
-        pointer-events: none; /* Desativa cliques quando invisível */
-    }
-
-    .ConteudoRecomendacoesDoChefe img {
-        width: 100%;
-        height: 15%;
-        margin-left: 0;
-    }
-
-    .item-recomendacao .info {
-        border-radius: 20px;
-        width: 100%;
-        height: 60%;
-    }
-
-    .TituloRDC {
-        font-family: 'Ranchers', cursive;
-        font-size: 3.5rem;
-        color: var(--primary);
-        margin-bottom: 20px;
-    }
-
-    .item-recomendacao .info div p {
-        font-size: 0.8rem;
-        margin-bottom: 0;
-    }
-
-    .item-recomendacao .info div h5 {
-        margin-top: 0;
-        font-size: 1rem;
-    }
-
-    .item-recomendacao .info div ul {
-        margin-top: 0;
-        font-size: 0.8rem;
-    }
-
-    .BotoesRDC {
-        height: 15%;
-    }
-
-    .ConteudoContent1 {
-        gap: 8vw;
-        padding-left: 20vw;
-    }
-
-    .Content2 h1 {
-        font-size: 1.2rem;
-    }
-
-    .textos {
-        width: 100%;
-        text-align: center;
-    }
-
-        .textos h1 {
-            color: var(--primary);
-            font-size: clamp(4rem, 6vw, 5rem);
-            letter-spacing: 0;
-        }
-
-    .bannerWrapper {
-        display: none;
-    }
-
-    .TituloCentral {
-        font-size: 1.5rem;
-    }
-
-    .HamburguerItem img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
-
-    /* Texto e botões centralizados */
-    .Descricao, .Botao, .TextoCentral {
-        text-align: center;
-    }
-
-        .Botao button {
-            width: 80%;
-            max-width: 300px;
-            font-size: 1rem;
-        }
-
-    /* Rodapé */
-    footer {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px 10px;
-    }
-
-    .navbar-collapse {
-        background-color: white;
-        position: absolute;
-        left: 0px;
-        top: 100%;
-        padding: 10px;
-        width: 100vw;
-        flex-basis: 100%;
-        flex-grow: 1;
-        align-items: center;
-    }
-}
 
 .FaixaHamburguer {
     position: absolute;
@@ -1621,16 +1497,6 @@ html, body {
 
     100% {
         transform: translateX(-50%); /* Move exatamente metade (o conjunto duplicado substitui o original) */
-    }
-}
-
-@media (max-width: 768px) {
-    .MarqueeItem {
-        font-size: 2rem;
-    }
-
-    .MarqueeContainer {
-        transform: rotate(0deg);
     }
 }
 
@@ -1795,5 +1661,144 @@ html, body {
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+/*
+
+    RESPONSIVIDADE
+
+*/
+
+@media (max-width: 768px) {
+
+    html {
+        font-size: 16px;
+    }
+
+    .MarqueeItem {
+        font-size: 2rem;
+    }
+
+    .MarqueeContainer {
+        transform: rotate(0deg);
+    }
+
+    .item-recomendacao {
+        flex-direction: column;
+        justify-content: normal;
+    }
+
+    .ConteudoRecomendacoesDoChefe{
+        height: 100%;
+    }
+
+    .ConteudoRecomendacoesDoChefe img {
+        width: 100%;
+        height: 30%;
+        margin-left: 0;
+    }
+
+    .item-recomendacao .info {
+        width: 80%;
+        height: 70%;
+        padding-top: 0;
+        margin: 0;
+    }
+
+    .TituloRDC {
+        font-family: 'Ranchers', cursive;
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+    }
+
+    .item-recomendacao .info div p {
+        font-size: 0.8rem;
+        margin-bottom: 0;
+    }
+
+    .item-recomendacao .info div h5 {
+        margin-top: 0;
+        font-size: 1rem;
+        display: none;
+    }
+
+    .item-recomendacao .info div ul {
+        display:none;
+    }
+
+    .BotoesRDC {
+        height: 15%;
+        gap: 5px;
+    }
+
+        .BotoesRDC .SaibaMaisHamburguer{
+            height: 100%;
+        }
+        .ConteudoContent1 {
+            gap: 8vw;
+            padding-left: 20vw;
+        }
+
+    .Content2 h1 {
+        font-size: 1.2rem;
+    }
+
+    .textos {
+        width: 100%;
+        text-align: center;
+    }
+
+        .title-tec {
+            -webkit-text-stroke: 3px white; 
+        }
+
+    .bannerWrapper {
+        display: none;
+    }
+
+    .TituloCentral {
+        font-size: 1.5rem;
+    }
+
+    .HamburguerItem img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .Descricao, .Botao, .TextoCentral {
+        text-align: center;
+    }
+
+        .Botao button {
+            width: 80%;
+            max-width: 300px;
+            font-size: 1rem;
+        }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 10px;
+    }
+
+    .navbar-collapse {
+        background-color: white;
+        position: absolute;
+        left: 0px;
+        top: 100%;
+        padding: 10px;
+        width: 100vw;
+        flex-basis: 100%;
+        flex-grow: 1;
+        align-items: center;
+    }
+
+    .prev-slide, .next-slide{
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
     }
 }

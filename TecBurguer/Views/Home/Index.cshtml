@@ -230,13 +230,13 @@
 </div>
 
 <div class="Content2 reveal" id="RecomendacoesDoChefe">
-    <h1 class="section-title" style="color: white; text-shadow: 0 0 20px var(--primary);">RECOMENDAÇÕES DO CHEFE</h1>
+    <h1 class="section-title" style="color: white; text-shadow: 0 0 20px var(--primary);">SUGESTÕES DO CHEFE</h1>
 
     <div class="ConteudoRecomendacoesDoChefe">
         <div class="carrossel-wrapper">
             @foreach (var item in Model)
             {
-                @if (item.Categoria == "Recomendação do chefe")
+                @if (item.Categoria == "Sugestão do chefe")
                 {
                     <div class="item-recomendacao">
                         <img src="@item.Imagem" onerror="this.src='/css/Imagens/BurguerLogo.png'">
@@ -299,7 +299,7 @@
 
 
 <div class="Content1" id="Cardapio" style="height: auto; padding-bottom: 50px;">
-    <h2 class="section-title reveal">CARDÁPIO COMPLETO</h2>
+    <h2 class="section-title reveal">CARDÁPIO</h2>
 
     <div class="CardapioCarrosselContainer reveal">
 
