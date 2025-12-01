@@ -18,6 +18,9 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--dark);
+    margin-top: 10vh;
+    overflow: hidden !important;
+    height: 90vh;
 }
 
 /* ==========================
@@ -27,8 +30,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 120px;
-    height: 80vh;
+    height: 90vh;
     position: relative;
     overflow: hidden;
     transition: all 0.7s ease-in-out;
@@ -39,8 +41,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 40%;
-    height: 100%;
+    width: 25%;
+    height: 80%;
     padding: 15px;
     text-align: center;
     color: var(--light); /* Alterado para texto claro */
@@ -48,14 +50,15 @@ body {
     border-radius: 15px;
     transition: all 0.7s ease-in-out;
     z-index: 1;
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Borda sutil para dark mode */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
     .Box div img {
         height: 12vw;
-        opacity: 0.8; /* Aumentei um pouco a opacidade para ver melhor no escuro */
+        opacity: 0.8;
         object-fit: contain;
-        filter: drop-shadow(0 0 5px var(--primary)); /* Brilho na logo */
+        filter: drop-shadow(0 0 10px var(--secondary));
+        transition: filter 0.7s ease-in-out;
     }
 
     .Box form {
@@ -69,6 +72,8 @@ body {
 
         .Box form div {
             width: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
 /* ==========================
@@ -86,25 +91,32 @@ body {
     position: absolute;
     right: 50%;
     border-radius: 15px 0 0 15px;
-    background-color: var(--dark); /* Era --dark original, agora é preto */
-    border: 1px solid var(--primary); /* Adicionei borda fina para destacar */
+    background-color: var(--dark);
+    border: 1px solid var(--secondary); 
     color: var(--light);
     z-index: 2;
     transition: all 0.7s ease-in-out;
 }
 
+#RightBox div{
+    width: 100%;
+}
+
     #RightBox div h1 {
-        color: var(--primary);
-        font-family: 'Ranchers', cursive; /* Fonte alterada */
+        color: var(--secondary);
+        font-family: 'Ranchers', cursive;
         font-size: clamp(1.2rem, 5vw, 2.5rem);
         width: 100%;
-        border-bottom: 5px solid var(--primary);
+        padding-bottom: 20px;
+        border-bottom: 5px solid var(--secondary);
         letter-spacing: 2px;
+        transition: color 0.7s ease-in-out, border-color 0.7s ease-in-out;
     }
 
     #RightBox h5 {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         text-align: justify;
-        font-weight: 300;
+        font-weight: bold;
     }
 
 /* ==========================
@@ -124,7 +136,7 @@ body {
         border-radius: 30px;
         color: var(--light);
         font-size: 15px;
-        font-family: 'Poppins', sans-serif; /* Fonte alterada */
+        font-family: 'Poppins', sans-serif; 
         font-weight: bolder;
         text-decoration: 0;
         cursor: pointer;
@@ -132,21 +144,19 @@ body {
     }
 
     .BottomRightBox a {
-        background-color: var(--primary);
-        transition: background-color 0.7s ease-in-out, transform 0.25s ease-in-out;
+        background-color: var(--primary);   
     }
 
 #registerSubmit {
-    background: linear-gradient(100deg, var(--primary), var(--primary-dark), var(--primary));
+    background: var(--primary);
 }
 
 #loginSubmit {
-    background: linear-gradient(100deg, var(--secondary), var(--secondary-dark), var(--secondary));
-    color: var(--dark); /* Contraste para o botão amarelo */
+    background: var(--secondary);
+    color: var(--light);
 }
 
 .BottomRightBox a:hover {
-    background-color: var(--primary-dark);
     box-shadow: 0 0 15px var(--primary);
 }
 
@@ -158,19 +168,21 @@ body {
 
 .registerSubmit:hover,
 #loginSubmit:hover {
-    box-shadow: 0 4px 10px rgba(255, 46, 0, 0.4); /* Sombra laranja */
+    box-shadow: 0 0 15px var(--secondary);
     background-position: 300px;
 }
 
 .BottomRightBox h4 {
-    color: var(--secondary);
-    font-family: 'Ranchers', cursive; /* Fonte alterada */
+    color: var(--primary);
+    font-family: 'Ranchers', cursive;
     letter-spacing: 1px;
+    transition: color 0.7s ease-in-out;
 }
 
 
 .links {
     display: flex;
+    flex-direction: column;
     width: 100%;
     justify-content: space-between;
     align-items: center;
@@ -178,25 +190,25 @@ body {
 
     .links p a {
         text-decoration: none;
-        color: #bbb; /* Texto um pouco mais claro para fundo escuro */
+        color: #bbb;
         transition: all ease-in-out 0.25s;
         font-weight: bold;
         font-size: 15px;
     }
 
         .links p a:hover {
-            color: var(--primary);
+            color: var(--secondary);
         }
 
 /* ==========================
    📝 Textos com gradiente
    ========================== */
 .TextoComImagem {
-    background: linear-gradient(90deg, var(--secondary), #fff); /* Amarelo para Branco */
+    background: var(--secondary); 
 }
 
 .TextoComImagem2 {
-    background: linear-gradient(90deg, var(--primary), var(--primary-dark)); /* Laranja para Vermelho */
+    background: var(--primary);
 }
 
 .TextoComImagem,
@@ -204,7 +216,7 @@ body {
     width: 100%;
     font-family: 'Ranchers', cursive; /* Adicionei a fonte aqui também se for título */
     font-weight: bold;
-    font-size: clamp(1.2rem, 5vw, 2.5rem);
+    font-size: clamp(3rem, 5vw, 3rem);
     background-size: cover;
     background-position: center;
     color: transparent;
@@ -220,14 +232,14 @@ body {
     border-radius: 30px;
     border: 1px solid #444; /* Borda mais escura */
     background-color: rgba(0,0,0,0.2); /* Fundo translúcido escuro */
-    color: white; /* Texto branco */
+    color: white;
     padding: 10px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
     .form-floating input:focus,
     .form-floating select:focus {
-        border-color: var(--primary);
+        border-color: var(--secondary);
         box-shadow: 0 0 5px rgba(255, 46, 0, 0.5); /* Glow Laranja */
         background-color: rgba(0,0,0,0.4);
         color: white;
@@ -254,9 +266,10 @@ body {
     .input-icon-group2 .input-icon {
         position: absolute;
         left: 12px;
-        top: 20%;
+        top: 50%;
         pointer-events: none;
         z-index: 2;
+        transform: translateY(-50%);
     }
 
     .input-icon-group .input-icon {
@@ -288,8 +301,8 @@ body {
 
 .form-floating input:focus ~ label,
 .form-floating input:not(:placeholder-shown) ~ label {
-    top: 10%;
-    color: var(--primary); /* Label ativa laranja */
+    top: 15%;
+    color: var(--secondary); 
     font-weight: bold;
 }
 
@@ -299,7 +312,7 @@ body {
 .Ball1, .Ball3 {
     position: fixed;
     border-radius: 100%;
-    background-color: var(--primary); /* Laranja */
+    background-color: var(--secondary); /* Laranja */
     filter: blur(60px);
     z-index: -1;
     transition: all 0.7s ease-in-out;
@@ -416,13 +429,28 @@ body {
    🔄 Variação de layout
    ========================== */
 .OutBox.swap #RightBox {
-    right: 10%;
+    right: 25%;
     border-radius: 0 15px 15px 0;
+    border-color: var(--primary);
+    border-color: var(--primary);
 }
 
+    .OutBox.swap #RightBox div h1 {
+        color: var(--primary);
+        border-color: var(--primary);
+    }
+
+    .OutBox.swap .BottomRightBox h4 {
+        color: var(--secondary);
+    }
+
+    .OutBox.swap #RightBox img {
+        filter: drop-shadow(0 0 10px var(--primary));
+    }
+
     .OutBox.swap #RightBox .BottomRightBox a {
-        background-color: var(--secondary); /* Amarelo na troca */
-        color: var(--dark);
+        background-color: var(--secondary);
+        box-shadow: 0 0 15px var(--secondary);
     }
 
 .Ball1.swap, .Ball3.swap {

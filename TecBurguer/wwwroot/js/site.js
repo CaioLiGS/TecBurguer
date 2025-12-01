@@ -303,7 +303,9 @@ function CalcularPrecoTotal(idPedido) {
         })
         .catch(err => {
             console.error('Erro ao buscar items do pedido:', err);
+
             alert('Erro ao calcular total. Por favor, tente novamente.');
+            location.reload();
         });
 }
 
@@ -333,8 +335,18 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
                         CalcularPrecoTotal(idPedido, update);
                     })
                     .catch(err => {
-                        console.error('Erro ao atualizar item do pedido:', err.response?.data || err.message);
-                        alert('Erro ao atualizar item. Por favor, tente novamente.');
+                        if (err.response && err.response.status === 400) {
+
+                            const mensagemDoServidor = err.response.data;
+
+                            alert("⚠️ ATENÇÃO: " + mensagemDoServidor);
+
+                            location.reload();
+                        }
+                        else {
+                            alert("Ocorreu um erro inesperado ao atualizar o pedido.");
+                            location.reload();
+                        }
                     });
             }
         });
@@ -435,6 +447,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = f
 document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.querySelector('.BottomRightBox a');
     const outBox = document.querySelector('.OutBox');
+    const forget = document.getElementById("forgot-password");
 
     if (loginBtn && outBox) {
 
@@ -448,7 +461,45 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             setTimeout(() => {
-                window.location.href = loginBtn.href;
+                location.href = loginBtn.href;
+            }, 800);
+        });
+    }
+
+    if (forget && outBox) {
+        forget.addEventListener('click', e => {
+            e.preventDefault();
+
+            outBox.classList.add('swap');
+            [1, 3].forEach(i => {
+                document.querySelector(`.Ball${i}`).classList.add('swap');
+            });
+
+            document.getElementById("LeftBox").innerHTML = `
+<form>
+    <div>
+        <h2 class="TextoComImagem2">Recuperar senha</h2>
+        <p>Digite o seu email</p>
+
+        <div class="input-icon-group">
+            <span class="input-icon">
+                <!-- Ícone de email -->
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.383V5.383zm-.034 6.434-5.966-3.583-5.966 3.583A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-1.183zM1 5.383v6l4.708-3.175L1 5.383z" />
+                </svg>
+            </span>
+            <div class="form-floating">
+                <input class="form-control" placeholder=" "/>
+                <label>Email</label>
+            </div>
+        </div>
+    </div>
+
+    <button id="registerSubmit" type="submit">Verificar conta</button>
+</form > `
+
+            setTimeout(() => {
+                location.href = forget.href;
             }, 800);
         });
     }
@@ -559,19 +610,27 @@ function fecharPopup() {
     LOGIN E REGISTRO
 */
 
-document.getElementById('registerForm').addEventListener('submit', function (e) {
-    const btn = document.getElementById('registerSubmit');
-    const text = btn.querySelector('.button-text');
-    const spinner = btn.querySelector('.spinner');
+document.addEventListener("DOMContentLoaded", function () {
 
-    text.style.display = 'none';
-    spinner.style.display = 'inline-block';
+    const form = $('#registerForm');
 
-    btn.disabled = true;
+    form.on('submit', function (e) {
+
+        if (!form.valid()) {
+            return;
+        }
+
+        const btn = document.getElementById('registerSubmit');
+        const text = btn.querySelector('.button-text');
+        const spinner = btn.querySelector('.spinner');
+
+        text.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        btn.disabled = true;
+    });
 });
-
 /*
-    PEDIDO VENDEDOR
+    PEDIDO VENDEDOR.
 */
 
 

@@ -3,11 +3,10 @@
 
 <link rel="stylesheet" href="~/css/Register.css" asp-append-version="true">
 
-<!-- Background Circles -->
 <div class="Ball1"></div>
 <div class="Ball3"></div>
 
-<div class="Outbox">
+<div class="OutBox">
     <div class="Box" id="RightBox">
 
         <div>
@@ -21,10 +20,10 @@
             <h2>Confirmação de Email</h2>
 
             <div class="form-floating confirmation-code-inputs">
-                <div class="confirmation-code-boxes">
+                <div class="confirmation-code-boxes" style="flex-direction: row;">
                     @for (int i = 0; i < 6; i++)
                     {
-                    <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="form-control code-box" id="codeBox_@i" name="ConfirmationCodeDigits" required style="width:2.5em;display:inline-block;text-align:center;margin-right:0.3em;" />
+                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="form-control code-box" id="codeBox_@i" name="ConfirmationCodeDigits" required style="width:2.5em;display:inline-block;text-align:center;margin-right:0.3em;" />
                     }
                 </div>
             </div>
@@ -32,7 +31,6 @@
             <p>Enviamos um código de confimação para o seu email, digite-o aqui para conferirmos se realmente é você!</p>
             <input type="hidden" asp-for="Code" id="ConfirmationCode" value="" />
             <script>
-                // Avança automaticamente para o próximo campo ao digitar
 
                 const form = document.querySelector('form[method="post"]');
                 const hiddenInput = document.getElementById('ConfirmationCode');
@@ -61,28 +59,33 @@
                     });
                 });
             </script>
-            <style>
-                .confirmation-code-boxes .code-box {
-                    font-size: 1.5em;
-                    margin-right: 0.3em;
-                    text-align: center;
-                    width: 1em;
-                    height: 3em;
-                    display: inline-block;
-                    border-radius: 10px;
-                }
-
-                #RightBox {
-                    left: 10%;
-                    width: 80%;
-                    height: 83vh;
-                    border-radius: 15px 15px 15px 15px;
-                }
-            </style>
-
-
             <button type="submit" class="btn btn-primary">Confirmar código</button>
         </form>
 
     </div>
 </div>
+
+<style>
+
+    .confirmation-code-boxes {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .confirmation-code-boxes .code-box {
+        font-size: 1.5em;
+        margin-right: 0.3em;
+        text-align: center;
+        width: 1em;
+        height: 3em;
+        display: inline-block;
+        border-radius: 10px;
+    }
+
+    #RightBox {
+        width: 50%;
+        border-radius: 15px 15px 15px 15px;
+    }
+</style>
+

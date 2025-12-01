@@ -1,15 +1,25 @@
 ﻿/* ==========================
-   🎨 Variáveis de cor
+   🎨 Variáveis (Tema Dark & Fire)
    ========================== */
+@import url('https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap');
+
 :root {
-    --primary: #E07A5F; /* laranja queimado */
-    --primary-dark: #d45d47;
-    --secondary: #81B29A; /* verde oliva */
-    --secondary-dark: #6d9b85;
-    --accent: #F2CC8F; /* bege areia */
-    --dark: #3D405B; /* marrom café */
-    --light: #faf3e0; /* branco quente */
-    --light-dark: #f6f3eb;
+    --primary: #FF2E00; /* Laranja Neon (Original) -> Virará Amarelo nos elementos */
+    --primary-dark: #8B0000;
+    --secondary: #FFC107; /* Amarelo Ouro (Original) -> Virará Laranja nos elementos */
+    --secondary-dark: #B8860B;
+    --accent: #FF9000;
+    --dark: #121212;
+    --light: #F5F5F5;
+    --light-dark: #1E1E1E;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--dark);
+    margin-top: 10vh;
+    overflow: hidden !important;
+    height: 90vh;
 }
 
 /* ==========================
@@ -19,8 +29,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 120px;
-    height: 80vh;
+    height: 90vh;
     position: relative;
     overflow: hidden;
     transition: all 0.7s ease-in-out;
@@ -31,21 +40,24 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 40%;
-    height: 100%;
+    width: 25%; /* Ajustado conforme o segundo código */
+    height: 80%; /* Ajustado conforme o segundo código */
     padding: 15px;
     text-align: center;
-    color: var(--dark);
+    color: var(--light);
     background-color: var(--light-dark);
     border-radius: 15px;
     transition: all 0.7s ease-in-out;
     z-index: 1;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
     .Box div img {
         height: 12vw;
-        opacity: 0.25;
+        opacity: 0.8;
         object-fit: contain;
+        filter: drop-shadow(0 0 10px var(--primary));
+        transition: filter 0.7s ease-in-out;
     }
 
     .Box form {
@@ -57,12 +69,14 @@
         height: 100%;
     }
 
-    .Box form div{
-        width: 100%;
-    }
+        .Box form div {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
 
 /* ==========================
-   📌 Caixas individuais
+   📌 Caixas específicas
    ========================== */
 #LeftBox {
     border-radius: 15px 0 0 15px;
@@ -74,25 +88,34 @@
 
 #RightBox {
     position: absolute;
-    left: 50%;
-    width: 40%;
+    right: 25%;
     border-radius: 0 15px 15px 0;
     background-color: var(--dark);
+    border: 1px solid var(--primary);
     color: var(--light);
     z-index: 2;
     transition: all 0.7s ease-in-out;
 }
 
-    #RightBox div h1 {
-        color: var(--primary);
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        font-size: clamp(1.2rem, 5vw, 2.5rem);
+    #RightBox div {
         width: 100%;
-        border-bottom: 5px solid var(--primary);
     }
 
-    #RightBox h3 {
+        #RightBox div h1 {
+            color: var(--primary);
+            font-family: 'Ranchers', cursive;
+            font-size: clamp(1.2rem, 5vw, 2.5rem);
+            width: 100%;
+            padding-bottom: 20px;
+            border-bottom: 5px solid var(--primary);
+            letter-spacing: 2px;
+            transition: color 0.7s ease-in-out, border-color 0.7s ease-in-out;
+        }
+
+    #RightBox h5 {
+        font-family: 'Poppins', sans-serif;
         text-align: justify;
+        font-weight: bold;
     }
 
 /* ==========================
@@ -114,56 +137,55 @@
         border-radius: 30px;
         color: var(--light);
         font-size: 15px;
-        font-family: 'Arial Narrow Bold', sans-serif;
+        font-family: 'Poppins', sans-serif;
         font-weight: bolder;
         text-decoration: 0;
         cursor: pointer;
-        transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-out, background-position 0.25s ease-in-out, background 0.7s ease-in-out;
+        transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-out, background 0.7s ease-in-out;
     }
 
     #RightBox button,
     #RightBox form button,
     .BottomRightBox a {
         background-color: var(--secondary);
-        transition: background-color 0.7s ease-in-out, transform 0.25s ease-in-out;
     }
 
 #registerSubmit {
-    background: linear-gradient(100deg, var(--primary), var(--primary-dark), var(--primary));
+    background: var(--primary);
+    color: var(--light);
 }
 
 #loginSubmit {
-    background: linear-gradient(100deg, var(--secondary), var(--secondary-dark), var(--secondary));
-    transition: all 0.7s ease-in-out;
+    background: var(--secondary);
+    color: var(--light);
 }
 
-#RightBox button:hover,
-#RightBox form button:hover,
-.BottomRightBox a:hover {
-    background-color: var(--secondary);
-}
-
+/* Hovers */
 #RightBox button:hover,
 #RightBox form button:hover,
 .BottomRightBox a:hover,
 #registerSubmit:hover,
 #loginSubmit:hover {
     transform: translateY(-5px);
+    box-shadow: 0 0 15px var(--primary);
 }
 
-    .registerSubmit:hover,
-    #loginSubmit:hover {
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        background-position: 300px;
-    }
+#RightBox button:hover,
+#RightBox form button:hover,
+.BottomRightBox a:hover {
+    box-shadow: 0 0 15px var(--secondary);
+}
 
 .BottomRightBox h4 {
     color: var(--secondary);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Ranchers', cursive;
+    letter-spacing: 1px;
+    transition: color 0.7s ease-in-out;
 }
 
 .links {
     display: flex;
+    flex-direction: column;
     width: 100%;
     justify-content: space-between;
     align-items: center;
@@ -171,13 +193,14 @@
 
     .links p a {
         text-decoration: none;
-        color: var(--secondary-dark);
+        color: #bbb;
         transition: all ease-in-out 0.25s;
         font-weight: bold;
         font-size: 15px;
     }
 
         .links p a:hover {
+            /* Troca: Se era --secondary agora é --primary */
             color: var(--primary);
         }
 
@@ -185,18 +208,19 @@
    📝 Textos com gradiente
    ========================== */
 .TextoComImagem {
-    background: linear-gradient(90deg, var(--primary), var(--accent));
+    background: var(--primary);
 }
 
 .TextoComImagem2 {
-    background: linear-gradient(90deg, var(--secondary), var(--secondary-dark));
+    background: var(--secondary);
 }
 
 .TextoComImagem,
 .TextoComImagem2 {
-    font-size: clamp(1.2rem, 5vw, 2.5rem);
     width: 100%;
+    font-family: 'Ranchers', cursive;
     font-weight: bold;
+    font-size: clamp(3rem, 5vw, 3rem);
     background-size: cover;
     background-position: center;
     color: transparent;
@@ -210,7 +234,9 @@
 .form-floating input,
 .form-floating select {
     border-radius: 30px;
-    border: 1px solid #ddd;
+    border: 1px solid #444;
+    background-color: rgba(0,0,0,0.2);
+    color: white;
     padding: 10px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -218,11 +244,14 @@
     .form-floating input:focus,
     .form-floating select:focus {
         border-color: var(--primary);
-        box-shadow: 0 0 5px rgba(224,122,95,0.5);
+        box-shadow: 0 0 5px rgba(255, 46, 0, 0.5);
+        background-color: rgba(0,0,0,0.4);
+        color: white;
     }
 
+/* Ícone do Select - Trocado para Primary (Laranja) */
 .form-floating select {
-    background-image: url("data:image/svg+xml;utf8,<svg fill='%23E07A5F' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23FF2E00' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 18px;
@@ -241,9 +270,10 @@
     .input-icon-group2 .input-icon {
         position: absolute;
         left: 12px;
-        top: 20%;
+        top: 50%;
         pointer-events: none;
         z-index: 2;
+        transform: translateY(-50%);
     }
 
     .input-icon-group .input-icon {
@@ -268,13 +298,16 @@
     left: 40px !important;
     top: 30%;
     transform: none;
-    color: inherit;
+    color: #888;
     transition: all 0.25s ease-in-out;
 }
 
 .form-floating input:focus ~ label,
 .form-floating input:not(:placeholder-shown) ~ label {
-    top: 10%;
+    top: 15%;
+    /* Troca: --secondary vira --primary */
+    color: var(--primary);
+    font-weight: bold;
 }
 
 /* ==========================
@@ -286,7 +319,6 @@
     background-color: var(--primary);
     filter: blur(60px);
     z-index: -1;
-    opacity: 0;
     transition: all 0.7s ease-in-out;
 }
 
@@ -306,7 +338,6 @@
     animation: aparecer 0.7s ease-in-out forwards, pulsar 30s linear infinite;
 }
 
-
 /* ==========================
    📱 Responsividade
    ========================== */
@@ -324,7 +355,7 @@
         margin-bottom: 24px;
     }
 
-    #LeftBox, #RightBox {
+    #LeftBox, #MidBox, #RightBox {
         border-radius: 15px;
     }
 }
@@ -367,7 +398,6 @@
 }
 
 @media (max-width: 900px) {
-    /* Faz o RightBox deixar de ser absoluto e virar bloco normal */
     #RightBox {
         position: static;
         width: 90%;
@@ -378,12 +408,10 @@
         margin-top: 10px;
     }
 
-    /* Faz o MidBox desaparecer */
-    #MidBox {
+    #LeftBox {
         display: none !important;
     }
 
-    /* Garante que as caixas fiquem empilhadas */
     .OutBox {
         flex-direction: column;
         align-items: center;
@@ -394,7 +422,6 @@
 }
 
 @media (max-width: 600px) {
-    /* Ajuste adicional para o RightBox em telas bem pequenas */
     #RightBox {
         width: 100%;
         padding: 15px;
@@ -403,15 +430,31 @@
 }
 
 /* ==========================
-   🔄 Variações de layout
+   🔄 Variação de layout (Troca de Lados)
    ========================== */
+
 .OutBox.swap #RightBox {
-    left: 10%;
+    right: 50%;
     border-radius: 15px 0 0 15px;
+    border-color: var(--secondary);
 }
+
+    .OutBox.swap #RightBox div h1 {
+        color: var(--secondary);
+        border-color: var(--secondary);
+    }
+
+    .OutBox.swap .BottomRightBox h4 {
+        color: var(--primary);
+    }
+
+    .OutBox.swap #RightBox img {
+        filter: drop-shadow(0 0 10px var(--secondary));
+    }
 
     .OutBox.swap #RightBox .BottomRightBox a {
         background-color: var(--primary);
+        box-shadow: 0 0 15px var(--primary);
     }
 
 .Ball1.swap, .Ball3.swap {
@@ -428,10 +471,11 @@
 
 #RightBox.swap {
     left: 10%;
-    width: 80%;
+    width: 80%; 
     border-radius: 15px 15px 15px 15px;
 }
 
+/* Spinner de carregamento */
 .spinner {
     border: 3px solid rgba(0, 0, 0, 0.1);
     border-left-color: white;
@@ -443,6 +487,7 @@
     vertical-align: middle;
 }
 
+/* Animações */
 @keyframes spin {
     to {
         transform: rotate(360deg);

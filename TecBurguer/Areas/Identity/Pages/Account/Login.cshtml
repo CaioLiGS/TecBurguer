@@ -82,6 +82,8 @@
                 <h2 class="TextoComImagem">Entrar na conta</h2>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
                 <div class="input-icon-group2">
                     <span class="input-icon">
                         <!-- Ícone de email -->
@@ -96,8 +98,9 @@
                     </div>
                     
                 </div>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                
 
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
                 <div class="input-icon-group2">
                     <span class="input-icon">
                         <!-- Ícone de cadeado que aceita cor via CSS -->
@@ -112,7 +115,7 @@
                     </div>
                     
                 </div>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                
                 <div class="links">
 
                     <label asp-for="Input.RememberMe" class="form-label">

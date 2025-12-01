@@ -43,14 +43,39 @@ public class PedidoHamburgueresController : ControllerBase
     }
 
     [HttpPut("update/{id}")]
-    public async Task<IActionResult> PutPedidoHamburgueres(int id, PedidoHamburguer pedidoHamburguer)
+    public async Task<IActionResult> UpdatePedidoHamburguer(int id, [FromBody] PedidoHamburguer pedidoHamburguer)
     {
+        if (id != pedidoHamburguer.Id) return BadRequest();
 
-        if (id != pedidoHamburguer.Id)
+        var itemExistente = await _context.PedidoHamburgueres.FindAsync(id);
+        if (itemExistente == null) return NotFound();
+
+        var hamburguer = await _context.Hamburguers
+            .Include(h => h.HamburguerIgredientes)
+            .ThenInclude(hi => hi.IdIngredienteNavigation)
+            .FirstOrDefaultAsync(h => h.IdHamburguer == pedidoHamburguer.IdHamburguer);
+
+        if (pedidoHamburguer.Quantidade > itemExistente.Quantidade)
         {
-            return BadRequest();
+            foreach (var receita in hamburguer.HamburguerIgredientes)
+            {
+                var ingrediente = receita.IdIngredienteNavigation;
+                int qtdPorLanche = receita.QuantidadeNecessario ?? 0;
+                int novaQtdTotalLanches = pedidoHamburguer.Quantidade ?? 0;
+
+                if (ingrediente != null)
+                {
+                    int totalIngredienteNecessario = novaQtdTotalLanches * qtdPorLanche;
+
+                    if (totalIngredienteNecessario > ingrediente.Quantidade)
+                    {
+                        return BadRequest($"Estoque insuficiente de {ingrediente.Nome} para adicionar mais itens!");
+                    }
+                }
+            }
         }
 
+        _context.Entry(itemExistente).State = EntityState.Detached;
         _context.Entry(pedidoHamburguer).State = EntityState.Modified;
 
         try
@@ -59,14 +84,8 @@ public class PedidoHamburgueresController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!PedidoHamburguerExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
+            if (!PedidoHamburguerExists(id)) return NotFound();
+            else throw;
         }
 
         return NoContent();
