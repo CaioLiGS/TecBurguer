@@ -46,8 +46,20 @@ namespace TecBurguer.Controllers
 
         public IActionResult Cardapio()
         {
-            var hamburgueres = _context.Hamburguers.ToList();
-            return View(hamburgueres); 
+            var hamburgueres = _context.Hamburguers.Include(h => h.HamburguerIgredientes)
+                    .ThenInclude(hi => hi.IdIngredienteNavigation)
+                    .ToList();
+
+            var agora = DateTime.Now;
+
+            var ofertasAtivas = _context.Ofertas
+                .Include(o => o.idHamburguerNavigation)
+                .Where(o => o.dataTermino.HasValue && o.dataTermino > agora)
+                .ToList();
+
+            ViewData["OfertasAtivas"] = ofertasAtivas;
+
+            return View(hamburgueres);
         }
 
         // ==========================================

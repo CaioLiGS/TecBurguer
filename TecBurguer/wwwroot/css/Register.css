@@ -469,12 +469,6 @@ body {
     animation: desaparecer 0.7s ease-in-out forwards, pulsar 30s linear infinite;
 }
 
-#RightBox.swap {
-    left: 10%;
-    width: 80%; 
-    border-radius: 15px 15px 15px 15px;
-}
-
 /* Spinner de carregamento */
 .spinner {
     border: 3px solid rgba(0, 0, 0, 0.1);

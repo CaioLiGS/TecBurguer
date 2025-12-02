@@ -211,17 +211,30 @@
 
                     document.getElementById("RightBox").classList.add('swap');
                 </script>
+
                 <style>
+                    .confirmation-code-boxes {
+                        flex-direction: row !important;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 20px;
+                    }
+
                     .confirmation-code-boxes .code-box {
                         font-size: 1.5em;
                         margin-right: 0.3em;
                         text-align: center;
-                        width: 1.5em;
+                        width: 1em;
+                        height: 3em;
                         display: inline-block;
                         border-radius: 10px;
                     }
-                </style>
 
+                    #RightBox {
+                        width: 50% !important;
+                        border-radius: 15px 15px 15px 15px;
+                    }
+                </style>
                 
                 <button type="submit" class="btn btn-primary">Confirmar código</button>
             </form>

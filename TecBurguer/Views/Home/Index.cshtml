@@ -11,12 +11,12 @@
     ViewData["Title"] = "Tec Burguer";
 
     var ofertasAtivas = ViewData["OfertasAtivas"] as IEnumerable<TecBurguer.Models.Ofertas>;
+    var cardapioAleatorio = Model.OrderBy(x => Guid.NewGuid()).Take(10).ToList();
 }
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
-
 
 <div class="BannerContent" id="BannerContent">
     <div class="Spotlight"></div>
@@ -298,30 +298,26 @@
 </div>
 
 
-<div class="Content1" id="Cardapio" style="height: auto; padding-bottom: 50px;">
-    <h2 class="section-title reveal">CARDÁPIO</h2>
+<div class="Content1" id="Cardapio" style="height: auto; padding-bottom: 80px;">
+    <h2 class="section-title reveal">CARDÁPIO (DESTAQUES)</h2>
 
     <div class="CardapioCarrosselContainer reveal">
 
         <button class="prev-slide" onclick="prevSlideCardapio()"><i class="fas fa-chevron-left"></i></button>
 
         <div class="carrossel-cardapio" id="CardapioCarrossel">
-            @foreach (var item in Model)
+
+            @foreach (var item in cardapioAleatorio)
             {
                 var promocao = false;
-                @if (ofertasAtivas != null && ofertasAtivas.Any())
+
+                if (ofertasAtivas != null && ofertasAtivas.Any())
                 {
-                    foreach (var oferta in ofertasAtivas)
-                    {
-                        if (oferta.idHamburguerNavigation != null && oferta.idHamburguerNavigation.IdHamburguer == item.IdHamburguer)
-                        {
-                            promocao = true;
-                            break;
-                        }
-                    }
+                    var oferta = ofertasAtivas.FirstOrDefault(o => o.idHamburguerNavigation != null && o.idHamburguerNavigation.IdHamburguer == item.IdHamburguer);
+                    if (oferta != null) promocao = true;
                 }
 
-                @if (!promocao)
+                if (!promocao)
                 {
                     <div class="BlocoHamburguer" style="margin-bottom: 30px;">
 
@@ -340,7 +336,9 @@
                             <div class="BotoesDoHamburguer">
                                 @if (SignInManager.IsSignedIn(User))
                                 {
-                                    @if (item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario))
+                                    bool temEstoque = item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario);
+
+                                    if (temEstoque)
                                     {
                                         <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
                                             <i class="fas fa-shopping-cart"></i>
@@ -348,11 +346,8 @@
                                     }
                                     else
                                     {
-                                        <a class="CartBurguer">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </a>
+                                        <a class="CartBurguer" style="opacity:0.5; cursor:not-allowed;"><i class="fas fa-ban"></i></a>
                                     }
-
                                 }
                                 else
                                 {
@@ -372,11 +367,9 @@
 
     </div>
 
-    <div style="text-align: center; padding-bottom: 30px;">
-        <a asp-controller="Home"
-           asp-action="Cardapio"
-           style="color: var(--primary); text-decoration: underline; cursor: pointer;">
-            Acesse nosso cardapio completo
+    <div style="text-align: center; margin-top: 40px;">
+        <a asp-controller="Home" asp-action="Cardapio" class="btn-ver-todos">
+            ACESSAR CARDÁPIO COMPLETO <i class="fas fa-arrow-right"></i>
         </a>
     </div>
 </div>
@@ -483,7 +476,6 @@
 
             let rotateX = ((y - centerY) / centerY) * -10;
             let rotateY = ((x - centerX) / centerX) * 10;
-
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
         });
 

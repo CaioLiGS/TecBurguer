@@ -613,7 +613,7 @@ header {
     height: 560px;
     min-width: 300px;
     padding: 20px;
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
@@ -1802,3 +1802,37 @@ html, body {
         font-size: 1rem;
     }
 }
+
+.btn-ver-todos {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--primary);
+    font-family: 'Ranchers', cursive;
+    font-size: 1.5rem;
+    padding: 15px 40px;
+    border: 2px solid var(--primary);
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(255, 46, 0, 0.2);
+}
+
+    .btn-ver-todos:hover {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 0 30px var(--primary);
+        transform: translateY(-5px);
+    }
+
+    .btn-ver-todos i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-ver-todos:hover i {
+        transform: translateX(5px);
+    }
+
