@@ -19,7 +19,7 @@
                 <h2 class="TextoComImagem">Criar nova conta</h2>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <!-- Name Field -->
+                <span asp-validation-for="Input.Nome" class="text-danger"></span>
                 <div class="input-icon-group">
                     <span class="input-icon">
                         <!-- User Icon -->
@@ -34,9 +34,8 @@
                         
                     </div>
                 </div>
-                <span asp-validation-for="Input.Nome" class="text-danger"></span>
 
-                <!-- Email Field -->
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
                 <div class="input-icon-group">
                     <span class="input-icon">
                         <!-- Email Icon -->
@@ -50,9 +49,8 @@
                         
                     </div>
                 </div>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
 
-                <!-- Password Field -->
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
                 <div class="input-icon-group">
                     <span class="input-icon">
                         <!-- Lock Icon -->
@@ -67,9 +65,8 @@
                     </div>
                     
                 </div>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
 
-                <!-- Confirm Password Field -->
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 <div class="input-icon-group">
                     <span class="input-icon">
                         <!-- Lock Icon -->
@@ -84,7 +81,7 @@
                     </div>
                     
                 </div>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                
                 
             </div>
 

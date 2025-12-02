@@ -534,3 +534,7 @@ body {
         opacity: 0;
     }
 }
+
+.text-danger ul {
+    list-style-type: none;
+}
