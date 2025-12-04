@@ -10,6 +10,7 @@ namespace TecBurguer.Models
         {
             Entregadors = new HashSet<Entregador>();
             PedidoHamburgueres = new HashSet<PedidoHamburguer>();
+            PedidoBebida = new HashSet<PedidoBebidas>();
         }
 
         public int IdPedido { get; set; }
@@ -21,6 +22,8 @@ namespace TecBurguer.Models
 
         public virtual Usuario? IdUsuarioNavigation { get; set; }
         public virtual ICollection<PedidoHamburguer> PedidoHamburgueres { get; set; }
+
+        public virtual ICollection<PedidoBebidas> PedidoBebida { get; set; }
         public virtual ICollection<Entregador> Entregadors { get; set; }
     }
 }

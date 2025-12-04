@@ -20,11 +20,13 @@ namespace TecBurguer.Models
         public virtual DbSet<Administrador> Administradors { get; set; } = null!;
         public virtual DbSet<Entregador> Entregadors { get; set; } = null!;
         public virtual DbSet<Hamburguer> Hamburguers { get; set; } = null!;
+        public virtual DbSet<Bebidas> Bebidas { get; set; } = null!;
         public virtual DbSet<HamburguerIgrediente> HamburguerIgredientes { get; set; } = null!;
         public virtual DbSet<Ingrediente> Ingredientes { get; set; } = null!;
         public virtual DbSet<Pedido> Pedidos { get; set; } = null!;
         public virtual DbSet<Ofertas> Ofertas { get; set; } = null!;
         public virtual DbSet<PedidoHamburguer> PedidoHamburgueres { get; set; } = null!;
+        public virtual DbSet<PedidoBebidas> PedidoBebidas { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -102,6 +104,26 @@ namespace TecBurguer.Models
                 entity.Property(e => e.Preco).HasColumnType("numeric(18, 2)");
             });
 
+            modelBuilder.Entity<Bebidas>(entity =>
+            {
+                entity.HasKey(e => e.IdBebidas)
+                    .HasName("PK__Bebidas__5BD4D479C15C344C");
+
+                entity.ToTable("Bebidas");
+
+                entity.Property(e => e.Nome)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Imagem)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Quantidade).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.Preco).HasColumnType("numeric(18, 2)");
+            });
+
             modelBuilder.Entity<HamburguerIgrediente>(entity =>
             {
                 entity.ToTable("HamburguerIgrediente");
@@ -169,6 +191,23 @@ namespace TecBurguer.Models
                     .WithMany(p => p.PedidoHamburgueres)
                     .HasForeignKey(d => d.IdPedido)
                     .HasConstraintName("FK__PedidoHam__IdPed__5441852A");
+
+                entity.Property(e => e.Quantidade).HasColumnType("int");
+            });
+
+            modelBuilder.Entity<PedidoBebidas>(entity =>
+            {
+                entity.ToTable("PedidoBebidas");
+
+                entity.HasOne(d => d.IdBebidasNavigation)
+                    .WithMany(p => p.PedidoBebida)
+                    .HasForeignKey(d => d.IdBebidas)
+                    .HasConstraintName("FK__PedidoBeb__IdBeb__5070F446");
+
+                entity.HasOne(d => d.IdPedidoNavigation)
+                    .WithMany(p => p.PedidoBebida)
+                    .HasForeignKey(d => d.IdPedido)
+                    .HasConstraintName("FK__PedidoBeb__IdPed__5441852A");
 
                 entity.Property(e => e.Quantidade).HasColumnType("int");
             });

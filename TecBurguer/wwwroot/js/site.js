@@ -285,6 +285,19 @@ function CalcularPrecoTotal(idPedido) {
 
                         console.log('Preço total calculado:', novosDados.precoTotal);
 
+                        axios.get(`/api/pedidobebidas/ListarPorPedido/${idPedido}`)
+                            .then(response => {
+                                console.log('Items do pedido recebidos:', response.data);
+
+                                const quantidade = response.data.length;
+
+                                if (quantidade == 0) {
+                                    axios.delete(`/api/pedidos/delete/${idPedido}`).then(res => {
+                                        console.log("O pedido foi removido!");
+                                        location.reload();
+                                    }).catch(err => console.error(err));
+                                }
+
                         axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
                             .then(res => {
                                 console.log('Pedido atualizado com sucesso');
@@ -312,8 +325,6 @@ function CalcularPrecoTotal(idPedido) {
 function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
     const url = '/api/pedidohamburgueres/create';
     const dados = { IdPedido: idPedido, IdHamburguer: idHamburguer, quantidade: 1 };
-
-    console.log('Iniciando adicionarPedidosHamburgueres:', { idPedido, idHamburguer });
 
     axios.get('/api/pedidohamburgueres/listar').then(response => {
         console.log('Items do carrinho recebidos:', response.data);
@@ -393,9 +404,67 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
         });
 }
 
-function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = false) {
+function adicionarPedidosBebidas(idPedido, idBebida) {
+    const url = '/api/pedidobebidas/create';
+    const dados = {
+        IdPedido: idPedido,
+        IdBebida: idBebida,
+        quantidade: 1
+    };
 
-    console.log('Iniciando adicionarAoCarrinho', { nome, preco, idHamburguer, emailUsuario, update });
+    axios.get('/api/pedidobebidas/listar').then(response => {
+
+        let criar = true;
+
+        response.data.forEach(item => {
+
+            if (idBebida == item.idBebida && item.idPedido === idPedido) {
+                criar = false;
+                dados.id = item.Id;
+                dados.quantidade = item.quantidade + 1;
+
+                axios.put(`/api/pedidobebidas/update/${item.id}`, dados)
+                    .then(res => {
+                        console.log('Quantidade atualizada com sucesso');
+                        CalcularPrecoTotal(idPedido, update);
+                    })
+                    .catch(err => {
+                        if (err.response && err.response.status === 400) {
+
+                            const mensagemDoServidor = err.response.data;
+
+                            alert("⚠️ ATENÇÃO: " + mensagemDoServidor);
+
+                            location.reload();
+                        }
+                        else {
+                            alert("Ocorreu um erro inesperado ao atualizar o pedido.");
+                            location.reload();
+                        }
+                    });
+            }
+        });
+
+        if (criar) {
+            console.log('Criando novo item:', dados);
+
+            axios.post(url, dados)
+                .then(res => {
+                    console.log('Item criado com sucesso:', res.data);
+                    CalcularPrecoTotal(idPedido, update);
+                })
+                .catch(err => {
+                    console.error('Erro ao criar pedido:', err.response?.data || err.message);
+                    alert('Erro ao adicionar item. Por favor, tente novamente.');
+                });
+        }
+    }).catch(err => {
+        console.error('Erro ao buscar items do carrinho:', err);
+        alert('Erro ao buscar carrinho. Por favor, tente novamente.');
+    });
+}
+
+function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, tipo) {
 
     axios.get('/api/usuarios/listar').then(response => {
         console.log('Usuários recebidos:', response.data);
@@ -423,7 +492,14 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, update = f
                     document.getElementById("FacaLogin").classList.add("mostrar");
                 } else {
                     showLoading();
-                    adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer, update);
+
+                    if (tipo == "Bebida") {
+                        adicionarPedidosBebidas();
+                    }
+                    else {
+                        adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
+                    }
+                    
                 }
                 
 

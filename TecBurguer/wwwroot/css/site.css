@@ -566,14 +566,36 @@ header {
     height: 80vh;
 }
 
-    .Content2 h1 {
+    .Content2 h1{
         text-align: center;
         color: white;
-        animation: MoveBackground 20s ease-in-out infinite;
+/*        animation: MoveBackground 20s ease-in-out infinite;*/
         width: 100%;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
 
+.Content3 {
+    background: var(--primary);
+    height: 90vh;
+    width: 100vw;
+    position: absolute;
+    left: 0;
+    padding: 20px;
+}
+
+    .Content3 h2 {
+        text-align: center;
+        color: white;
+        width: 100%;
+        font-size: 3rem;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+.BebidasCarrosselContainer{
+    display: flex;
+    justify-content: center;
+    height: 80%;
+}
 
 /*
     CONTEUDO DO HAMBURGUER
@@ -1518,6 +1540,13 @@ html, body {
         display: none;
     }
 
+.OfertasCorrosselContainer {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 /*
 
     TELA DE CARREGAMENTO
@@ -1835,4 +1864,5 @@ html, body {
     .btn-ver-todos:hover i {
         transform: translateX(5px);
     }
+
 

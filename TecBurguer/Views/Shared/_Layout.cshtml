@@ -28,7 +28,6 @@
 
                 if (pedido != null)
                 {
-                    // 4. A soma da contagem
                     cartCount = pedido.PedidoHamburgueres.Sum(ph => ph.Quantidade ?? 0);
                 }
             }
@@ -97,6 +96,9 @@
                                         <li>
                                             <a class="dropdown-item" asp-area="" asp-controller="Ingredientes" asp-action="Index">Ingredientes</a>
                                         </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Bebidas" asp-action="Index">Bebidas</a>
+                                    </li>
                                     </ul>
                                 </li>
                             }

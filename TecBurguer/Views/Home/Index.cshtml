@@ -5,13 +5,45 @@
 
 @inject UserManager<LoginCliente> UserManager
 @inject SignInManager<LoginCliente> SignInManager
-
+@inject TecBurguer.Models.DBTecBurguerContext _context
 
 @{
     ViewData["Title"] = "Tec Burguer";
 
     var ofertasAtivas = ViewData["OfertasAtivas"] as IEnumerable<TecBurguer.Models.Ofertas>;
-    var cardapioAleatorio = Model.OrderBy(x => Guid.NewGuid()).Take(10).ToList();
+
+    var bebidas = _context.Bebidas.ToList();
+
+    var listaMista = new List<dynamic>();
+
+    foreach (var h in Model)
+    {
+        listaMista.Add(new
+        {
+            Tipo = "Hamburguer",
+            Id = h.IdHamburguer,
+            Nome = h.Nome,
+            Descricao = h.Descricao,
+            Preco = h.Preco,
+            Imagem = h.Imagem,
+            ObjetoOriginal = h 
+        });
+    }
+    foreach (var b in bebidas)
+    {
+        listaMista.Add(new
+        {
+            Tipo = "Bebida",
+            Id = b.IdBebidas,
+            Nome = b.Nome,
+            Preco = b.Preco,
+            Imagem = b.Imagem,
+            Descricao = "",
+            ObjetoOriginal = b
+        });
+    }
+
+    var cardapioAleatorio = listaMista.OrderBy(x => Guid.NewGuid()).Take(20).ToList();
 }
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,7 +87,6 @@
         }
     ];
 
-    // Fallback caso não tenha imagens do banco
     if(imagens.length === 0) {
         imagens.push("/css/Imagens/BurguerLogo.png");
     }
@@ -68,22 +99,19 @@
 
         var atual = document.querySelector(".BurgerImageBanner.active");
 
-        // Criar próxima imagem
         var proxima = document.createElement("img");
         proxima.src = imagens[index];
-        proxima.className = "BurgerImageBanner"; // Começa invisível e deslocada
+        proxima.className = "BurgerImageBanner";
         bannerWrapper.appendChild(proxima);
 
-        // Force reflow (para o navegador processar a animação)
         void proxima.offsetWidth;
 
-        proxima.classList.add("active"); // Ativa animação de entrada
+        proxima.classList.add("active"); 
 
         if (atual) {
             atual.classList.remove("active");
-            atual.classList.add("exit"); // Ativa animação de saída
+            atual.classList.add("exit"); 
 
-            // Remove do DOM após a animação terminar
             setTimeout(() => {
                 if(atual.parentNode === bannerWrapper) bannerWrapper.removeChild(atual);
             }, 600); // 600ms corresponde à transition CSS
@@ -114,15 +142,12 @@
         const ember = document.createElement('div');
         ember.classList.add('ember');
 
-        // Tamanho aleatório
         const size = Math.random() * 6 + 2 + 'px';
         ember.style.width = size;
         ember.style.height = size;
 
-        // Posição horizontal aleatória
         ember.style.left = Math.random() * 100 + '%';
 
-        // Duração da animação aleatória
         const duration = Math.random() * 3 + 2 + 's';
         ember.style.animationDuration = duration;
 
@@ -134,7 +159,6 @@
         }, parseFloat(duration) * 1000);
     }
 
-    // Inicia as brasas
     createEmbers();
 </script>
 
@@ -177,6 +201,7 @@
                         <img src="@Html.DisplayFor(modelItem => item.Imagem)" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
                         <h3 class="TituloHamburguer">@item.Nome</h3>
+
                         <p class="DescricaoHamburguer">@item.Descricao</p>
 
                         <div class="BottomInfoBurguer">
@@ -297,7 +322,6 @@
     </div>
 </div>
 
-
 <div class="Content1" id="Cardapio" style="height: auto; padding-bottom: 80px;">
     <h2 class="section-title reveal">CARDÁPIO (DESTAQUES)</h2>
 
@@ -306,71 +330,144 @@
         <button class="prev-slide" onclick="prevSlideCardapio()"><i class="fas fa-chevron-left"></i></button>
 
         <div class="carrossel-cardapio" id="CardapioCarrossel">
-
             @foreach (var item in cardapioAleatorio)
             {
                 var promocao = false;
+                decimal precoExibicao = item.Preco ?? 0;
 
-                if (ofertasAtivas != null && ofertasAtivas.Any())
+                TecBurguer.Models.Ofertas ofertaAplicada = null;
+
+                if (item.Tipo == "Hamburguer" && ofertasAtivas != null)
                 {
-                    var oferta = ofertasAtivas.FirstOrDefault(o => o.idHamburguerNavigation != null && o.idHamburguerNavigation.IdHamburguer == item.IdHamburguer);
-                    if (oferta != null) promocao = true;
+                    ofertaAplicada = ofertasAtivas.FirstOrDefault(o => o.idHamburguer == item.Id);
+                    if (ofertaAplicada != null) { promocao = true; precoExibicao = ofertaAplicada.precoFinal ?? 0; }
                 }
 
                 if (!promocao)
                 {
-                    <div class="BlocoHamburguer" style="margin-bottom: 30px;">
+                    bool temEstoque = true;
+                    if (item.Tipo == "Hamburguer")
+                    {
+                        var h = item.ObjetoOriginal as TecBurguer.Models.Hamburguer;
+                        temEstoque = h.HamburguerIgredientes.Any() && h.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario);
+                    }
+                    else if (item.Tipo == "Bebida")
+                    {
+                        var b = item.ObjetoOriginal as TecBurguer.Models.Bebidas;
+                        temEstoque = (b.Quantidade ?? 0) > 0;
+                    }
 
-                        @if (!(item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario)))
+                    <div class="BlocoHamburguer" style="margin-bottom: 30px;">
+                        @if (!temEstoque)
                         {
                             <h1 class="ForaDeEstoque">FORA DE ESTOQUE</h1>
                         }
-
-                        <img src="@Html.DisplayFor(modelItem => item.Imagem)" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
-
+                        <img src="@item.Imagem" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
                         <h3 class="TituloHamburguer">@item.Nome</h3>
                         <p class="DescricaoHamburguer">@item.Descricao</p>
-
                         <div class="BottomInfoBurguer">
-                            <h4 class="PrecoBurguer">R$ @item.Preco</h4>
+                            <h4 class="PrecoBurguer">R$ @precoExibicao.ToString("N2")</h4>
                             <div class="BotoesDoHamburguer">
                                 @if (SignInManager.IsSignedIn(User))
                                 {
-                                    bool temEstoque = item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario);
-
                                     if (temEstoque)
                                     {
-                                        <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.IdHamburguer', '@UserManager.GetUserName(User)')">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </a>
+                                        if (item.Tipo == "Hamburguer")
+                                        {
+                                            <a class="CartBurguer" onclick="adicionarAoCarrinho('@item.Nome', @item.Preco, '@item.Id', '@UserManager.GetUserName(User)')"><i class="fas fa-shopping-cart"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="CartBurguer" onclick="adicionarBebidaAoCarrinho('@item.Nome', @item.Preco, '@item.Id', '@UserManager.GetUserName(User)')"><i class="fas fa-shopping-cart"></i></a>
+                                        }
                                     }
                                     else
                                     {
+
                                         <a class="CartBurguer" style="opacity:0.5; cursor:not-allowed;"><i class="fas fa-ban"></i></a>
                                     }
                                 }
                                 else
                                 {
-                                    <a class="CartBurguer" onclick="mostrarBotaoLogin()">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
+
+                                    <a class="CartBurguer" onclick="mostrarBotaoLogin()"><i class="fas fa-shopping-cart"></i></a>
                                 }
-                                <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" asp-action="Details" asp-route-id="@item.IdHamburguer">VER MAIS</a>
+                                @if (item.Tipo == "Hamburguer")
+                                {
+                                    <a class="SaibaMaisHamburguer" asp-controller="Hamburgueres" asp-action="Details" asp-route-id="@item.Id">VER MAIS</a>
+                                }
+                                else
+                                {
+
+                                    <a class="SaibaMaisHamburguer" style="opacity:0.5; cursor:default;">BEBIDA</a>
+                                }
                             </div>
                         </div>
                     </div>
                 }
             }
         </div>
-
         <button class="next-slide" onclick="nextSlideCardapio()"><i class="fas fa-chevron-right"></i></button>
-
     </div>
+    <div style="text-align: center;"><a asp-controller="Home" asp-action="Cardapio" class="btn-ver-todos">ACESSAR CARDÁPIO COMPLETO <i class="fas fa-arrow-right"></i></a></div>
+</div>
 
-    <div style="text-align: center; margin-top: 40px;">
-        <a asp-controller="Home" asp-action="Cardapio" class="btn-ver-todos">
-            ACESSAR CARDÁPIO COMPLETO <i class="fas fa-arrow-right"></i>
-        </a>
+<div class="Content3" id="Bebidas" style="height: auto; padding-bottom: 50px;">
+    <h2 class="section-title reveal">BEBIDAS GELADAS ❄️</h2>
+
+    <div class="BebidasCarrosselContainer reveal">
+        <button class="prev-slide" onclick="prevSlideBebidas()"><i class="fas fa-chevron-left"></i></button>
+
+        <div class="carrossel-cardapio" id="BebidasCarrossel">
+
+            @foreach (var bebida in bebidas)
+            {
+                bool temEstoque = (bebida.Quantidade ?? 0) > 0;
+
+                <div class="BlocoHamburguer" style="margin-bottom: 30px;">
+
+                    @if (!temEstoque)
+                    {
+                        <h1 class="ForaDeEstoque">ESGOTADO</h1>
+                    }
+
+                    <img src="@bebida.Imagem" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">
+
+                    <h3 class="TituloHamburguer">@bebida.Nome</h3>
+                    <p class="DescricaoHamburguer">Bebida refrescante.</p>
+
+                    <div class="BottomInfoBurguer">
+                        <h4 class="PrecoBurguer">R$ @(bebida.Preco?.ToString("N2"))</h4>
+
+                        <div class="BotoesDoHamburguer">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                if (temEstoque)
+                                {
+                                    <a class="CartBurguer" onclick="adicionarBebidaAoCarrinho('@bebida.Nome', @bebida.Preco, '@bebida.IdBebidas', '@UserManager.GetUserName(User)')">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="CartBurguer" style="opacity:0.5; cursor:not-allowed;"><i class="fas fa-ban"></i></a>
+                                }
+                            }
+                            else
+                            {
+                                <a class="CartBurguer" onclick="mostrarBotaoLogin()">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            }
+
+                            <a class="SaibaMaisHamburguer" style="opacity:0.5; cursor:default;">BEBIDA</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button class="next-slide" onclick="nextSlideBebidas()"><i class="fas fa-chevron-right"></i></button>
     </div>
 </div>
 
