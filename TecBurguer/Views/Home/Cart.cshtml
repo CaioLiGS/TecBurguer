@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TecBurguer.Areas.Identity.Data
+@using Microsoft.EntityFrameworkCore
 
 @model IEnumerable<TecBurguer.Models.Pedido>
 
@@ -10,12 +11,15 @@
 @{
     ViewData["Title"] = "Carrinho de Compras";
 
+    // Busca ofertas ativas
     var ofertasAtivas = _context.Ofertas
         .Where(o => DateTime.Now < o.dataTermino)
         .ToList();
 
     var pedido = Model.FirstOrDefault();
+
     List<dynamic> itemsDoCarrinho = new List<dynamic>();
+
     TecBurguer.Models.Pedido pedidoDoUsuario = null;
 
     foreach (var item in Model)
@@ -25,9 +29,39 @@
             pedidoDoUsuario = item;
             if (item.Estado == "Decidindo")
             {
-                foreach (var hamburguer in item.PedidoHamburgueres)
+                foreach (var ph in item.PedidoHamburgueres)
                 {
-                    itemsDoCarrinho.Add(hamburguer);
+                    itemsDoCarrinho.Add(new
+                    {
+                        Tipo = "Hamburguer",
+                        IdItemPedido = ph.Id,
+                        IdProduto = ph.IdHamburguer,
+                        Quantidade = ph.Quantidade,
+                        Nome = ph.IdHamburguerNavigation.Nome,
+                        PrecoOriginal = ph.IdHamburguerNavigation.Preco,
+                        Imagem = ph.IdHamburguerNavigation.Imagem,
+                        ObjetoOriginal = ph.IdHamburguerNavigation
+                    });
+                }
+
+                var bebidasDoPedido = _context.PedidoBebidas
+                    .Where(pb => pb.IdPedido == item.IdPedido)
+                    .Include(pb => pb.IdBebidasNavigation)
+                    .ToList();
+
+                foreach (var pb in bebidasDoPedido)
+                {
+                    itemsDoCarrinho.Add(new
+                    {
+                        Tipo = "Bebida",
+                        IdItemPedido = pb.Id,
+                        IdProduto = pb.IdBebidas,
+                        Quantidade = pb.Quantidade,
+                        Nome = pb.IdBebidasNavigation.Nome,
+                        PrecoOriginal = pb.IdBebidasNavigation.Preco,
+                        Imagem = pb.IdBebidasNavigation.Imagem,
+                        ObjetoOriginal = pb.IdBebidasNavigation
+                    });
                 }
             }
         }
@@ -41,17 +75,18 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <link rel="stylesheet" href="/css/Cart.css">
+
 <div class="cart-container">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
 
     <div class="container">
-        <h1 class="page-title">SEU CARRINHO</h1>
+        <h1 class="page-title">SEU CARRINHO 🔥</h1>
 
         @if (pedido != null && pedido.Estado == "Cozinhando")
         {
             <div class="alert alert-warning text-center" style="background: rgba(255, 193, 7, 0.2); border-color: var(--accent); color: white;">
-                <h4 style="margin:0;">PEDIDO EM PREPARO!</h4>
+                <h4 style="margin:0;">🔥 PEDIDO EM PREPARO!</h4>
                 <p>O pedido #@pedido.IdPedido já está na chapa e não pode ser alterado.</p>
             </div>
         }
@@ -70,33 +105,31 @@
                 <div class="col-lg-8">
                     @foreach (var item in itemsDoCarrinho)
                     {
-                        var hamburguer = item.IdHamburguerNavigation;
-                        var precoOriginal = hamburguer.Preco ?? 0;
-                        decimal precoFinal = precoOriginal;
+                        decimal precoUnitario = item.PrecoOriginal ?? 0;
+                        decimal precoFinal = precoUnitario;
                         TecBurguer.Models.Ofertas ofertaAplicada = null;
 
-                        // Lógica de Oferta no Razor
-                        if (ofertasAtivas != null)
+                        if (item.Tipo == "Hamburguer" && ofertasAtivas != null)
                         {
-                            ofertaAplicada = ofertasAtivas.FirstOrDefault(o => o.idHamburguer == hamburguer.IdHamburguer && DateTime.Now < o.dataTermino);
+                            ofertaAplicada = ofertasAtivas.FirstOrDefault(o => o.idHamburguer == item.IdProduto);
                             if (ofertaAplicada != null)
                             {
-                                var desconto = (precoOriginal * ofertaAplicada.porcentagem) / 100;
-                                precoFinal = precoOriginal - desconto;
+                                var desconto = (precoUnitario * ofertaAplicada.porcentagem ?? 0) / 100;
+                                precoFinal = precoUnitario - desconto;
                             }
                         }
 
                         <div class="cart-item">
-                            <img src="@(hamburguer.Imagem ?? "/css/Imagens/BurguerLogo.png")" alt="@hamburguer.Nome" class="item-image">
+                            <img src="@(item.Imagem ?? "/css/Imagens/BurguerLogo.png")" alt="@item.Nome" class="item-image" onerror="this.src='/css/Imagens/BurguerLogo.png'">
 
                             <div class="flex-grow-1">
                                 <div class="item-details">
-                                    <h5>@hamburguer.Nome</h5>
+                                    <h5>@item.Nome</h5>
 
                                     <div class="price-info">
                                         @if (ofertaAplicada != null)
                                         {
-                                            <span class="old-price">R$ @precoOriginal.ToString("N2")</span>
+                                            <span class="old-price">R$ @precoUnitario.ToString("N2")</span>
                                             <div>
                                                 <span class="current-price">R$ @precoFinal.ToString("N2")</span>
                                                 <span class="discount-badge">-@ofertaAplicada.porcentagem%</span>
@@ -104,7 +137,7 @@
                                         }
                                         else
                                         {
-                                            <span class="current-price">R$ @precoOriginal.ToString("N2")</span>
+                                            <span class="current-price">R$ @precoUnitario.ToString("N2")</span>
                                         }
                                     </div>
                                 </div>
@@ -112,9 +145,25 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="quantity-controls me-3">
-                                    <button class="quantity-btn" onclick="RemoverQuantidadeHamburguerPedido(@item.Id)">-</button>
+                                    @if (item.Tipo == "Hamburguer")
+                                    {
+                                        <button class="quantity-btn" onclick="RemoverQuantidadeHamburguerPedido(@item.IdItemPedido)">-</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="quantity-btn" onclick="RemoverQuantidadeBebidaPedido(@item.IdItemPedido)">-</button>
+                                    }
+
                                     <span class="quantity-input">@item.Quantidade</span>
-                                    <button class="quantity-btn" onclick="adicionarAoCarrinho('@hamburguer.Nome', @hamburguer.Preco, '@hamburguer.IdHamburguer', '@UserManager.GetUserName(User)')">+</button>
+
+                                    @if (item.Tipo == "Hamburguer")
+                                    {
+                                        <button class="quantity-btn" onclick="adicionarAoCarrinho('@item.Nome', @precoUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture), '@item.IdProduto', '@UserManager.GetUserName(User)', 'Hamburguer')">+</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="quantity-btn" onclick="adicionarAoCarrinho('@item.Nome', @precoUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture), '@item.IdProduto', '@UserManager.GetUserName(User)', 'Bebida')">+</button>
+                                    }
                                 </div>
 
                                 <div style="min-width: 100px; text-align: right;">
@@ -161,11 +210,9 @@
     <div class="popup-content glass-panel">
         <h3 style="color: var(--primary); font-family: 'Ranchers';">ENTREGA 🚀</h3>
         <p style="color: #ccc;">Informe seu CEP para confirmarmos a entrega.</p>
-
         <div class="mb-3">
             <input type="text" class="form-control" id="cepInput" placeholder="00000-000" maxlength="9">
         </div>
-
         <div class="d-flex gap-2 justify-content-center">
             <button class="btn btn-secondary" onclick="FecharPopUp()">Cancelar</button>
             <button class="btn-checkout" style="margin-top:0; width: auto;" onclick="FinalizarCompra('@UserManager.GetUserName(User)', @pedido?.IdPedido)">Confirmar</button>
@@ -175,17 +222,23 @@
 
 <div id="LoadingOverlay">
     <div class="loading-content">
-
         <div class="reactor-loader">
             <div class="ring ring-1"></div>
             <div class="ring ring-2"></div>
-
             <div class="icon-center">
                 <i class="fas fa-hamburger icon-burger"></i>
                 <i class="fas fa-shopping-cart icon-cart"></i>
             </div>
         </div>
-
-        <h3 class="loading-text">PREPARANDO PEDIDO...</h3>
+        <h3 class="loading-text">ATUALIZANDO...</h3>
     </div>
 </div>
+
+<script>
+    window.ofertasAtivasGlobais = @Json.Serialize(ofertasAtivas.Select(o => new { idHamburguer = o.idHamburguer, porcentagem = o.porcentagem }));
+
+    function FecharPopUp() {
+        document.getElementById("PopUpNaoTemCEP").classList.remove("Aparecer");
+    }
+
+</script>

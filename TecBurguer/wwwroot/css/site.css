@@ -739,7 +739,6 @@ header {
         }
 
     .CartBurguer img, .CartBurguer i {
-        width: 24px;
         color: white;
         font-size: 20px;
     }
@@ -1523,7 +1522,7 @@ html, body {
 }
 
 .carrossel-cardapio,
-.carrossel-ofertas{
+.carrossel-ofertas {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -1532,6 +1531,8 @@ html, body {
     padding: 20px;
     padding-left: 50px;
     gap: 25px;
+    height: 100%;
+    align-items: center;
 }
 
     /* Ocultar barra de rolagem para navegadores WebKit (Chrome, Safari) */

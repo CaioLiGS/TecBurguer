@@ -199,6 +199,32 @@ function showLoading() {
     }, 1200);
 }
 
+function RemoverQuantidadeBebidaPedido(IdPedidoBebida) {
+    showLoading();
+    axios.get('/api/pedidobebidas/listar').then(response => {
+        response.data.forEach(item => {
+            if (item.id == IdPedidoBebida) {
+                const dados = {
+                    id: IdPedidoBebida,
+                    idPedido: item.idPedido,
+                    idBebidas: item.idBebidas,
+                    quantidade: item.quantidade - 1
+                };
+
+                if (dados.quantidade <= 0) {
+                    axios.delete(`/api/pedidobebidas/delete/${item.id}`)
+                        .then(res => { CalcularPrecoTotal(item.idPedido); })
+                        .catch(err => { location.reload(); console.error(err); });
+                } else {
+                    axios.put(`/api/pedidobebidas/update/${item.id}`, dados)
+                        .then(res => { CalcularPrecoTotal(item.idPedido); })
+                        .catch(err => { location.reload(); console.error(err); });
+                }
+            }
+        });
+    }).catch(err => console.log(err));
+}
+
 function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
     showLoading();
     axios.get('/api/pedidohamburgueres/listar').then(response => {
@@ -229,98 +255,79 @@ function RemoverQuantidadeHamburguerPedido(IdPedidoHamburguer) {
     });
 }
 
-function CalcularPrecoTotal(idPedido) {
-
+async function CalcularPrecoTotal(idPedido) {
     console.log('Calculando preço total para pedido:', idPedido);
 
-    const novosDados = {
-        precoTotal: 0,
-    };
+    try {
+        const [resHamburgueres, resBebidas, resOfertas] = await Promise.all([
+            axios.get(`/api/pedidohamburgueres/ListarPorPedido/${idPedido}`),
+            axios.get(`/api/pedidobebidas/ListarPorPedido/${idPedido}`),
+            axios.get(`/api/ofertasapi/Listar`)
+        ]);
 
-    axios.get(`/api/pedidohamburgueres/ListarPorPedido/${idPedido}`)
-        .then(response => {
-            console.log('Items do pedido recebidos:', response.data);
+        const listaHamburgueres = resHamburgueres.data;
+        const listaBebidas = resBebidas.data;
+        const listaOfertas = resOfertas.data;
 
-            const quantidade = response.data.length;
+        if (listaHamburgueres.length === 0 && listaBebidas.length === 0) {
+            console.warn("Pedido vazio. Excluindo pedido...");
 
-            if (quantidade == 0) {
-                axios.delete(`/api/pedidos/delete/${idPedido}`).then(res => {
-                    console.log("O pedido foi removido!");
-                    location.reload();
-                }).catch(err => console.error(err));
+            await axios.delete(`/api/pedidos/delete/${idPedido}`);
+
+            alert("O pedido ficou vazio e foi removido.");
+            window.location.href = "/";
+            return; 
+        }
+
+        let precoTotalCalculado = 0;
+
+        listaHamburgueres.forEach(item => {
+            let precoReal = item.precoUnitario;
+
+            const ofertaAtiva = listaOfertas.find(o => o.idHamburguer == item.idHamburguer);
+
+            console.log("A oferta: " + ofertaAtiva);
+
+            if (ofertaAtiva) {
+                const agora = new Date();
+                const dataLocal = new Date(agora.getTime() - (agora.getTimezoneOffset() * 60000));
+                const dataFormatada = dataLocal.toISOString().slice(0, 19);
+
+                if (dataFormatada < ofertaAtiva.dataTermino) {
+                    precoReal = ofertaAtiva.precoFinal;
+                    console.log(`Oferta aplicada no ${item.nomeHamburguer}: De ${item.precoUnitario} por ${precoReal}`);
+                }
             }
 
-            let precoTotalCalculado = 0;
-
-            response.data.forEach(item => {
-
-                axios.get(`/api/OfertasApi/Listar`)
-                    .then(oferta => {
-                        var precoReal = item.precoUnitario;
-                        oferta.data.forEach(itemoferta => {
-
-                            if (itemoferta.idHamburguer == item.idHamburguer) {
-
-                                const agora = new Date();
-
-                                const dataLocal = new Date(agora.getTime() - (agora.getTimezoneOffset() * 60000));
-                                const dataFormatada = dataLocal.toISOString().slice(0, 19);
-
-                                console.log("Id hamburguer da oferta: " + itemoferta.idHamburguer);
-                                console.log("Data hoje: " + dataFormatada);
-                                console.log("Data oferta: " + itemoferta.dataTermino);
-
-                                if (dataFormatada < itemoferta.dataTermino) {
-                                    precoReal = itemoferta.precoFinal;
-                                }
-                            }
-                        });
-
-                        const subtotal = (item.quantidade * precoReal);
-                        precoTotalCalculado += subtotal;
-
-                        novosDados.precoTotal = Math.round(precoTotalCalculado * 100) / 100;
-
-                        console.log(`Item: ${item.nomeHamburguer}, Qtd: ${item.quantidade}, Preço Unitário: ${item.precoUnitario}, Subtotal: ${subtotal}`);
-
-                        console.log('Preço total calculado:', novosDados.precoTotal);
-
-                        axios.get(`/api/pedidobebidas/ListarPorPedido/${idPedido}`)
-                            .then(response => {
-                                console.log('Items do pedido recebidos:', response.data);
-
-                                const quantidade = response.data.length;
-
-                                if (quantidade == 0) {
-                                    axios.delete(`/api/pedidos/delete/${idPedido}`).then(res => {
-                                        console.log("O pedido foi removido!");
-                                        location.reload();
-                                    }).catch(err => console.error(err));
-                                }
-
-                        axios.patch(`/api/pedidos/update/${idPedido}`, novosDados)
-                            .then(res => {
-                                console.log('Pedido atualizado com sucesso');
-                                location.reload();
-                            })
-                            .catch(err => {
-                                console.error('Erro ao atualizar pedido:', err.response?.data || err.message);
-                            });
-                    })
-                    .catch(err => {
-                        console.log("Deu erro na parte de pegar as ofertas!\n" + err);
-                    });
-            });
-
-            
-        })
-        .catch(err => {
-            console.error('Erro ao buscar items do pedido:', err);
-
-            alert('Erro ao calcular total. Por favor, tente novamente.');
-            location.reload();
+            precoTotalCalculado += (item.quantidade * precoReal);
         });
+
+        // 4. Calcula total das Bebidas
+        listaBebidas.forEach(item => {
+            precoTotalCalculado += (item.quantidade * item.precoUnitario);
+        });
+
+        // Arredonda para 2 casas decimais
+        const precoFinal = Math.round(precoTotalCalculado * 100) / 100;
+
+        console.log('Preço Total Final Calculado:', precoFinal);
+
+        // 5. Atualiza o Pedido no Banco de Dados
+        const novosDados = {
+            precoTotal: precoFinal
+        };
+
+        await axios.patch(`/api/pedidos/update/${idPedido}`, novosDados);
+
+        console.log('Banco de dados atualizado com sucesso.');
+        //location.reload(); // Recarrega a página para mostrar os valores novos
+
+    } catch (err) {
+        console.error('Erro ao calcular/atualizar total:', err);
+        alert('Ocorreu um erro ao atualizar o carrinho.');
+    }
 }
+
 
 function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
     const url = '/api/pedidohamburgueres/create';
@@ -381,7 +388,7 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
     });
 }
 
-function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
+function adicionarPedidos(nome, preco, idUsuario, idHamburguer, tipo) {
     const url = '/api/pedidos/create';
 
     const dados = {
@@ -396,7 +403,14 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
     axios.post(url, dados)
         .then(response => {
             console.log('Pedido criado com sucesso:', response.data);
-            adicionarPedidosHamburgueres(response.data.idPedido, idHamburguer);
+
+            if (tipo == 'Hamburguer') {
+                adicionarPedidosHamburgueres(response.data.idPedido, idHamburguer);
+            }
+            else {
+                adicionarPedidosBebidas(response.data.idPedido, idHamburguer);
+            }
+
         })
         .catch(err => {
             console.error('Erro ao criar pedido:', err.response?.data || err.message);
@@ -406,9 +420,11 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer) {
 
 function adicionarPedidosBebidas(idPedido, idBebida) {
     const url = '/api/pedidobebidas/create';
+
+    console.log("id da bebida: " + idBebida);
     const dados = {
         IdPedido: idPedido,
-        IdBebida: idBebida,
+        IdBebidas: idBebida,
         quantidade: 1
     };
 
@@ -418,15 +434,15 @@ function adicionarPedidosBebidas(idPedido, idBebida) {
 
         response.data.forEach(item => {
 
-            if (idBebida == item.idBebida && item.idPedido === idPedido) {
+            if (idBebida == item.idBebidas && item.idPedido === idPedido) {
                 criar = false;
-                dados.id = item.Id;
+                dados.id = item.id;
                 dados.quantidade = item.quantidade + 1;
 
                 axios.put(`/api/pedidobebidas/update/${item.id}`, dados)
                     .then(res => {
                         console.log('Quantidade atualizada com sucesso');
-                        CalcularPrecoTotal(idPedido, update);
+                        CalcularPrecoTotal(idPedido);
                     })
                     .catch(err => {
                         if (err.response && err.response.status === 400) {
@@ -451,7 +467,7 @@ function adicionarPedidosBebidas(idPedido, idBebida) {
             axios.post(url, dados)
                 .then(res => {
                     console.log('Item criado com sucesso:', res.data);
-                    CalcularPrecoTotal(idPedido, update);
+                    CalcularPrecoTotal(idPedido);
                 })
                 .catch(err => {
                     console.error('Erro ao criar pedido:', err.response?.data || err.message);
@@ -494,7 +510,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, tipo) {
                     showLoading();
 
                     if (tipo == "Bebida") {
-                        adicionarPedidosBebidas();
+                        adicionarPedidosBebidas(pedidoExistente.idPedido, idHamburguer);
                     }
                     else {
                         adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
