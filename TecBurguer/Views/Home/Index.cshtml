@@ -114,27 +114,23 @@
 
             setTimeout(() => {
                 if(atual.parentNode === bannerWrapper) bannerWrapper.removeChild(atual);
-            }, 600); // 600ms corresponde à transition CSS
+            }, 600); 
         }
 
         index = (index + 1) % imagens.length;
     }
 
-    // Troca a cada 4.5 segundos para dar tempo de ler o texto
     setInterval(trocarImagemBanner, 4500);
-    // Inicia a rotação logo após a primeira imagem estática
     setTimeout(trocarImagemBanner, 4500);
 
-
-    // 2. LÓGICA DAS PARTÍCULAS (EFEITO DE BRASAS)
     function createEmbers() {
         const container = document.getElementById('BannerContent');
-        const particleCount = 30; // Quantidade de brasas
+        const particleCount = 30; 
 
         for (let i = 0; i < particleCount; i++) {
             setTimeout(() => {
                 spawnEmber(container);
-            }, i * 300); // Cria uma brasa a cada 300ms aleatoriamente
+            }, i * 300); 
         }
     }
 
@@ -179,7 +175,7 @@
         </div>
     </div>
 
-    <div class="OfertasCarrosselContainer reveal" style="height: 80%;">
+    <div class="OfertasCarrosselContainer reveal" style="height: 100%;">
 
         <button class="prev-slide" onclick="prevSlideOfertas()"><i class="fas fa-chevron-left"></i></button>
 
@@ -416,7 +412,7 @@
     </div>
 </div>
 
-<div class="Content3" id="Bebidas" style="height: auto; padding-bottom: 50px;">
+<div class="Content3" id="Bebidas">
     <h2 class="section-title reveal">BEBIDAS GELADAS ❄️</h2>
 
     <div class="BebidasCarrosselContainer reveal">

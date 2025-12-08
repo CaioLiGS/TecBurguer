@@ -262,12 +262,14 @@ async function CalcularPrecoTotal(idPedido) {
         const [resHamburgueres, resBebidas, resOfertas] = await Promise.all([
             axios.get(`/api/pedidohamburgueres/ListarPorPedido/${idPedido}`),
             axios.get(`/api/pedidobebidas/ListarPorPedido/${idPedido}`),
-            axios.get(`/api/ofertasapi/Listar`)
+            axios.get(`/api/ofertasapi/listar`)
         ]);
 
         const listaHamburgueres = resHamburgueres.data;
         const listaBebidas = resBebidas.data;
         const listaOfertas = resOfertas.data;
+
+        console.table(listaOfertas);
 
         if (listaHamburgueres.length === 0 && listaBebidas.length === 0) {
             console.warn("Pedido vazio. Excluindo pedido...");
@@ -282,15 +284,18 @@ async function CalcularPrecoTotal(idPedido) {
         let precoTotalCalculado = 0;
 
         listaHamburgueres.forEach(item => {
+
+            console.log(item);
+
             let precoReal = item.precoUnitario;
 
             const ofertaAtiva = listaOfertas.find(o => o.idHamburguer == item.idHamburguer);
 
-            console.log("A oferta: " + ofertaAtiva);
-
             if (ofertaAtiva) {
                 const agora = new Date();
+
                 const dataLocal = new Date(agora.getTime() - (agora.getTimezoneOffset() * 60000));
+
                 const dataFormatada = dataLocal.toISOString().slice(0, 19);
 
                 if (dataFormatada < ofertaAtiva.dataTermino) {
@@ -320,7 +325,7 @@ async function CalcularPrecoTotal(idPedido) {
         await axios.patch(`/api/pedidos/update/${idPedido}`, novosDados);
 
         console.log('Banco de dados atualizado com sucesso.');
-        //location.reload(); // Recarrega a página para mostrar os valores novos
+        location.reload();
 
     } catch (err) {
         console.error('Erro ao calcular/atualizar total:', err);
@@ -391,8 +396,10 @@ function adicionarPedidosHamburgueres(idPedido, idHamburguer, update) {
 function adicionarPedidos(nome, preco, idUsuario, idHamburguer, tipo) {
     const url = '/api/pedidos/create';
 
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
     const dados = {
-        nome: `Pedido_${idUsuario}_${nome}`,
+        nome: `${code}`,
         PrecoTotal: parseFloat(preco),
         estado: "Decidindo",
         IdUsuario: idUsuario
@@ -633,6 +640,61 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
     CARRINHO
 */
+
+let tipoMoradia = 'casa';
+
+function AlternarMoradia(tipo) {
+    tipoMoradia = tipo;
+
+    // Atualiza botões
+    document.getElementById('btnCasa').classList.toggle('active', tipo === 'casa');
+    document.getElementById('btnApto').classList.toggle('active', tipo === 'apto');
+
+    // Troca os inputs visíveis
+    if (tipo === 'casa') {
+        document.getElementById('areaCasa').style.display = 'block';
+        document.getElementById('areaApto').style.display = 'none';
+    } else {
+        document.getElementById('areaCasa').style.display = 'none';
+        document.getElementById('areaApto').style.display = 'block';
+    }
+}
+
+// --- Busca de CEP (ViaCEP) ---
+function BuscarEndereco(cep) {
+    const cleanCep = cep.replace(/\D/g, '');
+
+    if (cleanCep.length === 8) {
+        document.getElementById('cepInput').disabled = true;
+
+        axios.get(`https://viacep.com.br/ws/${cleanCep}/json/`)
+            .then(response => {
+                const data = response.data;
+                if (!data.erro) {
+                    document.getElementById('ruaInput').value = data.logradouro;
+                    document.getElementById('bairroInput').value = data.bairro;
+                    document.getElementById('cidadeInput').value = data.localidade;
+                    document.getElementById('ufInput').value = data.uf;
+                    document.getElementById('msgErroCep').style.display = 'none';
+
+                    if (tipoMoradia === 'casa') document.getElementById('numCasaInput').focus();
+                    else document.getElementById('condominioInput').focus();
+                } else {
+                    document.getElementById('msgErroCep').style.display = 'block';
+                    document.getElementById('msgErroCep').innerText = "CEP não encontrado.";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('msgErroCep').style.display = 'block';
+                document.getElementById('msgErroCep').innerText = "Erro ao buscar CEP.";
+            })
+            .finally(() => {
+                document.getElementById('cepInput').disabled = false;
+            });
+    }
+}
+
 function FinalizarCompra(username, idPedido) {
 
     axios.get('/api/usuarios/listar').then(response => {
@@ -644,10 +706,42 @@ function FinalizarCompra(username, idPedido) {
 
             if (document.getElementById("cepInput").value != '' && (usuarioExistente.cep == null || usuarioExistente.cep == "")) {
 
+                const cep = document.getElementById('cepInput').value;
+                const rua = document.getElementById('ruaInput').value;
+                const bairro = document.getElementById('bairroInput').value;
+                const cidade = document.getElementById('cidadeInput').value;
+                const uf = document.getElementById('ufInput').value;
+
+                if (!rua) {
+                    alert("Por favor, informe um CEP válido primeiro.");
+                    return;
+                }
+
+                let complementoFinal = "";
+
+                if (tipoMoradia === 'casa') {
+                    const numero = document.getElementById('numCasaInput').value;
+                    if (!numero) { alert("Informe o número da casa."); return; }
+                    complementoFinal = `${numero}`;
+                } else {
+                    const cond = document.getElementById('condominioInput').value;
+                    const bloco = document.getElementById('blocoInput').value;
+                    const andar = document.getElementById('andarInput').value;
+                    const numApto = document.getElementById('numAptoInput').value;
+
+                    if (!cond || !numApto) { alert("Informe pelo menos o Condomínio e o Número do Apto."); return; }
+
+                    complementoFinal = `Cond. ${cond}, Bloco ${bloco}, Andar ${andar}, Apto ${numApto}`;
+                }
+
                 const dados = {
 
-                    Cep: document.getElementById("cepInput").value
-
+                    Cep: document.getElementById("cepInput").value,
+                    Rua: rua,
+                    Bairro: bairro,
+                    Cidade: `${cidade}`,
+                    Estado: uf,
+                    Complemento: complementoFinal
                 }
 
                 axios.patch(`/api/usuarios/update/${usuarioExistente.idUsuario}`, dados);

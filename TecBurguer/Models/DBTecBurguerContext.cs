@@ -258,6 +258,9 @@ namespace TecBurguer.Models
                 entity.Property(e => e.Rua)
                     .HasMaxLength(100)
                     .HasDefaultValue(false);
+                entity.Property(e => e.Complemento)
+                    .HasMaxLength(100)
+                    .HasDefaultValue(false);
                 entity.Property(e => e.Administrador)
                     .IsUnicode(false)
                     .HasDefaultValue(false);

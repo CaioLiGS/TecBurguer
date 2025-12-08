@@ -1,112 +1,143 @@
 ﻿@model TecBurguer.Models.Ofertas
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nova Oferta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Ofertas</h4>
-<hr />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <link href="~/css/Ofertas.css" rel="stylesheet" />
-<div class="row">
-    <div class="col-md-4">
+<div class="create-container">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="glass-panel">
+        <h1 class="form-title">CRIAR OFERTA <i class="fas fa-fire"></i></h1>
+        <p class="form-subtitle">Defina preços especiais para seus produtos</p>
+
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="idHamburguer" class="control-label">Hamburguer</label>
-                <select asp-for="idHamburguer" class ="form-control" asp-items="ViewBag.idHamburguer" onreadystatechange="readOnly"></select>
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
+
+            <div class="input-group-modern">
+                <label asp-for="idHamburguer" class="form-label">SELECIONE O HAMBÚRGUER</label>
+                <div class="input-wrapper">
+                    <select asp-for="idHamburguer" class="form-control styled-select" asp-items="ViewBag.idHamburguer">
+                        <option value="" disabled selected>-- Escolha o item --</option>
+                    </select>
+                    <i class="fas fa-hamburger input-icon"></i>
+                    <i class="fas fa-chevron-down select-arrow"></i>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="dataTermino" class="control-label">Data fim</label>
-                <input asp-for="dataTermino" class="form-control"/>
+
+            <div class="input-group-modern">
+                <label asp-for="dataTermino" class="form-label">DATA DE TÉRMINO</label>
+                <div class="input-wrapper">
+                    <input asp-for="dataTermino" class="form-control" type="datetime-local" />
+                    <i class="fas fa-calendar-alt input-icon"></i>
+                </div>
                 <span asp-validation-for="dataTermino" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="precoFinal" class="control-label">Preço final</label>
-                <input id="PrecoFinal" asp-for="precoFinal"
-                       class="form-control"
-                       placeholder="Preço atual: R$ --.--" /> <span asp-validation-for="precoFinal" class="text-danger"></span>
-                <span asp-validation-for="precoFinal" class="text-danger"></span>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group-modern">
+                        <label asp-for="precoFinal" class="form-label">PREÇO FINAL (R$)</label>
+                        <div class="input-wrapper">
+                            <input id="PrecoFinal" asp-for="precoFinal" class="form-control" placeholder="0,00" />
+                            <i class="fas fa-tag input-icon"></i>
+                        </div>
+                        <span asp-validation-for="precoFinal" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group-modern">
+                        <label asp-for="porcentagem" class="form-label">DESCONTO (%)</label>
+                        <div class="input-wrapper">
+                            <input id="PorcentagemOferta" asp-for="porcentagem" class="form-control" placeholder="0%" />
+                            <i class="fas fa-percent input-icon"></i>
+                        </div>
+                        <span asp-validation-for="porcentagem" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="porcentagem" class="control-label">Porcentagem</label>
-                <input id="PorcentagemOferta" asp-for="porcentagem" class="form-control" />
-                <span asp-validation-for="porcentagem" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Criar" class="btn btn-primary" />
-            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-bolt"></i> LANÇAR OFERTA
+            </button>
         </form>
+
+        <a asp-controller="Hamburgueres" asp-action="Index" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Voltar para lista
+        </a>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script>
-        var preco = 0;
+        var precoOriginal = 0;
 
         $(document).ready(function() {
-
-            // 1. Pega o JSON de preços que enviamos do Controller
             var precos = @Html.Raw(ViewData["PrecosHamburgueres"]);
 
-            // 2. Pega os elementos do formulário
             var $dropdown = $('#idHamburguer');
             var $inputPreco = $('#PrecoFinal');
+            var $inputPorc = $('#PorcentagemOferta');
 
-            // 3. Uma função para atualizar o placeholder
-            function atualizarPlaceholder() {
+            function atualizarDadosProduto() {
                 var idSelecionado = $dropdown.val();
 
                 if (idSelecionado && precos[idSelecionado]) {
-                    preco = precos[idSelecionado]; 
-
-                    $inputPreco.attr('placeholder', 'Preço atual: ' + preco);
+                    precoOriginal = parseFloat(precos[idSelecionado]);
+                    $inputPreco.attr('placeholder', 'Atual: R$ ' + precoOriginal.toFixed(2));
                 } else {
-                    // Se for o "-- Selecione --"
-                    $inputPreco.attr('placeholder', 'Preço atual: R$ --.--');
+                    $inputPreco.attr('placeholder', 'R$ --.--');
+                    precoOriginal = 0;
                 }
             }
 
-            // 4. Executa a função quando o dropdown mudar
             $dropdown.on('change', function() {
-                atualizarPlaceholder();
+                atualizarDadosProduto();
+                $inputPreco.val('').prop('readonly', false);
+                $inputPorc.val('').prop('readonly', false);
             });
 
-            // 5. Executa a função agora (caso um item já venha pré-selecionado)
-            atualizarPlaceholder();
-
+            atualizarDadosProduto();
         });
 
-        $(document.getElementById("PrecoFinal")).blur(function(){
+        $('#PrecoFinal').blur(function(){
+            var valorDigitado = $(this).val().replace(',', '.');
+            var $inputPorc = $('#PorcentagemOferta');
 
-            if(document.getElementById("PrecoFinal").value == ""){
-                document.getElementById("PorcentagemOferta").value = "";
-                document.getElementById("PorcentagemOferta").readOnly = false;
+            if(valorDigitado == "" || valorDigitado == 0 || precoOriginal == 0){
+                $inputPorc.val('').prop('readonly', false);
             }
-            else{
-                document.getElementById("PorcentagemOferta").value = (100 - document.getElementById("PrecoFinal").value / preco * 100).toFixed(2) + "%";
-                document.getElementById("PorcentagemOferta").readOnly = true;
+            else {
+                var desconto = (100 - (valorDigitado / precoOriginal * 100));
+                $inputPorc.val(desconto.toFixed(2))//.prop('readonly', true);
             }
-            
         });
 
-        $(document.getElementById("PorcentagemOferta")).blur(function(){
+        $('#PorcentagemOferta').blur(function(){
+            var valorDigitado = $(this).val().replace('%', '').replace(',', '.');
+            var $inputPreco = $('#PrecoFinal');
 
-            if(document.getElementById("PorcentagemOferta").value == ""){
-                document.getElementById("PrecoFinal").value = "";
-                document.getElementById("PrecoFinal").readOnly = false;
+            if(valorDigitado == "" || valorDigitado == 0 || precoOriginal == 0){
+                $inputPreco.val('').prop('readonly', false);
             }
-            else{
-                document.getElementById("PrecoFinal").value = (preco - preco * document.getElementById("PorcentagemOferta").value / 100).toFixed(2);
-                document.getElementById("PrecoFinal").readOnly = true;
-            }
+            else {
 
+                var novoPreco = (precoOriginal - (precoOriginal * valorDigitado / 100));
+                $inputPreco.val(novoPreco.toFixed(2))//.prop('readonly', true);
+            }
         });
-
-
     </script>
 }

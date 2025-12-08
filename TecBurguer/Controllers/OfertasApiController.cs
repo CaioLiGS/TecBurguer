@@ -23,10 +23,23 @@ namespace TecBurguer.Controllers
         [HttpGet("Listar")]
         public async Task<ActionResult<IEnumerable<Ofertas>>> GetOfertas()
         {
+
             if (_context.Ofertas == null)
             {
                 return NotFound();
             }
+
+            var ofertasVencidas = await _context.Ofertas
+                .Where(o => o.dataTermino < DateTime.Now)
+                .ToListAsync();
+
+            if (ofertasVencidas.Any())
+            {
+                _context.Ofertas.RemoveRange(ofertasVencidas);
+                await _context.SaveChangesAsync();
+            }
+
+           
             return await _context.Ofertas.ToListAsync();
         }
     }

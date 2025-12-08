@@ -25,9 +25,10 @@ public class LoginContext : IdentityDbContext<LoginCliente>
     {
         public void Configure(EntityTypeBuilder<LoginCliente> builder)
         {
-            builder.Property(x => x.Nome).HasMaxLength(100);
+            builder.Property(x => x.Nome).HasMaxLength(250);
             builder.Property(x => x.Administrador).HasDefaultValue(false);
             builder.Property(x => x.Vendedor).HasDefaultValue(false);
+            builder.Property(x => x.Servico).HasDefaultValue("Usuário").HasMaxLength(50);
         }
     }
 }

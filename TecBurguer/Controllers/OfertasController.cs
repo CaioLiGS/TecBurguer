@@ -56,14 +56,12 @@ namespace TecBurguer.Controllers
                 oferta.idHamburguer = hamburguerId.Value;
             }
 
-            // Usando "Nome" para o texto do dropdown
             ViewData["idHamburguer"] = new SelectList(_context.Hamburguers, "IdHamburguer", "Nome", oferta.idHamburguer);
 
             var precos = _context.Hamburguers.ToDictionary(h => h.IdHamburguer, h => h.Preco);
 
             ViewData["PrecosHamburgueres"] = System.Text.Json.JsonSerializer.Serialize(precos);
 
-            // Passa a nova oferta (com o ID já preenchido) para a View
             return View(oferta);
         }
 

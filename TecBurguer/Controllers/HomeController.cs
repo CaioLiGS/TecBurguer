@@ -70,8 +70,9 @@ namespace TecBurguer.Controllers
         public IActionResult Entregadores()
         {
             var pedidosDisponiveis = _context.Pedidos
-                .Include(p => p.IdUsuarioNavigation) // Inclui dados do cliente para ver endereço/nome
-                .Where(p => p.Estado == "Para ser entregue")
+                .Include(p => p.IdUsuarioNavigation)
+                .Where(p => p.Estado == "Para ser entregue" || p.Estado == "Saiu para entrega")
+                .Include(p => p.Entregadors)
                 .ToList();
 
             return View(pedidosDisponiveis);
@@ -80,7 +81,7 @@ namespace TecBurguer.Controllers
         // POST: Processa a escolha do pedido pelo entregador
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AceitarEntrega(int idPedido)
+        public async Task<IActionResult> AceitarEntrega(int idPedido, string NomeEntregador)
         {
             var pedido = await _context.Pedidos.FindAsync(idPedido);
 
@@ -101,7 +102,7 @@ namespace TecBurguer.Controllers
             var novaEntrega = new Entregador
             {
                 IdPedido = pedido.IdPedido,
-                Nome = "Entregador da Sessão",
+                Nome = NomeEntregador,
                 Veiculo = "Moto",
                 Avaliacao = 5.0m               
             };
@@ -114,6 +115,35 @@ namespace TecBurguer.Controllers
             return RedirectToAction(nameof(Entregadores));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FinalizarEntrega(int idPedido)
+        {
+            var pedido = await _context.Pedidos.FindAsync(idPedido);
+
+            if (pedido == null)
+            {
+                TempData["Erro"] = "Pedido não encontrado.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                pedido.Estado = "Entregue";
+                pedido.IdUsuario = null;
+
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+
+                TempData["Sucesso"] = $"Entrega do pedido #{idPedido} confirmada!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Erro"] = "Erro ao finalizar entrega: " + ex.Message;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
 
         public IActionResult PedidoVendedor()
         {

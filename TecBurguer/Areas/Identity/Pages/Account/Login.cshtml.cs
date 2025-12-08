@@ -126,25 +126,9 @@ namespace TecBurguer.Areas.Identity.Pages.Account
 
                     if (user != null) 
                     {
-                        if (user.Vendedor)
+                        if (!await _signInManager.UserManager.IsInRoleAsync(user, user.Servico))
                         {
-                            _logger.LogInformation("Usuário é VENDEDOR!");
-
-
-                            if (!await _signInManager.UserManager.IsInRoleAsync(user, "Vendedor"))
-                            {
-                                await _signInManager.UserManager.AddToRoleAsync(user, "Vendedor");
-                            }
-                        }
-                        else if (user.Administrador)
-                        {
-                            _logger.LogInformation("Usuário é ADMINISTRADOR!");
-
-
-                            if (!await _signInManager.UserManager.IsInRoleAsync(user, "Administrador"))
-                            {
-                                await _signInManager.UserManager.AddToRoleAsync(user, "Administrador");
-                            }
+                            await _signInManager.UserManager.AddToRoleAsync(user, user.Servico);
                         }
                         
                     }

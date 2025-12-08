@@ -1,109 +1,246 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TecBurguer.Areas.Identity.Data
 @model IEnumerable<TecBurguer.Models.Pedido>
+
+@inject UserManager<LoginCliente> UserManager
 
 @{
     ViewData["Title"] = "Painel de Entregas";
+
+    var user = await UserManager.GetUserAsync(User);
+    string emailLogado = user?.Email?.Trim().ToLower() ?? "";
+
+    int ObterCategoria(TecBurguer.Models.Pedido p)
+    {
+        var entregador = p.Entregadors.FirstOrDefault();
+        bool estaLivre = entregador == null;
+        bool eMeu = entregador != null && entregador.Nome.Trim().ToLower() == emailLogado;
+
+        if (eMeu) return 0;      
+        if (estaLivre) return 1; 
+        return 2;                
+    }
+
+    var gruposDePedidos = Model.GroupBy(p => ObterCategoria(p))
+                               .OrderBy(g => g.Key)
+                               .ToList();
+
+    var titulos = new Dictionary<int, string>
+    {
+        { 0, "🚀 MEUS PEDIDOS EM ANDAMENTO" },
+        { 1, "📦 PEDIDOS DISPONÍVEIS" },
+        { 2, "🔒 PEDIDOS COM OUTROS ENTREGADORES" }
+    };
 }
 
 <link href="https://fonts.googleapis.com/css2?family=Ranchers&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="~/css/Entregadores.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <div class="container mt-5">
 
     <div class="header-container">
-        <h1 class="modern-title">
-            Painel de Entregas
-        </h1>
-        <p class="subtitle">Selecione um pedido dispon�vel para realizar a entrega</p>
+        <h1 class="modern-title">Painel de Entregas</h1>
+        <p class="subtitle">Gerencie suas corridas em tempo real</p>
     </div>
 
-    @if (TempData["Erro"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Ops!</strong> @TempData["Erro"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    @if (TempData["Sucesso"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Sucesso!</strong> @TempData["Sucesso"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
+    @if (TempData["Erro"] != null) { /* ... (Alertas mantidos) ... */ }
+    @if (TempData["Sucesso"] != null) { /* ... (Alertas mantidos) ... */ }
 
-    @if (!Model.Any())
+    @if (!gruposDePedidos.Any())
     {
         <div class="empty-state-wrapper">
             <div class="radar-spinner">
-                <div class="radar-wave"></div>
-                <div class="radar-wave delay-1"></div>
-                <i class="fas fa-check-circle"></i>
+                <div class="radar-wave"></div> <div class="radar-wave delay-1"></div> <i class="fas fa-check-circle"></i>
             </div>
-
             <div class="empty-content">
                 <h3>Tudo tranquilo por aqui!</h3>
-                <p>N�o h� pedidos aguardando entrega no momento.</p>
-
-                <button onclick="window.location.reload();" class="btn-refresh">
-                    <i class="fas fa-sync-alt"></i> Atualizar
-                </button>
+                <p>Não há pedidos aguardando entrega no momento.</p>
+                <button onclick="window.location.reload();" class="btn-refresh"><i class="fas fa-sync-alt"></i> Atualizar</button>
             </div>
         </div>
     }
     else
     {
-        <div class="table-responsive shadow-sm rounded">
-            <table class="table table-hover table-striped align-middle mb-0">
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <th scope="col"># ID</th>
-                        <th scope="col">Cliente</th>
-                        <th scope="col">Endere�o / Bairro</th>
-                        <th scope="col">Total</th>
-                        <th scope="col" class="text-center">A��o</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var pedido in Model)
+        @foreach (var grupo in gruposDePedidos)
+        {
+            <h2 class="section-separator section-@grupo.Key">@titulos[grupo.Key]</h2>
+
+            <div class="grid-entregas">
+                @foreach (var pedido in grupo)
+                {
+                    var entregadorResponsavel = pedido.Entregadors.FirstOrDefault();
+                    bool estaLivre = entregadorResponsavel == null;
+                    bool eMeuPedido = false;
+
+                    if (entregadorResponsavel != null && !string.IsNullOrEmpty(emailLogado))
                     {
-                        <tr>
-                            <td><strong>#@pedido.IdPedido</strong></td>
-                            <td>
-                                @if (pedido.IdUsuarioNavigation != null)
-                                {
-                                    @pedido.IdUsuarioNavigation.Nome
-                                }
-                                else
-                                {
-                                    <span class="text-muted">Cliente n�o ident.</span>
-                                }
-                            </td>
-                            <td>
-                                @if (pedido.IdUsuarioNavigation != null)
-                                {
-                                    <i class="fas fa-map-marker-alt text-danger"></i> 
-                                    @pedido.IdUsuarioNavigation.Bairro
-                                }
-                                else
-                                {
-                                    <span>-</span>
-                                }
-                            </td>
-                            <td class="fw-bold text-success">
-                                R$ @(pedido.PrecoTotal?.ToString("F2") ?? "0.00")
-                            </td>
-                            <td class="text-center">
-                                <form asp-action="AceitarEntrega" method="post">
-                                    <input type="hidden" name="idPedido" value="@pedido.IdPedido" />
-                                    <button type="submit" class="btn btn-primary btn-sm px-4">
-                                        Aceitar Entrega
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                        if (entregadorResponsavel.Nome.Trim().ToLower() == emailLogado) { eMeuPedido = true; }
                     }
-                </tbody>
-            </table>
-        </div>
+
+                    <div class="card-entrega @(eMeuPedido ? "meu-pedido" : (estaLivre ? "livre" : "ocupado"))">
+                        <div class="card-header-entrega">
+                            <span class="badge-id">#@pedido.IdPedido</span>
+                            <span class="badge-status">
+                                @if (estaLivre)
+                                {
+                                    <span class="text-success"><i class="fas fa-box-open"></i> Disponível</span>
+                                }
+                                else if (eMeuPedido)
+                                {
+
+                                    <span class="text-primary"><i class="fas fa-user-astronaut"></i> Minha Entrega</span>
+                                }
+                                else
+                                {
+
+                                    <span class="text-muted"><i class="fas fa-lock"></i> Em andamento</span>
+                                }
+                            </span>
+                        </div>
+
+                        <div class="card-body-entrega">
+                            <div class="info-row"><i class="fas fa-user"></i><span>@(pedido.IdUsuarioNavigation?.Nome ?? "Cliente não ident.")</span></div>
+                            <div class="info-row">
+                                <i class="fas fa-map-marker-alt text-danger"></i>
+                                <span>@(pedido.IdUsuarioNavigation?.Rua), @(pedido.IdUsuarioNavigation?.Bairro) - @(pedido.IdUsuarioNavigation?.Cidade)</span>
+                            </div>
+                            <div class="info-row price"><i class="fas fa-money-bill-wave"></i><span>R$ @(pedido.PrecoTotal?.ToString("F2") ?? "0.00")</span></div>
+
+                            @if (eMeuPedido)
+                            {
+                                // 1. Recupera os dados
+                                var rua = pedido.IdUsuarioNavigation?.Rua;
+                                var complemento = pedido.IdUsuarioNavigation?.Complemento; 
+                                var bairro = pedido.IdUsuarioNavigation?.Bairro;
+                                var cidade = pedido.IdUsuarioNavigation?.Cidade;
+
+                                var enderecoTexto = $"{rua}";
+
+                                if (!string.IsNullOrEmpty(complemento))
+                                {
+                                    enderecoTexto += $", {complemento}";
+                                }
+
+                                enderecoTexto += $", {bairro} - {cidade}";
+
+                                var enderecoEncoded = System.Net.WebUtility.UrlEncode(enderecoTexto);
+
+                                <div class="mapa-container">
+                                    <iframe width="100%"
+                                            height="300"
+                                            frameborder="0"
+                                            scrolling="no"
+                                            marginheight="0"
+                                            marginwidth="0"
+                                            style="border:0; border-radius: 10px;"
+
+                                            src="https://maps.google.com/maps?q=@enderecoEncoded&t=&z=15&ie=UTF8&iwloc=&output=embed">
+                                    </iframe>
+
+                                    <div class="mt-2 text-center">
+                                        <small class="text-muted d-block mb-2">
+                                            <i class="fas fa-map-marked-alt"></i>
+                                            <strong>Destino:</strong> @enderecoTexto
+                                        </small>
+
+                                        <a href="https://www.google.com/maps/search/?api=1&query=@enderecoEncoded" target="_blank" class="btn btn-outline-light w-100">
+                                            <i class="fas fa-location-arrow"></i> ABRIR NO GPS (WAZE/MAPS)
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="card-footer-entrega">
+                            @if (estaLivre)
+                            {
+                                <form asp-action="AceitarEntrega" method="post" style="width: 100%;">
+                                    <input type="hidden" name="idPedido" value="@pedido.IdPedido" />
+                                    <input type="hidden" name="NomeEntregador" value="@emailLogado" />
+                                    <button type="submit" class="btn-aceitar"><i class="fas fa-check"></i> ACEITAR ENTREGA</button>
+                                </form>
+                            }
+                            else if (eMeuPedido)
+                            {
+                                <button type="button" class="btn-finalizar" onclick="AbrirModalFinalizar(@pedido.IdPedido, '@pedido.Nome')">
+                                    <i class="fas fa-flag-checkered"></i> FINALIZAR ENTREGA
+                                </button>
+                            }
+                            else
+                            {
+                                <div class="entregador-info">
+                                    <div style="display:flex; flex-direction:column; align-items:center;">
+                                        <img src="https://ui-avatars.com/api/?name=@entregadorResponsavel.Nome&background=random" class="avatar-mini mb-1">
+                                        <span style="font-size: 0.8rem; color: #aaa;">Pedido com:</span>
+                                        <span style="font-weight: bold; word-break:break-all;">@entregadorResponsavel.Nome</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     }
 </div>
+
+<div id="PopUpConfirmacao">
+    <div class="popup-glass">
+        <h2 style="color: var(--primary); font-family: 'Ranchers';">CONFIRMAR ENTREGA</h2>
+        <p style="color: #ccc; font-size: 0.9rem;">
+            Peça o código de segurança ao cliente para finalizar.
+        </p>
+
+        <input type="text" id="inputCodigoEntrega" class="input-codigo" placeholder="CÓDIGO" maxlength="10">
+        <p id="msgErro" class="text-danger fw-bold" style="display:none;">Código incorreto!</p>
+
+        <div class="d-flex gap-2 justify-content-center mt-3">
+            <button class="btn btn-secondary w-50" onclick="FecharModal()">CANCELAR</button>
+            <button class="btn btn-success w-50 fw-bold" onclick="ValidarEFinalizar()">CONFIRMAR</button>
+        </div>
+    </div>
+</div>
+
+<form id="formFinalizarReal" asp-action="FinalizarEntrega" method="post" style="display:none;">
+    <input type="hidden" name="idPedido" id="idPedidoHidden" />
+</form>
+
+<script>
+    let pedidoIdAtual = 0;
+    let codigoCorretoAtual = "";
+
+    function AbrirModalFinalizar(idPedido, codigoPedido) {
+        pedidoIdAtual = idPedido;
+        codigoCorretoAtual = codigoPedido; 
+
+        document.getElementById('inputCodigoEntrega').value = "";
+        document.getElementById('msgErro').style.display = "none";
+
+        document.getElementById('PopUpConfirmacao').classList.add('Aparecer');
+        document.getElementById('inputCodigoEntrega').focus();
+    }
+
+    function FecharModal() {
+        document.getElementById('PopUpConfirmacao').classList.remove('Aparecer');
+    }
+
+    function ValidarEFinalizar() {
+        const codigoDigitado = document.getElementById('inputCodigoEntrega').value.trim();
+
+        if (codigoDigitado.toLowerCase() === codigoCorretoAtual.toLowerCase()) {
+
+            document.getElementById('idPedidoHidden').value = pedidoIdAtual;
+            document.getElementById('formFinalizarReal').submit();
+
+        } else {
+            const msg = document.getElementById('msgErro');
+            msg.style.display = "block";
+            msg.innerText = "Código incorreto!";
+
+            const input = document.getElementById('inputCodigoEntrega');
+            input.style.borderColor = "red";
+            setTimeout(() => input.style.borderColor = "#555", 1000);
+        }
+    }
+</script>

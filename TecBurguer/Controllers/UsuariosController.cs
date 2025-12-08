@@ -124,6 +124,10 @@ namespace TecBurguer.Controllers
             {
                 usuarioDoBanco.Rua = dadosParciais.Rua;
             }
+            if (dadosParciais.Complemento != null)
+            {
+                usuarioDoBanco.Complemento = dadosParciais.Complemento;
+            }
             if (dadosParciais.Administrador != null)
             {
                 usuarioDoBanco.Administrador = dadosParciais.Administrador;

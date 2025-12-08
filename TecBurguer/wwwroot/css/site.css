@@ -243,6 +243,136 @@ header {
 }
 
 
+@media (max-width: 991px) {
+
+    /* 1. Botão Hambúrguer (Ajuste de Cor e Posição) */
+    .navbar-toggler {
+        border: none;
+        outline: none;
+        position: relative;
+        z-index: 1060; /* Fica acima do menu aberto */
+    }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+    /* 2. O Container do Menu (Fundo Preto Tela Cheia) */
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw; /* Largura total da viewport */
+        height: 100vh; /* Altura total da viewport */
+        background-color: #121212; /* Fundo Escuro (var(--dark)) */
+        z-index: 1050;
+        padding-top: 90px; /* Espaço para não cobrir o logo */
+        padding-bottom: 20px;
+        padding-left: 0;
+        padding-right: 0;
+        /* Garante que o conteúdo role se a tela for pequena na altura */
+        overflow-y: auto;
+    }
+
+        /* Quando o menu abre, forçamos o display flex */
+        .navbar-collapse.show {
+            display: flex !important;
+            flex-direction: column;
+        }
+
+    /* 3. Estrutura Principal da Lista */
+    .navbar-nav-flex-grow-1 {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important; 
+        height: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 20px !important; 
+    }
+
+    /* 4. As Abas (Links) - Forçamos a exibição */
+    .Abas {
+        display: flex !important; 
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        gap: 30px;
+        margin-top: 20px;
+    }
+
+        /* Estilo dos Links no Mobile */
+        .Abas li {
+            list-style: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .Abas a.nav-link,
+        .Abas a.dropdown-toggle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: var(--primary);
+            color: white !important; 
+            text-transform: uppercase;
+            padding: 10px;
+            border-radius: 10px;
+            width: 100%;
+            display: block;
+        }
+
+    .dropdown-menu {
+        position: static;
+        float: none;
+        background: rgba(255,255,255,0.05);
+        border: none;
+        text-align: center;
+    }
+
+    .dropdown-item {
+        color: #ccc;
+        padding: 10px;
+        font-size: 1.1rem;
+    }
+
+    .ContentRight {
+        display: flex !important;
+        flex-direction: column-reverse; 
+        width: 100%;
+        align-items: center;
+        gap: 30px;
+        margin-top: auto; 
+        padding-top: 20px;
+        border-top: 1px solid var(--primary); 
+    }
+
+        /* Estilo do Login */
+        .ContentRight li {
+            list-style: none;
+            width: 100%;
+            text-align: center;
+        }
+
+    .Cart {
+        margin: 0;
+    }
+
+        .Cart a img {
+            width: 60px; /* Ícone grande */
+            height: auto;
+        }
+
+    .QuantCart {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+        bottom: 0;
+        right: -5px;
+        left: auto;
+    }
+}
+
 /*
     BANNER
 */
@@ -576,7 +706,6 @@ header {
 
 .Content3 {
     background: var(--primary);
-    height: 90vh;
     width: 100vw;
     position: absolute;
     left: 0;
@@ -1469,15 +1598,14 @@ html, body {
 
 .MarqueeContainer {
     width: 100%;
-    overflow: hidden; /* Esconde o que sai da tela */
+    overflow: hidden; 
     background: linear-gradient(90deg, var(--primary-dark), #000, var(--primary-dark));
     border-top: 4px solid var(--primary);
     border-bottom: 4px solid var(--primary);
     padding: 15px 0;
-    margin-bottom: 40px;
     position: relative;
     box-shadow: 0 0 30px rgba(255, 46, 0, 0.2);
-    transform: rotate(-1deg); /* Leve inclinação para estilo radical */
+    transform: rotate(-1deg); 
 }
 
 .MarqueeTrack {
@@ -1759,7 +1887,7 @@ html, body {
     }
 
     .BotoesRDC {
-        height: 15%;
+        height: 10%;
         gap: 5px;
     }
 
@@ -1781,8 +1909,13 @@ html, body {
     }
 
         .title-tec {
-            -webkit-text-stroke: 3px white; 
+            -webkit-text-stroke: 0px white; 
+            color: white;
         }
+
+    .btn-ver-todos{
+        font-size: 1rem !important;
+    }
 
     .bannerWrapper {
         display: none;
@@ -1830,6 +1963,24 @@ html, body {
         width: 30px;
         height: 30px;
         font-size: 1rem;
+    }
+
+    .carrossel-cardapio, .carrossel-ofertas {
+        padding-left: 13.5vw;
+        gap: 13.5vw;
+    }
+
+    .Content3{
+        padding: 0;
+        padding-top: 20px;
+    }
+
+    .Content3 h2 {
+        font-size: 2rem;
+    }
+
+    .Content1{
+        height: auto;
     }
 }
 
