@@ -131,6 +131,7 @@ namespace TecBurguer.Controllers
             {
                 pedido.Estado = "Entregue";
                 pedido.IdUsuario = null;
+                pedido.DataEntregue = DateTime.Now;
 
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();

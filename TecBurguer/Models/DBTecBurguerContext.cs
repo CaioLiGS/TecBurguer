@@ -170,6 +170,8 @@ namespace TecBurguer.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
+                entity.Property(e => e.DataEntregue).HasColumnType("dateTime");
+
                 entity.Property(e => e.PrecoTotal).HasColumnType("numeric(18, 2)");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)

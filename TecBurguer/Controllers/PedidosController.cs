@@ -150,7 +150,6 @@ public class PedidosController : ControllerBase
         {
             foreach (var itemPedido in pedidoDoBanco.PedidoHamburgueres)
             {
-                // Se o lanche ou receita não existirem, pula
                 if (itemPedido.IdHamburguerNavigation?.HamburguerIgredientes == null) continue;
 
                 int qtdLanches = itemPedido.Quantidade ?? 0;
@@ -162,13 +161,11 @@ public class PedidosController : ControllerBase
 
                     if (ingrediente != null)
                     {
-                        // O cálculo acontece aqui, na memória do servidor
                         int totalDeduzir = qtdLanches * qtdPorLanche;
                         ingrediente.Quantidade -= totalDeduzir;
 
                         if (ingrediente.Quantidade < 0) return BadRequest($"Falta estoque de {ingrediente.Nome}");
 
-                        // Marca o ingrediente para atualização
                         _context.Entry(ingrediente).State = EntityState.Modified;
                     }
                 }

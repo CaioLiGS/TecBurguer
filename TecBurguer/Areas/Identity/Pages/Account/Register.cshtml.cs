@@ -163,12 +163,94 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-
-                    // Gerar código de confirmação
                     GeneratedCode = new Random().Next(100000, 999999).ToString();
 
-                    // Enviar e-mail (exemplo usando um serviço fictício)
-                    await EmailService.SendAsync(Input.Email, "Código de confirmação", $"Seu código: {GeneratedCode}");
+                    string emailSubject = "🔥 TecBurguer: Seu código de acesso";
+
+                    string emailBody = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Estilos básicos para clientes de e-mail que suportam */
+        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #000000; }}
+        .container {{ max-width: 600px; margin: 0 auto; background-color: #121212; border-radius: 15px; overflow: hidden; }}
+        .header {{ background: linear-gradient(45deg, #FF2E00, #d62500); padding: 30px; text-align: center; }}
+        .content {{ padding: 40px 30px; color: #f5f5f5; text-align: center; }}
+        .code-box {{ 
+            background-color: rgba(255, 46, 0, 0.1); 
+            border: 2px solid #FF2E00; 
+            border-radius: 10px; 
+            padding: 20px; 
+            font-size: 32px; 
+            font-weight: bold; 
+            letter-spacing: 5px; 
+            color: #FF2E00; 
+            margin: 30px 0;
+            display: inline-block;
+            min-width: 200px;
+        }}
+        .footer {{ background-color: #0a0a0a; padding: 20px; text-align: center; color: #666; font-size: 12px; }}
+        .btn-link {{ color: #FFC107; text-decoration: none; }}
+    </style>
+</head>
+<body style='margin: 0; padding: 20px; background-color: #000000;'>
+    
+    <table align='center' border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px; background-color: #121212; border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(255, 46, 0, 0.2);'>
+        
+        <tr>
+            <td align='center' style='padding: 30px; background: linear-gradient(45deg, #FF2E00, #991b00);'>
+                <h1 style='color: #ffffff; margin: 0; font-family: Impact, sans-serif; letter-spacing: 2px; font-size: 28px;'>TEC BURGER</h1>
+            </td>
+        </tr>
+
+        <tr>
+            <td align='center' style='padding: 40px 30px; color: #eeeeee; font-family: sans-serif;'>
+                <h2 style='margin-top: 0; font-weight: normal;'>Olá!</h2>
+                <p style='font-size: 16px; line-height: 1.5; color: #cccccc;'>
+                    Recebemos uma solicitação de acesso para sua conta. <br>
+                    Use o código abaixo para continuar:
+                </p>
+
+                <div style='margin: 30px 0;'>
+                    <span style='
+                        display: inline-block;
+                        background-color: #1a0500;
+                        border: 2px dashed #FF2E00;
+                        border-radius: 12px;
+                        padding: 15px 40px;
+                        font-size: 36px;
+                        font-weight: bold;
+                        letter-spacing: 8px;
+                        color: #FF2E00;
+                    '>
+                        {GeneratedCode}
+                    </span>
+                </div>
+
+                <p style='font-size: 14px; color: #888888;'>
+                    Este código expira em 10 minutos.<br>
+                    Se você não solicitou este código, pode ignorar este e-mail com segurança.
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td align='center' style='padding: 20px; background-color: #080808; color: #555555; font-family: sans-serif; font-size: 12px; border-top: 1px solid #222;'>
+                <p style='margin: 0;'>&copy; {DateTime.Now.Year} TecBurguer. O sabor do futuro.</p>
+                <p style='margin: 5px 0 0 0;'>
+                    Precisa de ajuda? <a href='#' style='color: #FFC107; text-decoration: none;'>Fale conosco</a>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
+";
+
+                    // 3. Enviar e-mail
+                    await EmailService.SendAsync(Input.Email, emailSubject, emailBody);
 
                     // Salvar código em sessão ou banco (exemplo: sessão)
                     HttpContext.Session.SetString("ConfirmationCode", GeneratedCode);

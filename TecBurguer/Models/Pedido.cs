@@ -18,6 +18,10 @@ namespace TecBurguer.Models
         public string? Descricao { get; set; }
         public decimal? PrecoTotal { get; set; }
         public string? Estado { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? DataEntregue { get; set; }
+
         public int? IdUsuario { get; set; }
 
         public virtual Usuario? IdUsuarioNavigation { get; set; }

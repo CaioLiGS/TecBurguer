@@ -57,22 +57,84 @@ namespace TecBurguer.Areas.Identity.Pages.Account
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // Gerar código de 6 dígitos
                 var code = new Random().Next(100000, 999999).ToString();
 
-                // Salvar código temporário no Identity
                 await _userManager.SetAuthenticationTokenAsync(user, "TecBurguer", "ResetCode", code);
 
-                // Enviar e-mail usando seu EmailService
-                await EmailService.SendAsync(
-                    Input.Email,
-                    "Código de redefinição de senha",
-                    $"Seu código de redefinição é: <b>{code}</b>"
-                );
+                string emailSubject = "🔐 TecBurguer: Redefinição de Senha";
+
+                string emailBody = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #000000; }}
+        .container {{ max-width: 600px; margin: 0 auto; background-color: #121212; border-radius: 15px; overflow: hidden; }}
+    </style>
+</head>
+<body style='margin: 0; padding: 20px; background-color: #000000;'>
+    
+    <table align='center' border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px; background-color: #121212; border-radius: 15px; overflow: hidden; box-shadow: 0 0 25px rgba(255, 46, 0, 0.25); border: 1px solid #333;'>
+        
+        <tr>
+            <td align='center' style='padding: 35px; background: linear-gradient(135deg, #FF2E00, #801700);'>
+                <h1 style='color: #ffffff; margin: 0; font-family: Arial, sans-serif; font-weight: 900; letter-spacing: 1px; font-size: 26px; text-transform: uppercase;'>
+                    RECUPERAÇÃO DE CONTA
+                </h1>
+            </td>
+        </tr>
+
+        <tr>
+            <td align='center' style='padding: 40px 30px; color: #e0e0e0; font-family: sans-serif;'>
+                <h2 style='margin-top: 0; font-weight: normal; color: #ffffff;'>Esqueceu a senha?</h2>
+                <p style='font-size: 16px; line-height: 1.6; color: #bbbbbb; margin-bottom: 25px;'>
+                    Não se preocupe! Recebemos uma solicitação para redefinir a senha da sua conta <strong>TecBurguer</strong>.
+                </p>
+                <p style='font-size: 16px; line-height: 1.6; color: #bbbbbb;'>
+                    Use o código de segurança abaixo para prosseguir:
+                </p>
+
+                <div style='margin: 35px 0;'>
+                    <span style='
+                        display: inline-block;
+                        background-color: rgba(255, 255, 255, 0.05);
+                        border: 2px solid #FF2E00;
+                        border-radius: 8px;
+                        padding: 15px 50px;
+                        font-size: 38px;
+                        font-weight: bold;
+                        letter-spacing: 10px;
+                        color: #FF2E00;
+                        box-shadow: 0 0 15px rgba(255, 46, 0, 0.2);
+                        text-shadow: 0 0 5px rgba(255, 46, 0, 0.5);
+                    '>
+                        {code}
+                    </span>
+                </div>
+
+                <p style='font-size: 13px; color: #888888; border-top: 1px solid #333; padding-top: 20px; margin-top: 30px;'>
+                    ⚠️ <strong>Importante:</strong> Este código expira em breve.<br>
+                    Se você não solicitou essa alteração, ignore este e-mail. Sua senha permanecerá a mesma e sua conta está segura.
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td align='center' style='padding: 20px; background-color: #080808; color: #555555; font-family: sans-serif; font-size: 12px;'>
+                <p style='margin: 0;'>&copy; {DateTime.Now.Year} TecBurguer</p>
+                <p style='margin: 5px 0 0 0;'>Enviado automaticamente pelo sistema de segurança.</p>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
+";
+
+                await EmailService.SendAsync(Input.Email, emailSubject, emailBody);
 
                 return RedirectToPage("./VerifyResetCode", new { email = Input.Email });
             }

@@ -10,10 +10,11 @@ namespace TecBurguer.Models
     {
         public int id { get; set; }
         public int? idHamburguer { get; set; }
-        [Required(ErrorMessage ="O campo DATA DE TÉRMINO é obrigatório!")]
 
+        [Required(ErrorMessage ="O campo DATA DE TÉRMINO é obrigatório!")]
         [DataType(DataType.DateTime)]
         public DateTime? dataTermino { get; set; }
+
         [Required(ErrorMessage = "O campo PREÇO FINAL é obrigatório!")]
         public decimal? precoFinal { get; set; }
 
