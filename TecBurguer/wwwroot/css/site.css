@@ -1145,7 +1145,6 @@ header {
     color: white;
     letter-spacing: 3px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     width: 50%;
     transition: all 0.5s ease-in-out;
     text-align: center;
@@ -1159,6 +1158,7 @@ header {
 
 #registrar {
     text-wrap: nowrap;
+    text-align: center;
 }
 
 .navbar-nav .nav-item {

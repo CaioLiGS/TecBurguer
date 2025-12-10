@@ -190,7 +190,7 @@
                     <div class="BlocoHamburguer" style="margin-bottom: 30px;">
                         @if (!(item.HamburguerIgredientes.Any() && item.HamburguerIgredientes.All(i => i.IdIngredienteNavigation!.Quantidade >= i.QuantidadeNecessario)))
                         {
-                            <h1 class="ForaDeEstoque">FORA DE ESTOQUE</h1>
+                            <h1 class="ForaDeEstoque">ESGOTADO</h1>
                         }
                         <div class="FaixaHamburguer">@(oferta.porcentagem >= 30 ? "MEGA!!" : "OFERTA")</div>
 
@@ -360,7 +360,7 @@
 
                             @if (!temEstoque)
                             {
-                                <h1 class="ForaDeEstoque">FORA DE ESTOQUE</h1>
+                                <h1 class="ForaDeEstoque">ESGOTADO</h1>
                             }
 
                             <img src="@item.Imagem" class="ImagemHamburguer" onerror="this.src='/css/Imagens/BurguerLogo.png'">

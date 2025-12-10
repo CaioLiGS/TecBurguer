@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TecBurguer.Models;
@@ -155,6 +156,134 @@ namespace TecBurguer.Controllers
                         .ThenInclude(hi => hi.IdIngredienteNavigation);
 
             return View(pedidos.ToList());
+        }
+
+        public async Task<IActionResult> Estatisticas()
+        {
+            var agora = DateTime.Now;
+            var hoje = agora.Date;
+            var inicioSemana = hoje.AddDays(-7); // Considerando janela de 7 dias
+            var inicioMes = new DateTime(agora.Year, agora.Month, 1);
+            var inicioAno = new DateTime(agora.Year, 1, 1);
+
+            // Carrega pedidos entregues com todas as dependências de ingredientes
+            var pedidos = await _context.Pedidos
+                .Include(p => p.PedidoHamburgueres)
+                    .ThenInclude(ph => ph.IdHamburguerNavigation)
+                        .ThenInclude(h => h.HamburguerIgredientes)
+                            .ThenInclude(hi => hi.IdIngredienteNavigation) // Importante carregar o nome do ingrediente
+                .Where(p => p.Estado == "Entregue" && p.DataEntregue.HasValue)
+                .ToListAsync();
+
+            var vm = new EstatisticasViewModel();
+
+            // 1. Cards Totais
+            vm.VendasHoje = pedidos.Where(p => p.DataEntregue.Value.Date == hoje).Sum(p => p.PrecoTotal ?? 0);
+            vm.VendasSemana = pedidos.Where(p => p.DataEntregue.Value.Date >= inicioSemana).Sum(p => p.PrecoTotal ?? 0);
+            vm.VendasMes = pedidos.Where(p => p.DataEntregue.Value.Date >= inicioMes).Sum(p => p.PrecoTotal ?? 0);
+            vm.VendasAno = pedidos.Where(p => p.DataEntregue.Value.Date >= inicioAno).Sum(p => p.PrecoTotal ?? 0);
+
+            // 2. Hambúrguer Mais Vendido
+            var itensVendidos = pedidos.SelectMany(p => p.PedidoHamburgueres).ToList();
+            var topBurguer = itensVendidos
+                .GroupBy(ph => ph.IdHamburguerNavigation)
+                .OrderByDescending(g => g.Sum(ph => ph.Quantidade ?? 0))
+                .FirstOrDefault();
+
+            if (topBurguer != null)
+            {
+                vm.TopHamburguerNome = topBurguer.Key.Nome;
+                vm.TopHamburguerQtd = topBurguer.Sum(ph => ph.Quantidade ?? 0);
+                vm.TopHamburguerRendimento = topBurguer.Sum(ph => (ph.Quantidade ?? 0) * (topBurguer.Key.Preco ?? 0));
+            }
+
+            // 3. Gráficos de Evolução
+
+            // A) Diária (Últimos 7 dias)
+            vm.GraficoDiario = pedidos
+                .Where(p => p.DataEntregue.Value.Date >= hoje.AddDays(-6))
+                .GroupBy(p => p.DataEntregue.Value.Date)
+                .Select(g => new VendaPeriodo { Label = g.Key.ToString("dd/MM"), Total = g.Sum(p => p.PrecoTotal ?? 0) })
+                .OrderBy(x => x.Label)
+                .ToList();
+
+            // B) Semanal (Dentro do Mês Atual)
+            vm.GraficoSemanal = pedidos
+                .Where(p => p.DataEntregue.Value.Date >= inicioMes)
+                .GroupBy(p => GetWeekOfMonth(p.DataEntregue.Value))
+                .Select(g => new VendaPeriodo { Label = "Semana " + g.Key, Total = g.Sum(p => p.PrecoTotal ?? 0) })
+                .OrderBy(x => x.Label)
+                .ToList();
+
+            // C) Mensal (Dentro do Ano Atual)
+            vm.GraficoMensal = pedidos
+                .Where(p => p.DataEntregue.Value.Date >= inicioAno)
+                .GroupBy(p => p.DataEntregue.Value.Month)
+                .Select(g => new VendaPeriodo
+                {
+                    Label = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(g.Key),
+                    Total = g.Sum(p => p.PrecoTotal ?? 0)
+                })
+                .ToList(); // A ordenação pode precisar de ajuste dependendo se o mês vem como int ou string, aqui assume ordem de inserção
+
+            // 4. Categorias
+            vm.EstatisticasPorCategoria = itensVendidos
+                .GroupBy(ph => ph.IdHamburguerNavigation.Categoria)
+                .Select(g => new CategoriaStats
+                {
+                    NomeCategoria = g.Key ?? "Geral",
+                    TotalVendas = g.Sum(ph => (ph.Quantidade ?? 0) * (ph.IdHamburguerNavigation.Preco ?? 0)),
+                    MediaVendas = g.Average(ph => (ph.Quantidade ?? 0) * (ph.IdHamburguerNavigation.Preco ?? 0))
+                }).ToList();
+
+            // 5. Relatório de Ingredientes e Alerta de Reposição
+            // Lógica: Calcula quanto de ingrediente foi gasto nos pedidos dos últimos 7 dias
+            var pedidosRecentes = pedidos.Where(p => p.DataEntregue.Value >= inicioSemana).ToList();
+
+            var usoIngredientes = new List<IngredienteRelatorio>();
+
+            // Iterar sobre todos os pedidos recentes -> hambúrgueres -> ingredientes
+            foreach (var pedido in pedidosRecentes)
+            {
+                foreach (var item in pedido.PedidoHamburgueres)
+                {
+                    int qtdLanche = item.Quantidade ?? 0;
+                    foreach (var ingr in item.IdHamburguerNavigation.HamburguerIgredientes)
+                    {
+                        var nomeIng = ingr.IdIngredienteNavigation?.Nome ?? "Ingrediente Desc.";
+                        var qtdGasta = qtdLanche * (ingr.QuantidadeNecessario ?? 0);
+
+                        var existente = usoIngredientes.FirstOrDefault(i => i.NomeIngrediente == nomeIng);
+                        if (existente == null)
+                        {
+                            usoIngredientes.Add(new IngredienteRelatorio { NomeIngrediente = nomeIng, GastoSemana = qtdGasta, QuantidadeTotal = ingr.IdIngredienteNavigation?.Quantidade ?? 0});
+                        }
+                        else
+                        {
+                            existente.GastoSemana += qtdGasta;
+                        }
+                    }
+                }
+            }
+
+            // Definição de Regra de Alerta: Se gastou mais de 50 unidades na semana, sugere reposição.
+            // (Você pode ajustar esse valor '50' conforme a realidade do negócio)
+            foreach (var item in usoIngredientes)
+            {
+                item.AlertaReposicao = item.GastoSemana >= item.QuantidadeTotal;
+            }
+
+            vm.RelatorioIngredientes = usoIngredientes.OrderByDescending(i => i.GastoSemana).ToList();
+
+            return View(vm);
+        }
+
+        // Helper para pegar número da semana dentro do mês
+        private int GetWeekOfMonth(DateTime date)
+        {
+            DateTime beginningOfMonth = new DateTime(date.Year, date.Month, 1);
+            int offset = (int)beginningOfMonth.DayOfWeek; // Domingo = 0
+            return (date.Day + offset - 1) / 7 + 1;
         }
 
         public IActionResult Privacy()
