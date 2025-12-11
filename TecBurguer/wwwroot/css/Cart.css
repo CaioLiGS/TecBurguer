@@ -423,3 +423,24 @@ h1.page-title {
         transform: scale(1);
     }
 }
+
+@media (max-width: 768px) {
+
+    .cart-item {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .flex-grow-1 {
+        width: 100%;
+    }
+    .item-details{
+        width: 100%;
+    }
+    .align-items-center {
+        gap: 20px;
+        align-items: center !important;
+        width: 100%;
+        justify-content: space-between;
+    }
+}

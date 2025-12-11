@@ -113,32 +113,56 @@
                             }
                         </div>
 
-                        <div class="ContentRight">
-                            <div class="Cart">
-                                <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Cart"><img src="~/css/Imagens/IconCart.png"></a>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="ContentRight">
+                                <div class="Cart">
+                                    <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Cart"><img src="~/css/Imagens/IconCart.png"></a>
+                                        @if (cartCount != 0)
+                                        {
+                                            <p class="QuantCart" >
+                                                @cartCount
+                                            </p>
+                                        }
+                                
+                                </div>
+                            
+                                    <li class="LoginPartial2">
+                                        <partial name="_LoginPartial" />
+                                    </li>
+
+                            </div>
+
+                            <style>
+                                @@media (max-width: 576px) {
+                                    .ContentRight{
+                                        flex-direction: row-reverse !important;
+                                        justify-content: space-between;
+                                    }
+                                    
+                                }
+                            </style>
+                        }
+                        else
+                        {
+                            <div class="ContentRight">
+                                <div class="Cart" style="display: none;">
+                                    <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Cart"><img src="~/css/Imagens/IconCart.png"></a>
                                     @if (cartCount != 0)
                                     {
-                                        <p class="QuantCart">
+                                        <p class="QuantCart" >
                                             @cartCount
                                         </p>
                                     }
-                                
-                            </div>
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                <li class="LoginPartial2">
-                                    <partial name="_LoginPartial" />
-                                </li>
-                            }
-                            else
-                            {
+
+                                </div>
                                 <li class="LoginPartial">
                                     <partial name="_LoginPartial" />
                                 </li>
-                            }
 
-                        </div>
-                       
+                            </div>
+                        }
+
    
                     </ul>
                 </div>

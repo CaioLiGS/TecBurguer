@@ -94,6 +94,7 @@ body {
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         transition: background 0.2s;
         display: flex;
+        align-items: center;
     }
 
         .styled-table tbody tr:last-of-type {
@@ -133,7 +134,7 @@ body {
     border-radius: 30px;
     border: 1px solid rgba(255,255,255,0.1);
     width: fit-content;
-
+    height: 50px;
     transition: all 0.5s ease-in-out;
 }
 
@@ -235,4 +236,13 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+@media (max-width: 768px){
+    .styled-table th {
+        font-size: 0.8rem;
+    }
+    .ingredient-name {
+        font-size: 0.8rem;
+    }
 }
