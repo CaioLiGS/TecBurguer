@@ -121,19 +121,6 @@ window.carregarDetalhesPedido = carregarDetalhesPedido;
 //    }
 //});
 
-function toggleDropdown() {
-    const menu = document.getElementById("dropdownMenu");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
-// Fecha dropdown ao clicar fora
-window.onclick = function (event) {
-    if (!event.target.matches('.btn-filtrar, .btn-filtrar *')) {
-        document.querySelectorAll(".dropdown-content").forEach(dropdown => {
-            dropdown.style.display = "none";
-        });
-    }
-};
 
 function filtrar(categoria) {
     document.querySelectorAll(".section").forEach(secao => {
@@ -276,7 +263,6 @@ async function CalcularPrecoTotal(idPedido) {
 
             await axios.delete(`/api/pedidos/delete/${idPedido}`);
 
-            alert("O pedido ficou vazio e foi removido.");
             window.location.href = "/";
             return; 
         }
@@ -641,7 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
     CARRINHO
 */
 
-let tipoMoradia = 'casa';
+let tipoMoradia = "casa";
 
 function AlternarMoradia(tipo) {
     tipoMoradia = tipo;
@@ -651,7 +637,7 @@ function AlternarMoradia(tipo) {
     document.getElementById('btnApto').classList.toggle('active', tipo === 'apto');
 
     // Troca os inputs visíveis
-    if (tipo === 'casa') {
+    if (tipo == 'casa') {
         document.getElementById('areaCasa').style.display = 'block';
         document.getElementById('areaApto').style.display = 'none';
     } else {
@@ -677,7 +663,7 @@ function BuscarEndereco(cep) {
                     document.getElementById('ufInput').value = data.uf;
                     document.getElementById('msgErroCep').style.display = 'none';
 
-                    if (tipoMoradia === 'casa') document.getElementById('numCasaInput').focus();
+                    if (tipoMoradia == 'casa') document.getElementById('numCasaInput').focus();
                     else document.getElementById('condominioInput').focus();
                 } else {
                     document.getElementById('msgErroCep').style.display = 'block';
@@ -719,7 +705,7 @@ function FinalizarCompra(username, idPedido) {
 
                 let complementoFinal = "";
 
-                if (tipoMoradia === 'casa') {
+                if (tipoMoradia == 'casa') {
                     const numero = document.getElementById('numCasaInput').value;
                     if (!numero) { alert("Informe o número da casa."); return; }
                     complementoFinal = `${numero}`;
@@ -788,9 +774,44 @@ function fecharPopup() {
     document.getElementById("FacaLogin").classList.remove("mostrar");
 }
 
-/*
-    HAMBURGUERES DO CARDAPIO
-*/
+const dropdown = document.getElementById("dropdown-admin");
+const menu = document.getElementById("menuDrop");
+let fixo = false;
+let dropHover = false;
+
+dropdown.addEventListener("mouseenter", function() {
+    menu.classList.add("show");
+    dropHover = true;
+});
+
+menu.addEventListener("mouseenter", function () {
+    fixo = true;
+
+    if (dropHover) {
+        menu.classList.add("show");
+    }
+});
+
+menu.addEventListener("mouseleave", function () {
+    fixo = false;
+    dropHover = false;
+    menu.classList.remove("show");
+});
+
+dropdown.addEventListener("mouseleave", function() {
+    if (fixo) { return}
+    menu.classList.remove("show");
+    
+});
+
+dropdown.addEventListener("click", function() {
+    if (menu.classList.contains("show")) {
+        menu.classList.remove("show");
+    } else {
+        menu.classList.add("show");
+    }
+});
+
 
 /*
     LOGIN E REGISTRO

@@ -139,6 +139,8 @@ public class PedidosController : ControllerBase
             .ThenInclude(ph => ph.IdHamburguerNavigation)
                 .ThenInclude(h => h!.HamburguerIgredientes)
                     .ThenInclude(hi => hi.IdIngredienteNavigation)
+        .Include(b => b.PedidoBebida)
+            .ThenInclude(beb => beb.IdBebidasNavigation)
         .FirstOrDefaultAsync(p => p.IdPedido == id);
 
         if (pedidoDoBanco == null)
@@ -170,8 +172,16 @@ public class PedidosController : ControllerBase
                     }
                 }
             }
-        }
 
+            foreach (var itemBebida in pedidoDoBanco.PedidoBebida)
+            {
+                itemBebida.IdBebidasNavigation!.Quantidade -= itemBebida.Quantidade ?? 0;
+
+                if (itemBebida.IdBebidasNavigation.Quantidade < 0) return BadRequest($"Falta estoque de {itemBebida.IdBebidasNavigation.Nome}");
+
+                _context.Entry(itemBebida.IdBebidasNavigation).State = EntityState.Modified;
+            }
+        }
         // 2. Aplicar manualmente as atualizações parciais
         if (dadosParciais.Nome != null)
         {

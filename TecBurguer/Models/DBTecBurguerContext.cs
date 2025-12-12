@@ -119,7 +119,7 @@ namespace TecBurguer.Models
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Quantidade).HasColumnType("numeric(18, 2)");
+                entity.Property(e => e.Quantidade).HasColumnType("int");
 
                 entity.Property(e => e.Preco).HasColumnType("numeric(18, 2)");
             });

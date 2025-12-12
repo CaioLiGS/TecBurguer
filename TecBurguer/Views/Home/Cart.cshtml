@@ -211,11 +211,11 @@
 
                                         @if (item.Tipo == "Hamburguer")
                                         {
-                                            <button class="quantity-btn" onclick="adicionarAoCarrinho('@item.Nome', @precoUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture), '@item.IdProduto', '@UserManager.GetUserName(User)', true)">+</button>
+                                            <button class="quantity-btn" onclick="adicionarAoCarrinho('@item.Nome', @precoUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture), '@item.IdProduto', '@UserManager.GetUserName(User)', 'Hamburguer')">+</button>
                                         }
                                         else
                                         {
-                                            <button class="quantity-btn" onclick="adicionarBebidaAoCarrinho('@item.Nome', @precoUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture), '@item.IdProduto', '@UserManager.GetUserName(User)', true)">+</button>
+                                            <button class="quantity-btn" onclick="adicionarAoCarrinho('@item.Nome', @precoUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture), '@item.IdProduto', '@UserManager.GetUserName(User)', 'Bebida')">+</button>
                                         }
                                     </div>
                                 }

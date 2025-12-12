@@ -142,11 +142,6 @@ header {
     top: 0;
 }
 
-.nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0;
-}
-
 .nav-item.dropdown {
     position: relative;
 }
@@ -207,21 +202,27 @@ header {
 }
 
 .dropdown-menu {
-    display: none;
+    display: block;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: var(--light);
+    background-color: var(--primary);
     box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
     border-radius: 5px;
     min-width: 180px;
     padding: 5px 0;
     z-index: 1000;
-    transition: opacity 0.3s ease;
+    right: 0 !important;
+    left: auto !important;
+    height: 0;
+    opacity: 0;
+    transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
-.nav-item.dropdown:hover > .dropdown-menu {
-    display: block;
+.dropdown-menu.show{
+    height: 200px;
+    opacity: 1;
+    margin-top: 0;
 }
 
 .dropdown-item {
@@ -255,7 +256,7 @@ header {
     }
 
     .navbar-nav-flex-grow-1 {
-        height: 100%;
+        height: 90%;
         padding-left: 0;
         flex-direction: column !important;
         align-items: center;
@@ -284,13 +285,21 @@ header {
             text-align: center;
         }
 
-    .Abas .nav-link {
-        background-color: var(--primary);
-        border-radius: 8px;
-        padding: 10px;
-        color: white !important;
-        letter-spacing: 2px;
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        .Abas .nav-link {
+            background-color: var(--primary);
+            border-radius: 8px;
+            padding: 10px;
+            color: white !important;
+            letter-spacing: 2px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            justify-content: center;
+        }
+
+    .dropdown-menu {
+        width: 100%;
+        margin-top: 10px !important;
+        border-radius: 10px;
+        font-family: fantasy;
     }
 
     @keyframes aparecer {
@@ -632,7 +641,6 @@ header {
     .Content2 h1{
         text-align: center;
         color: white;
-/*        animation: MoveBackground 20s ease-in-out infinite;*/
         width: 100%;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
@@ -1120,12 +1128,6 @@ header {
     align-items: center;
 }
 
-.dropdown-menu {
-    right: 0 !important;
-    left: auto !important;
-    background-color: var(--primary);
-}
-
 /*
    Teste Cardapio
 */
@@ -1319,7 +1321,7 @@ header {
 }
 
 .TituloRDC {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Ranchers', cursive;
     text-transform: uppercase;
     font-size: 3rem;
     color: var(--accent);
@@ -1800,9 +1802,7 @@ html, body {
     }
 
     .TituloRDC {
-        font-family: 'Ranchers', cursive;
         font-size: 2rem;
-        color: var(--primary);
         margin-bottom: 20px;
     }
 
@@ -1835,7 +1835,7 @@ html, body {
         }
 
     .Content2 h1 {
-        font-size: 1.2rem;
+        font-size: 2.3rem;
     }
 
     .textos {

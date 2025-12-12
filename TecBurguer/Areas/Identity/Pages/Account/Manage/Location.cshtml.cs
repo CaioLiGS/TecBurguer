@@ -33,18 +33,23 @@ namespace TecBurguer.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Display(Name = "CEP")]
+            [Required(ErrorMessage ="O campo CEP é obrigatório!")]
             public string Cep { get; set; }
 
             [Display(Name = "Rua")]
+            [Required(ErrorMessage = "O campo RUA é obrigatório!")]
             public string Rua { get; set; }
 
             [Display(Name = "Bairro")]
+            [Required(ErrorMessage = "O campo BAIRRO é obrigatório!")]
             public string Bairro { get; set; }
 
             [Display(Name = "Cidade")]
+            [Required(ErrorMessage = "O campo CIDADE é obrigatório!")]
             public string Cidade { get; set; }
 
             [Display(Name = "Estado")]
+            [Required(ErrorMessage = "O campo ESTADO é obrigatório!")]
             public string Estado { get; set; }
         }
 
@@ -65,7 +70,7 @@ namespace TecBurguer.Areas.Identity.Pages.Account.Manage
             var userLogin = await _userManager.GetUserAsync(User);
             if (userLogin == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Não foi possível carregar o usuário com a id '{_userManager.GetUserId(User)}'.");
             }
 
             // BUSCA O USUÁRIO DE NEGÓCIO PELO EMAIL DO LOGIN
@@ -91,7 +96,7 @@ namespace TecBurguer.Areas.Identity.Pages.Account.Manage
             var userLogin = await _userManager.GetUserAsync(User);
             if (userLogin == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Não foi possível carregar o usuário com a id:  '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)

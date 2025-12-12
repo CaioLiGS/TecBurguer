@@ -179,17 +179,25 @@ namespace TecBurguer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Hamburguers == null)
-            {
-                return Problem("Entity set 'DBTecBurguerContext.Hamburguers'  is null.");
-            }
-            var hamburguer = await _context.Hamburguers.FindAsync(id);
+            var hamburguer = await _context.Hamburguers
+                .Include(h => h.HamburguerIgredientes) // <--- IMPORTANTE: Traz a relação junto
+                .FirstOrDefaultAsync(m => m.IdHamburguer == id);
+
             if (hamburguer != null)
             {
+                // 2. Remova os itens da tabela de relacionamento primeiro
+                if (hamburguer.HamburguerIgredientes != null && hamburguer.HamburguerIgredientes.Any())
+                {
+                    _context.HamburguerIgredientes.RemoveRange(hamburguer.HamburguerIgredientes);
+                }
+
+                // 3. Agora é seguro remover o hambúrguer
                 _context.Hamburguers.Remove(hamburguer);
+
+                // 4. Salva tudo no banco (o EF gera os deletes na ordem correta)
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

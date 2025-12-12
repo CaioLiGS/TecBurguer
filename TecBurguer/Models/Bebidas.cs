@@ -19,7 +19,7 @@ namespace TecBurguer.Models
 
         public string? Imagem { get; set; }
 
-        public decimal? Quantidade { get; set; }
+        public int? Quantidade { get; set; }
 
         public virtual ICollection<PedidoBebidas> PedidoBebida { get; set; }
     }
