@@ -2,6 +2,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TecBurguer.Areas.Identity.Data;
 using TecBurguer.Models;
 
 namespace TecBurguer.Controllers
@@ -10,13 +11,14 @@ namespace TecBurguer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DBTecBurguerContext _context;
+        private readonly LoginContext _loginContext;
 
-        public HomeController(ILogger<HomeController> logger, DBTecBurguerContext context)
+        public HomeController(ILogger<HomeController> logger, DBTecBurguerContext context, LoginContext loginContext)
         {
             _logger = logger;
             _context = context;
+            _loginContext = loginContext;
         }
-
         public IActionResult Index()
         {
             var hamburgueres = _context.Hamburguers.Include(h => h.HamburguerIgredientes)       
@@ -158,6 +160,42 @@ namespace TecBurguer.Controllers
             return View(pedidos.ToList());
         }
 
+        public async Task<IActionResult> UsuariosContrato()
+        {
+            var usuarios = await _context.Usuarios.AsNoTracking().ToListAsync();
+            return View(usuarios);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AtualizarServico(int idUsuario, string novoServico)
+        {
+            var usuario = await _context.Usuarios.FindAsync(idUsuario);
+
+            if (usuario != null)
+            {
+                usuario.Servico = novoServico;
+
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
+
+                if (!string.IsNullOrEmpty(usuario.Email))
+                {
+                    var usuarioIdentity = await _loginContext.Users
+                        .FirstOrDefaultAsync(u => u.Email == usuario.Email);
+
+                    if (usuarioIdentity != null)
+                    {
+                        usuarioIdentity.Servico = novoServico;
+
+                        _loginContext.Update(usuarioIdentity);
+                        await _loginContext.SaveChangesAsync();
+                    }
+                }
+            }
+
+            return RedirectToAction(nameof(UsuariosContrato));
+        }
         public async Task<IActionResult> Estatisticas()
         {
             var agora = DateTime.Now;

@@ -128,17 +128,9 @@ namespace TecBurguer.Controllers
             {
                 usuarioDoBanco.Complemento = dadosParciais.Complemento;
             }
-            if (dadosParciais.Administrador != null)
+            if (dadosParciais.Servico != null)
             {
-                usuarioDoBanco.Administrador = dadosParciais.Administrador;
-            }
-            if (dadosParciais.Administrador != null)
-            {
-                usuarioDoBanco.Administrador = dadosParciais.Administrador;
-            }
-            if (dadosParciais.Vendedor != null)
-            {
-                usuarioDoBanco.Vendedor = dadosParciais.Vendedor;
+                usuarioDoBanco.Servico = dadosParciais.Servico;
             }
             // OBS: Não atualize Senha ou NivelAcesso assim, a menos que seja intencional.
 

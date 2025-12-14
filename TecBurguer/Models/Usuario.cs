@@ -19,8 +19,7 @@ namespace TecBurguer.Models
         public string? Bairro { get; set; }
         public string? Rua { get; set; }
         public string? Complemento { get; set; }
-        public bool? Administrador { get; set; }
-        public bool? Vendedor { get; set; }
+        public string? Servico { get; set; }
         public virtual ICollection<Pedido> Pedidos { get; set; }
     }
 }
