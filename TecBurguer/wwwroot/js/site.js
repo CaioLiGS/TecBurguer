@@ -411,7 +411,7 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer, tipo) {
         });
 }
 
-function adicionarPedidosBebidas(idPedido, idBebida, nome, preco, emailUsuario, tipo) {
+function adicionarPedidosBebidas(idPedido, idBebida) {
     const url = '/api/pedidobebidas/create';
 
     console.log("id da bebida: " + idBebida);
@@ -463,7 +463,8 @@ function adicionarPedidosBebidas(idPedido, idBebida, nome, preco, emailUsuario, 
                     CalcularPrecoTotal(idPedido);
                 })
                 .catch(err => {
-                    adicionarAoCarrinho(nome, preco, idBebida, emailUsuario, tipo)
+                    console.error('Erro ao criar pedido:', err.response?.data || err.message);
+                    alert('Erro ao adicionar item. Por favor, tente novamente.');
                 });
         }
     }).catch(err => {
@@ -502,7 +503,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, tipo) {
                     showLoading();
 
                     if (tipo == "Bebida") {
-                        adicionarPedidosBebidas(pedidoExistente.idPedido, idHamburguer, nome, preco, emailUsuario, tipo);
+                        adicionarPedidosBebidas(pedidoExistente.idPedido, idHamburguer);
                     }
                     else {
                         adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
@@ -514,7 +515,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, tipo) {
             } else {
                 console.log('Nenhum pedido existente, criando novo');
                 showLoading();
-                adicionarPedidos(nome, preco, idUsuario, idHamburguer);
+                adicionarPedidos(nome, preco, idUsuario, idHamburguer, tipo);
             }
 
         }).catch(err => {
