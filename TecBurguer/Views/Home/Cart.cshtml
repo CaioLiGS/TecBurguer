@@ -269,6 +269,11 @@
                             <button class="btn-checkout" onclick="FinalizarCompra('@UserManager.GetUserName(User)', @pedido?.IdPedido)">
                                 FINALIZAR COMPRA
                             </button>
+                            <p style="
+                                color: var(--bs-gray-500);
+                                text-align: center;
+                                margin-top: 10px;
+                            ">*O pagamento vai ser realizado na entrega!</p>
                         }
                         else
                         {
@@ -278,6 +283,11 @@
                             <p style="text-align:center; font-size: 0.8rem; color: #777; margin-top: 10px;">
                                 O pedido já foi processado e não pode ser alterado.
                             </p>
+                            <p style="
+                                color: var(--bs-gray-500);
+                                text-align: center;
+                                margin-top: 10px;
+                            ">*O pagamento vai ser realizado na entrega!</p>
                         }
                     </div>
                 </div>
