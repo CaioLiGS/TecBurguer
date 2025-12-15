@@ -1805,7 +1805,7 @@ html, body {
 
     .item-recomendacao .info {
         width: 80%;
-        height: 70%;
+        height: 60%;
         padding-top: 0;
         margin: 0;
     }
@@ -1827,18 +1827,13 @@ html, body {
     }
 
     .item-recomendacao .info div ul {
-        text-align: left;
-        
+        display: none; 
     }
 
     .BotoesRDC {
-        height: 10%;
+        height: 20%;
         gap: 5px;
     }
-
-        .BotoesRDC .SaibaMaisHamburguer{
-            height: 100%;
-        }
         .ConteudoContent1 {
             gap: 8vw;
             padding-left: 20vw;
