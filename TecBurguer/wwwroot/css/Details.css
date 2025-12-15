@@ -15,12 +15,13 @@ body {
     color: var(--text-main);
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
-    margin-top: 10vh;
+    padding-top: 10vh;
+    height: 100vh;
 }
 
 /* --- LAYOUT PRINCIPAL --- */
 .details-container {
-    height: 87vh;
+    height: 90vh;
     width: 100vw;
     display: flex;
     align-items: center;
@@ -108,13 +109,14 @@ body {
 .product-title {
     font-family: 'Ranchers', cursive;
     font-size: 4rem;
-    color: transparent;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-    margin-bottom: 10px;
+    text-align: center;
+    color: var(--accent);
+    /* background: linear-gradient(90deg, var(--primary), var(--accent)); */
+    /* -webkit-background-clip: text; */
+    /*background-clip: text;*/
+    /* margin-bottom: 10px; */
     line-height: 1;
-    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-shadow: 0 10px 30px rgb(0 0 0 / 50%);
 }
 
 .price-container {
@@ -239,7 +241,7 @@ body {
     color: white;
     padding: 20px;
     border-radius: 50px;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
@@ -345,6 +347,11 @@ body {
 }
 
 @media (max-width: 900px) {
+    body{
+        oveflow: auto;
+        padding-top: 30px;
+    }
+    
     .glass-panel {
         flex-direction: column;
     }
