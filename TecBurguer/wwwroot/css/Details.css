@@ -120,7 +120,6 @@ body {
 }
 
 .price-container {
-    margin-bottom: 20px;
     display: flex;
     align-items: baseline;
     gap: 15px;
@@ -156,16 +155,16 @@ body {
     font-size: 1.1rem;
     color: #ccc;
     line-height: 1.6;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     border-left: 4px solid var(--primary);
     padding-left: 20px;
 }
 
 /* --- ACORDEÃO DE INGREDIENTES --- */
 .accordion-container {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     border-radius: 15px;
-    overflow: hidden;
+    overflow: auto;
     border: 1px solid rgba(255,255,255,0.1);
     background: rgba(0,0,0,0.2);
 }
