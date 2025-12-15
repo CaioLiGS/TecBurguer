@@ -1367,6 +1367,8 @@ header {
 
         .item-recomendacao .info div ul {
             text-align: left;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         }
 
 .BotoesRDC {
@@ -1818,8 +1820,7 @@ html, body {
 
     .item-recomendacao .info div ul {
         text-align: left;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        
     }
 
     .BotoesRDC {
