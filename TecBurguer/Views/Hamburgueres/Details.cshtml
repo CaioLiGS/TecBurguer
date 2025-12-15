@@ -36,19 +36,7 @@
 
         <div class="details-column">
             <h1 class="product-title">@Model.Nome</h1>
-            <div class="price-container">
-                @if (temOferta)
-                {
-                    <span class="old-price">R$ @Model.Preco.GetValueOrDefault().ToString("N2")</span>
-                    <span class="current-price">R$ @precoFinal.ToString("N2")</span>
-                    <span class="discount-badge">-@oferta?.porcentagem% OFF</span>
-                }
-                else
-                {
-                    <span class="current-price">R$ @Model.Preco.GetValueOrDefault().ToString("N2")</span>
-                }
-            </div>
-
+        
             <p class="product-description">
                 @Model.Descricao
             </p>
@@ -72,6 +60,19 @@
                         }
                     </ul>
                 </div>
+            </div>
+
+            <div class="price-container">
+                @if (temOferta)
+                {
+                    <span class="old-price">R$ @Model.Preco.GetValueOrDefault().ToString("N2")</span>
+                    <span class="current-price">R$ @precoFinal.ToString("N2")</span>
+                    <span class="discount-badge">-@oferta?.porcentagem% OFF</span>
+                }
+                else
+                {
+                    <span class="current-price">R$ @Model.Preco.GetValueOrDefault().ToString("N2")</span>
+                }
             </div>
 
             @if (SignInManager.IsSignedIn(User))
@@ -117,7 +118,7 @@
                 if (content.style.maxHeight) {
                     content.style.maxHeight = null;
                 } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
+                    content.style.maxHeight = "100px";
                 }
             });
         });
