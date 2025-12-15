@@ -80,7 +80,7 @@
                             </li>
                         }
 
-                        @if (User.IsInRole("Vendedor") && User.IsInRole("Administrador"))
+                        @if (User.IsInRole("Vendedor") || User.IsInRole("Administrador"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="PedidoVendedor">Pedidos</a>
