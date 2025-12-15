@@ -411,7 +411,7 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer, tipo) {
         });
 }
 
-function adicionarPedidosBebidas(idPedido, idBebida) {
+function adicionarPedidosBebidas(idPedido, idBebida, nome, preco, emailUsuario, tipo) {
     const url = '/api/pedidobebidas/create';
 
     console.log("id da bebida: " + idBebida);
@@ -463,8 +463,7 @@ function adicionarPedidosBebidas(idPedido, idBebida) {
                     CalcularPrecoTotal(idPedido);
                 })
                 .catch(err => {
-                    console.error('Erro ao criar pedido:', err.response?.data || err.message);
-                    alert('Erro ao adicionar item. Por favor, tente novamente.');
+                    adicionarAoCarrinho(nome, preco, idBebida, emailUsuario, tipo)
                 });
         }
     }).catch(err => {
@@ -503,7 +502,7 @@ function adicionarAoCarrinho(nome, preco, idHamburguer, emailUsuario, tipo) {
                     showLoading();
 
                     if (tipo == "Bebida") {
-                        adicionarPedidosBebidas(pedidoExistente.idPedido, idHamburguer);
+                        adicionarPedidosBebidas(pedidoExistente.idPedido, idHamburguer, nome, preco, emailUsuario, tipo);
                     }
                     else {
                         adicionarPedidosHamburgueres(pedidoExistente.idPedido, idHamburguer);
