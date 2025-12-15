@@ -1912,6 +1912,8 @@ html, body {
         height: 30vh;
         bottom: 0;
         border-radius: 0;
+        border-left: 0;
+        right: -100vw;
         border-top: 10px solid var(--primary);
     }
 
