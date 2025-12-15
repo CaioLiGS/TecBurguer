@@ -630,7 +630,7 @@ header {
 
 .Content2 {
     background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
-    padding: 50px 0;
+    padding: 10px 0;
     margin: 50px 0;
     position: relative;
     border-top: 5px solid var(--primary);
@@ -1099,14 +1099,14 @@ header {
     }
 
 #register {
-    text-wrap: nowrap;
-    width: 50%;
+    width: 100%;
     text-align: center;
 }
 
 .navbar-nav .nav-item {
     display: flex;
     align-items: center;
+    width: 50%;
 }
 
 .navbar-light .navbar-toggler {
@@ -1325,7 +1325,6 @@ header {
     text-transform: uppercase;
     font-size: 3rem;
     color: var(--accent);
-    margin-bottom: 20px;
 }
 
 .carrossel-wrapper {
@@ -1354,7 +1353,7 @@ header {
         background-color: var(--secondary-dark);
         border-radius: 50px;
         justify-content: space-between;
-        width: 40%;
+        width: 60%;
         height: 100%;
         margin-right: 5%;
         padding: 20px;
@@ -1376,7 +1375,7 @@ header {
     align-items: center;
     align-content: center;
     flex-wrap: nowrap;
-    height: 50px;
+    height: 40px;
     gap: 20px;
 }
 
@@ -1433,7 +1432,7 @@ header {
             }
 
     .BotoesRDC .SaibaMaisHamburguer {
-        height: 50px;
+        height: 100%;
     }
 
         .BotoesRDC .SaibaMaisHamburguer:hover {
@@ -1818,7 +1817,9 @@ html, body {
     }
 
     .item-recomendacao .info div ul {
-        display:none;
+        text-align: left;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
 
     .BotoesRDC {
