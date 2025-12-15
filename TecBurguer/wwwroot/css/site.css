@@ -1906,6 +1906,18 @@ html, body {
     .Content1{
         height: auto;
     }
+
+    #FacaLogin{
+        width: 100vw;
+        height: 30vh;
+        bottom: 0;
+        border-radius: 0;
+        border-top: 10px solid var(--primary);
+    }
+
+    #FacaLogin.mostrar{
+        right: 0;
+    }
 }
 
 .btn-ver-todos {
