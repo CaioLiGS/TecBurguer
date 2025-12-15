@@ -1376,7 +1376,7 @@ header {
         .item-recomendacao .info div ul {
             text-align: left;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 190px));
         }
 
 .BotoesRDC {
@@ -1812,7 +1812,7 @@ html, body {
 
     .TituloRDC {
         font-size: 2rem;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .item-recomendacao .info div p {
@@ -1831,7 +1831,7 @@ html, body {
     }
 
     .BotoesRDC {
-        height: 20%;
+        height: 15%;
         gap: 5px;
     }
         .ConteudoContent1 {
@@ -1840,7 +1840,7 @@ html, body {
         }
 
     .Content2 h1 {
-        font-size: 2.3rem;
+        font-size: 1.5rem;
     }
 
     .textos {
