@@ -219,10 +219,18 @@ header {
     transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
+.dropdown-menu li{
+    display: none;
+}
+
 .dropdown-menu.show{
     height: 200px;
     opacity: 1;
     margin-top: 0;
+}
+
+.dropdown-menu.show li{
+    display: block;
 }
 
 .dropdown-item {
