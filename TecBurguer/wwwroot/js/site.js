@@ -397,7 +397,7 @@ function adicionarPedidos(nome, preco, idUsuario, idHamburguer, tipo) {
         .then(response => {
             console.log('Pedido criado com sucesso:', response.data);
 
-            console.log('O tipo é:, tipo);
+            console.log('O tipo é:' + tipo);
 
             if (tipo == 'Bebida') {
                 adicionarPedidosBebidas(response.data.idPedido, idHamburguer);
