@@ -54,14 +54,31 @@ O sistema é dividido em quatro frentes principais para atender a todos os stake
 - Informações de endereço integradas para logística.
 
 ---
+## 📸 Demonstração
+
+### Tela inicial
+<p align="center">
+  <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/4840f4d8-c515-410a-ae17-9c06f1d82c95" />
+</p>
+
+### Loja do sistema
+<p align="center">
+  <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/58425b96-7f1e-4a75-8cd0-b7121fc5166e" />
+</p>
+
+### Administração de hamburgueres
+<p align="center">
+  <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/28f45c57-f359-4af1-a2a0-b9a2ddc6678f" />
+</p>
+
+---
 
 ## 🏗 Arquitetura do Sistema
 
 O projeto utiliza o padrão **MVC (Model-View-Controller)**, garantindo a separação de responsabilidades e facilitando a manutenção do código.
 
 
-
-[Image of MVC architecture diagram for web applications]
+<img width="865" height="533" alt="supabase-schema-qspldknkkndxhlvsrbbl" src="https://github.com/user-attachments/assets/5174ec30-bd21-4990-a9c0-45149ec72808" />
 
 
 1.  **Model:** Gerencia os dados e a lógica de negócios, conectando-se ao **Supabase**.
@@ -80,7 +97,7 @@ O projeto utiliza o padrão **MVC (Model-View-Controller)**, garantindo a separa
    ```bash
    dotnet run
 
-_____________________________________________________________
+---
 📄 Licença
 Este projeto está sob a licença MIT.
 
