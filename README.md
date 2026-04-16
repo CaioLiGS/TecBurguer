@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/Deploy-Railway-0b0d0e?style=for-the-badge&logo=railway" alt="Railway">
 </p>
 
-> **Acesse o projeto:** [tecburguer-production.up.railway.app](https://tecburguer-production.up.railway.app)
+> **Acesse o projeto:** [tecburguer-production.up.railway.app](https://tecburguer.onrender.com)
 
 O **TecBurguer** é uma solução completa para a gestão de uma hamburgueria, abrangendo desde a interface de compra do cliente até o controle administrativo e operacional (Cozinha e Entrega). Desenvolvido com foco em organização e eficiência utilizando a arquitetura MVC.
 
